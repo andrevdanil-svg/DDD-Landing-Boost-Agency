@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" fill="none" font-family="Inter, -apple-system, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="aBar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b7fff"/>
+      <stop offset="1" stop-color="#655BFA"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="1200" height="760" rx="16" fill="#0f0f12"/>
+
+  <!-- Sidebar -->
+  <rect x="0" y="0" width="72" height="760" fill="#0a0a0c"/>
+  <rect x="22" y="22" width="28" height="28" rx="6" fill="#655BFA"/>
+  <g fill="none" stroke="#8a8a95" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="26" y="110" width="20" height="20" rx="3"/>
+    <circle cx="36" cy="170" r="8" stroke="#655BFA"/>
+    <path d="M28 220h16M28 228h10"/>
+    <path d="M28 278l6-6 4 4 8-10"/>
+    <path d="M30 330h12M30 336h8"/>
+  </g>
+
+  <!-- Topbar -->
+  <rect x="72" y="0" width="1128" height="64" fill="#0f0f12"/>
+  <line x1="72" y1="64" x2="1200" y2="64" stroke="#1a1a20"/>
+  <text x="96" y="38" font-size="13" fill="#8a8a95">Reporting</text>
+  <text x="170" y="38" font-size="13" fill="#55555f">/</text>
+  <text x="184" y="38" font-size="13" fill="#f5f5f7" font-weight="500">Устройства</text>
+  <rect x="900" y="20" width="170" height="28" rx="6" fill="#17171c" stroke="#24242c"/>
+  <text x="914" y="38" font-size="12" fill="#c9c9d1">01 янв – 15 янв 2026</text>
+  <rect x="1080" y="20" width="96" height="28" rx="6" fill="#655BFA"/>
+  <text x="1128" y="38" font-size="12" fill="#ffffff" font-weight="600" text-anchor="middle">Экспорт</text>
+
+  <!-- Tabs -->
+  <g transform="translate(104,100)">
+    <text font-size="11" fill="#8a8a95" letter-spacing="1.5">РАЗРЕЗЫ</text>
+    <g transform="translate(0,20)">
+      <rect x="0" y="0" width="86" height="32" rx="8" fill="#17171c" stroke="#24242c"/>
+      <text x="43" y="21" font-size="12" fill="#c9c9d1" text-anchor="middle">Обзор</text>
+      <rect x="94" y="0" width="110" height="32" rx="8" fill="#655BFA"/>
+      <text x="149" y="21" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">Устройства</text>
+      <rect x="212" y="0" width="120" height="32" rx="8" fill="#17171c" stroke="#24242c"/>
+      <text x="272" y="21" font-size="12" fill="#c9c9d1" text-anchor="middle">Демография</text>
+      <rect x="340" y="0" width="108" height="32" rx="8" fill="#17171c" stroke="#24242c"/>
+      <text x="394" y="21" font-size="12" fill="#c9c9d1" text-anchor="middle">Креативы</text>
+    </g>
+  </g>
+
+  <!-- Device cards -->
+  <g transform="translate(104,188)">
+    <!-- Desktop -->
+    <rect x="0" y="0" width="338" height="132" rx="14" fill="#17171c" stroke="#24242c"/>
+    <g transform="translate(24,24)" stroke="#8b7fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="0" y="0" width="24" height="16" rx="2"/>
+      <path d="M4 20h16M10 16v4M14 16v4"/>
+    </g>
+    <text x="24" y="80" font-size="11" fill="#8a8a95" letter-spacing="1.5">DESKTOP</text>
+    <text x="24" y="108" font-size="26" fill="#f5f5f7" font-weight="500">52.4%</text>
+    <text x="200" y="108" font-size="13" fill="#8a8a95">2.4M показов</text>
+
+    <!-- Mobile -->
+    <rect x="354" y="0" width="338" height="132" rx="14" fill="#17171c" stroke="#24242c"/>
+    <g transform="translate(378,20)" stroke="#8b7fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="0" y="0" width="18" height="28" rx="3"/>
+      <path d="M7 24h4"/>
+    </g>
+    <text x="378" y="80" font-size="11" fill="#8a8a95" letter-spacing="1.5">MOBILE</text>
+    <text x="378" y="108" font-size="26" fill="#f5f5f7" font-weight="500">38.7%</text>
+    <text x="554" y="108" font-size="13" fill="#8a8a95">1.77M показов</text>
+
+    <!-- Tablet -->
+    <rect x="708" y="0" width="338" height="132" rx="14" fill="#17171c" stroke="#24242c"/>
+    <g transform="translate(732,20)" stroke="#8b7fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="0" y="0" width="22" height="28" rx="3"/>
+      <path d="M9 24h4"/>
+    </g>
+    <text x="732" y="80" font-size="11" fill="#8a8a95" letter-spacing="1.5">TABLET</text>
+    <text x="732" y="108" font-size="26" fill="#f5f5f7" font-weight="500">8.9%</text>
+    <text x="908" y="108" font-size="13" fill="#8a8a95">408K показов</text>
+  </g>
+
+  <!-- Bar chart -->
+  <g transform="translate(104,344)">
+    <rect x="0" y="0" width="1056" height="356" rx="14" fill="#17171c" stroke="#24242c"/>
+    <text x="24" y="32" font-size="14" fill="#f5f5f7" font-weight="500">Performance по устройствам</text>
+    <text x="24" y="54" font-size="11" fill="#8a8a95">CTR / CPA / ROAS</text>
+
+    <!-- grid -->
+    <g stroke="#1a1a20">
+      <line x1="24" y1="100" x2="1032" y2="100"/>
+      <line x1="24" y1="170" x2="1032" y2="170"/>
+      <line x1="24" y1="240" x2="1032" y2="240"/>
+      <line x1="24" y1="310" x2="1032" y2="310"/>
+    </g>
+
+    <!-- Desktop bar group -->
+    <g transform="translate(160,90)">
+      <rect x="0"  y="140" width="48" height="80" rx="4" fill="url(#aBar)"/>
+      <rect x="60" y="90"  width="48" height="130" rx="4" fill="url(#aBar)" opacity=".8"/>
+      <rect x="120" y="40" width="48" height="180" rx="4" fill="url(#aBar)" opacity=".6"/>
+      <text x="84" y="240" font-size="12" fill="#c9c9d1" text-anchor="middle">Desktop</text>
+    </g>
+    <!-- Mobile bar group -->
+    <g transform="translate(480,90)">
+      <rect x="0"  y="110" width="48" height="110" rx="4" fill="url(#aBar)"/>
+      <rect x="60" y="70"  width="48" height="150" rx="4" fill="url(#aBar)" opacity=".8"/>
+      <rect x="120" y="30" width="48" height="190" rx="4" fill="url(#aBar)" opacity=".6"/>
+      <text x="84" y="240" font-size="12" fill="#c9c9d1" text-anchor="middle">Mobile</text>
+    </g>
+    <!-- Tablet bar group -->
+    <g transform="translate(800,90)">
+      <rect x="0"  y="170" width="48" height="50" rx="4" fill="url(#aBar)"/>
+      <rect x="60" y="150" width="48" height="70" rx="4" fill="url(#aBar)" opacity=".8"/>
+      <rect x="120" y="120" width="48" height="100" rx="4" fill="url(#aBar)" opacity=".6"/>
+      <text x="84" y="240" font-size="12" fill="#c9c9d1" text-anchor="middle">Tablet</text>
+    </g>
+
+    <!-- Legend -->
+    <g transform="translate(24,322)" font-size="11" fill="#c9c9d1">
+      <rect x="0" y="-8" width="10" height="10" rx="2" fill="#655BFA"/>
+      <text x="16" y="1">CTR</text>
+      <rect x="60" y="-8" width="10" height="10" rx="2" fill="#8b7fff" opacity=".8"/>
+      <text x="76" y="1">CPA</text>
+      <rect x="120" y="-8" width="10" height="10" rx="2" fill="#c0b8ff" opacity=".6"/>
+      <text x="136" y="1">ROAS</text>
+    </g>
+  </g>
+</svg>

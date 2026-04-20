@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — Boost! Agency · бюджет, сроки, модели оплаты и отчётность</title>
+  <meta name="description" content="Ответы на частые вопросы о programmatic-рекламе: минимальный бюджет, сроки запуска, модели оплаты, форматы отчётности и интеграции с BI.">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <div data-include="/partials/header.html"></div>
+
+  <main id="top">
+
+    <section class="section hero">
+      <div class="hero__bg" aria-hidden="true">
+        <img src="/assets/hero_pattern.svg" alt="">
+      </div>
+      <div class="container">
+        <div class="hero__inner">
+          <span class="eyebrow">FAQ</span>
+          <h1 class="hero__title">Вопросы,<br>которые задают <em>чаще всего.</em></h1>
+          <p class="hero__subtitle">Если вашего вопроса здесь нет — напишите на hello@boost.agency или в Telegram @boost_agency. Отвечаем в течение рабочего дня.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container faq__grid">
+        <div class="faq__heading">
+          <span class="eyebrow">Базовое</span>
+          <h2>О работе и бюджете.</h2>
+        </div>
+        <div class="faq__list">
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Какой минимальный бюджет для запуска?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner"><p>От $5 000/мес. Это минимум, при котором алгоритм успевает обучиться, а вы получаете значимые performance-результаты. Брендам с меньшим бюджетом рекомендуем сначала собрать first-party-сегменты.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Сколько времени занимает запуск?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner"><p>От брифа до первого показа — 3–5 рабочих дней. За это время собираем стратегию, сегменты, трекинг и адаптируем креативы. Если креативы готовы, запускаем быстрее.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>В каких странах и гео работаете?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner"><p>Россия, СНГ и Восточная Европа — основной рынок. По запросу — MENA и Западная Европа. По каждому гео показываем прозрачную performance-картину в кабинете.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Какая модель оплаты — фикс, % или CPA?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner"><p>Три модели: процент от медийного бюджета, фикс-фи за управление или CPA/CPO для устоявшихся воронок. Модель выбираем под зрелость performance-данных клиента.</p></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container faq__grid">
+        <div class="faq__heading">
+          <span class="eyebrow">Отчётность</span>
+          <h2>Метрики и прозрачность.</h2>
+        </div>
+        <div class="faq__list">
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Какие форматы отчётности?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner"><p>Live-кабинет 24/7 + еженедельный звонок с аналитиком. По запросу — PDF-отчёт в конце месяца, интеграция по API с вашей BI-системой, экспорт в CSV/XLSX.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Чем отличаетесь от «обычного» рекламного агентства?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner"><p>Собственная DSP и прозрачный кабинет, в котором клиент видит всё, что видим мы. Никаких «чёрных ящиков», сводных отчётов в конце месяца и ручного рисования цифр в Excel.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Можно ли подключить свою BI-систему?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner"><p>Да. Отгружаем сырые логи в BigQuery, S3 или по API. Подключали Looker, Metabase, Power BI, Tableau.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Как измеряете post-view конверсии?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner"><p>Сопоставляем показы с визитами в вашей веб-аналитике или MMP. Окно атрибуции настраивается, стандарт — 7 дней post-click и 1 день post-view.</p></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section__head" style="text-align:center; margin-inline:auto;">
+        <h2>Не нашли ответ?</h2>
+        <div class="hero__cta" style="justify-content:center;">
+          <a href="/contact/" class="btn btn--primary btn--large">Задать вопрос команде</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div data-include="/partials/footer.html"></div>
+
+  <script src="/main.js"></script>
+</body>
+</html>

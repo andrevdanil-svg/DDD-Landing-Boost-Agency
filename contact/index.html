@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Контакты и заявка — Boost! Agency</title>
+  <meta name="description" content="Оставьте заявку: пришлём медиаплан под ваш KPI за 48 часов и дадим демо-доступ в кабинет с реальными данными. Отвечаем в течение рабочего дня.">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <div data-include="/partials/header.html"></div>
+
+  <main id="top">
+
+    <section class="section" id="contact">
+      <div class="container contact__grid">
+        <div class="contact__text">
+          <span class="eyebrow">Заявка</span>
+          <h1>Расскажите о задаче.<br>Ответим в&nbsp;течение рабочего дня.</h1>
+          <p>Пришлём медиаплан под ваш KPI и дадим демо-доступ в кабинет с реальными данными.</p>
+          <ul class="contact__benefits">
+            <li>Медиаплан и прогноз по KPI — за 48 часов</li>
+            <li>Демо-доступ в кабинет с действующей кампанией</li>
+            <li>NDA по запросу — до брифа</li>
+          </ul>
+          <div class="contact__channels">
+            <div>Или напрямую:</div>
+            <a href="mailto:hello@boost.agency">hello@boost.agency</a>
+            <a href="https://t.me/boost_agency" target="_blank" rel="noopener">Telegram: @boost_agency</a>
+          </div>
+        </div>
+
+        <form class="form" id="contact-form" action="/leads" method="post" novalidate>
+          <div class="form__row">
+            <div class="form__field">
+              <label for="f-first">Имя</label>
+              <input id="f-first" name="first_name" type="text" placeholder="Анна" required>
+            </div>
+            <div class="form__field">
+              <label for="f-last">Фамилия</label>
+              <input id="f-last" name="last_name" type="text" placeholder="Петрова" required>
+            </div>
+          </div>
+          <div class="form__field">
+            <label for="f-email">Рабочий email</label>
+            <input id="f-email" name="email" type="email" placeholder="anna@company.ru" required>
+          </div>
+          <div class="form__row">
+            <div class="form__field">
+              <label for="f-company">Компания</label>
+              <input id="f-company" name="company" type="text" placeholder="Название компании" required>
+            </div>
+            <div class="form__field">
+              <label for="f-role">Должность</label>
+              <input id="f-role" name="role" type="text" placeholder="Head of Marketing">
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="form__field">
+              <label for="f-phone">Телефон</label>
+              <input id="f-phone" name="phone" type="tel" placeholder="+7 999 123-45-67" pattern="^\+?[0-9\s\-\(\)]{7,20}$" title="Номер в международном формате, например +7 999 123-45-67">
+            </div>
+            <div class="form__field">
+              <label for="f-site">Сайт</label>
+              <input id="f-site" name="website" type="url" placeholder="https://company.ru">
+            </div>
+          </div>
+          <div class="form__field">
+            <label for="f-budget">Бюджет на месяц</label>
+            <select id="f-budget" name="budget" required>
+              <option value="" disabled selected hidden>Выберите диапазон</option>
+              <option>до $5 000</option>
+              <option>$5 000 – $20 000</option>
+              <option>$20 000 – $50 000</option>
+              <option>от $50 000</option>
+              <option>Пока не знаю</option>
+            </select>
+          </div>
+          <div class="form__field">
+            <label for="f-msg">Что хотите обсудить?</label>
+            <textarea id="f-msg" name="message" rows="4" placeholder="Коротко о продукте, KPI и текущей ситуации"></textarea>
+          </div>
+          <label class="form__checkbox">
+            <input type="checkbox" name="consent" required>
+            <span>Согласен на обработку персональных данных в соответствии с <a href="#">Политикой конфиденциальности</a>.</span>
+          </label>
+          <button type="submit" class="btn btn--primary btn--large form__submit">Отправить заявку</button>
+        </form>
+
+        <div class="form__success" id="form-success" role="status" aria-live="polite">
+          <div class="form__success-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3>Заявка принята</h3>
+          <p>Менеджер напишет на указанный email в течение рабочего дня.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div data-include="/partials/footer.html"></div>
+
+  <script src="/main.js"></script>
+</body>
+</html>

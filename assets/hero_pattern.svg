@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none">
+  <defs>
+    <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#655BFA" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#655BFA" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#655BFA" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="hg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b7fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#8b7fff" stop-opacity=".5"/>
+    </linearGradient>
+    <radialGradient id="hglow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#655BFA" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#655BFA" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- subtle grid -->
+  <g stroke="#ffffff" stroke-opacity=".04" stroke-width="1">
+    <path d="M0 150h1440M0 300h1440M0 450h1440M0 600h1440M0 750h1440"/>
+    <path d="M180 0v900M360 0v900M540 0v900M720 0v900M900 0v900M1080 0v900M1260 0v900"/>
+  </g>
+
+  <!-- wavy performance curves -->
+  <path d="M0 620 C 200 580, 340 720, 540 560 S 900 460, 1100 520 1440 380 1440 380" stroke="url(#hg1)" stroke-width="1.2"/>
+  <path d="M0 680 C 260 620, 400 780, 640 620 S 980 520, 1180 580 1440 460 1440 460" stroke="url(#hg2)" stroke-width="1"/>
+  <path d="M0 740 C 240 700, 420 820, 700 700 S 1040 600, 1220 660 1440 540 1440 540" stroke="#8b7fff" stroke-opacity=".18" stroke-width="1"/>
+
+  <!-- data dots with subtle pulse -->
+  <g fill="#655BFA">
+    <circle cx="540" cy="560" r="3"><animate attributeName="opacity" values="1;.3;1" dur="3.2s" repeatCount="indefinite"/></circle>
+    <circle cx="900" cy="460" r="3"><animate attributeName="opacity" values=".3;1;.3" dur="4s" repeatCount="indefinite"/></circle>
+    <circle cx="1180" cy="580" r="3"><animate attributeName="opacity" values="1;.4;1" dur="3.6s" repeatCount="indefinite"/></circle>
+    <circle cx="340" cy="720" r="2.5" opacity=".8"/>
+    <circle cx="700" cy="700" r="2.5" opacity=".7"/>
+  </g>
+
+  <!-- glow orb top-right -->
+  <ellipse cx="1240" cy="200" rx="420" ry="320" fill="url(#hglow)"/>
+</svg>
