@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="leads-api" content="https://platform.boostagency.uz/api/leads">
+  <script>document.write('<base href="'+(location.hostname.endsWith("github.io")?"/DDD-Landing-Boost-Agency/uz/":"/uz/")+'">');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boost! Agency — Programmatic-реклама без чёрного ящика</title>
+  <meta name="description" content="Performance-реклама через programmatic. Закупаем display, video, native и CTV через десятки бирж и SSP. Прозрачный кабинет с live-аналитикой для каждого рекламодателя.">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="canonical" href="https://boostagency.uz/uz/">
+  <link rel="alternate" hreflang="ru" href="https://boostagency.uz/">
+  <link rel="alternate" hreflang="en" href="https://boostagency.uz/en/">
+  <link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/">
+  <link rel="alternate" hreflang="x-default" href="https://boostagency.uz/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Boost! Agency">
+  <meta property="og:url" content="https://boostagency.uz/uz/">
+  <meta property="og:title" content="Boost! Agency — Programmatic-реклама без чёрного ящика">
+  <meta property="og:description" content="Performance-реклама через programmatic. Закупаем display, video, native и CTV через десятки бирж и SSP. Прозрачный кабинет с live-аналитикой для каждого рекламодателя.">
+  <meta property="og:image" content="https://boostagency.uz/assets/og-image.svg">
+  <meta property="og:locale" content="uz_UZ">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Boost! Agency — Programmatic-реклама без чёрного ящика">
+  <meta name="twitter:description" content="Performance-реклама через programmatic. Закупаем display, video, native и CTV через десятки бирж и SSP. Прозрачный кабинет с live-аналитикой для каждого рекламодателя.">
+  <meta name="twitter:image" content="https://boostagency.uz/assets/og-image.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Boost! Agency",
+    "url": "https://boostagency.uz/",
+    "logo": "https://boostagency.uz/assets/logo_boost.svg",
+    "image": "https://boostagency.uz/assets/og-image.svg",
+    "description": "Programmatic-агентство: закупаем display, video, native, mobile in-app и CTV через десятки бирж и SSP. Прозрачный кабинет с live-аналитикой.",
+    "email": "hello@boost.agency",
+    "telephone": "+998935634905",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Площадь Хамида Олимжана, 4Б",
+      "addressLocality": "Ташкент",
+      "addressCountry": "UZ"
+    },
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "telephone": "+998935634905",
+      "email": "hello@boost.agency",
+      "contactType": "sales",
+      "availableLanguage": ["ru", "uz", "en"]
+    }],
+    "sameAs": [
+      "https://t.me/boost_agency"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="lang-banner" id="lang-banner" hidden>
+    <div class="lang-banner__inner">
+      <span class="lang-banner__text" id="lang-banner-text"></span>
+      <a class="lang-banner__btn" id="lang-banner-switch" href="#"></a>
+      <button class="lang-banner__close" id="lang-banner-close" aria-label="Close" type="button">×</button>
+    </div>
+  </div>
+
+  <header class="header" role="banner">
+  <div class="container header__inner">
+    <a href="/uz/" class="header__logo" aria-label="Boost! Agency — на главную">
+      <img src="/assets/logo_boost_light.svg" alt="Boost! Agency">
+    </a>
+    <nav class="header__nav" aria-label="Главная навигация">
+      <a href="platform/">Платформа</a>
+      <a href="channels/">Каналы</a>
+      <a href="technology/">Технология</a>
+      <a href="analytics/">Аналитика</a>
+      <div class="header__nav-item header__nav-item--dropdown">
+        <button type="button" class="header__nav-trigger" aria-haspopup="true" aria-expanded="false">
+          Услуги
+          <svg class="header__nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="header__dropdown" role="menu">
+          <a href="self-launch/" role="menuitem">
+            <span class="header__dropdown-title">Самостоятельный запуск</span>
+            <span class="header__dropdown-sub">Быстрый запуск, мастер за 5 минут, кастом</span>
+          </a>
+          <a href="topup/" role="menuitem">
+            <span class="header__dropdown-title">Пополнение кабинетов</span>
+            <span class="header__dropdown-sub">Google Ads, Meta, DV360, Yandex.Direct</span>
+          </a>
+          <a href="sites/" role="menuitem">
+            <span class="header__dropdown-title">Сайты и лендинги</span>
+            <span class="header__dropdown-sub">Под кампанию, сбор лидов, имидж</span>
+          </a>
+        </div>
+      </div>
+      <a href="cases/">Кейсы</a>
+      <a href="about/">Компания</a>
+    </nav>
+    <div class="lang-switcher" id="lang-switcher" aria-label="Language"></div>
+    <a href="contact/" class="btn btn--primary header__cta">Хочу Boost!</a>
+    <button class="header__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="lang-switcher lang-switcher--mobile" id="lang-switcher-mobile" aria-label="Language"></div>
+  <a href="platform/">Платформа</a>
+  <a href="channels/">Каналы</a>
+  <a href="technology/">Технология</a>
+  <a href="analytics/">Аналитика</a>
+  <div class="mobile-menu__group">Услуги</div>
+  <a href="self-launch/">Самостоятельный запуск</a>
+  <a href="topup/">Пополнение кабинетов</a>
+  <a href="sites/">Сайты и лендинги</a>
+  <a href="cases/">Кейсы</a>
+  <a href="about/">Компания</a>
+  <a href="faq/">FAQ</a>
+  <a href="contact/" class="btn btn--primary">Хочу Boost!</a>
+</div>
+
+  <main id="top">
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+    <section class="section hero">
+      <div class="hero__bg" aria-hidden="true">
+        <img src="/assets/hero_pattern.svg" alt="">
+      </div>
+      <div class="container">
+        <div class="hero__inner">
+          <span class="eyebrow">Programmatic &middot; omnichannel &middot; real&#8209;time</span>
+          <h1 class="hero__title">Programmatic-реклама<br>без&nbsp;<em>чёрного ящика.</em></h1>
+          <p class="hero__subtitle">Закупаем display, video, native и CTV через десятки бирж и SSP. Оптимизируем ставки на уровне аукциона. Показываем в кабинете каждый доллар — от показа до покупки.</p>
+          <div class="hero__cta">
+            <a href="#contact" class="btn btn--primary btn--large">Хочу Boost!</a>
+            <a href="#platform" class="btn btn--ghost btn--large">Как это работает →</a>
+          </div>
+          <div class="hero__proof">
+            <span class="hero__proof-dot"></span>
+            <span>Работаем с 2019. Более 200 кампаний для брендов e-commerce, авто, недвижимости и ритейла.</span>
+          </div>
+        </div>
+
+        <div class="hero__viz" aria-hidden="true">
+          <div class="hero__orb"></div>
+
+          <div class="hero__card hero__card--a">
+            <span class="hero__card-label">ROAS</span>
+            <span class="hero__card-value">×3.14</span>
+            <span class="hero__card-delta hero__card-delta--up">↑ +0.82</span>
+            <svg class="hero__card-spark" viewBox="0 0 160 22" preserveAspectRatio="none">
+              <polyline points="0,18 20,15 40,16 60,11 80,13 100,7 120,9 140,4 160,6" fill="none" stroke="#3ecf8e" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <div class="hero__card hero__card--b">
+            <span class="hero__card-label">CPA</span>
+            <span class="hero__card-value">$4.20</span>
+            <span class="hero__card-delta hero__card-delta--up">↓ −41%</span>
+            <svg class="hero__card-spark" viewBox="0 0 160 22" preserveAspectRatio="none">
+              <polyline points="0,4 20,6 40,7 60,10 80,11 100,13 120,15 140,18 160,19" fill="none" stroke="#3ecf8e" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <div class="hero__card hero__card--c">
+            <span class="hero__card-label">Показы</span>
+            <span class="hero__card-value">4.58M</span>
+            <span class="hero__card-delta hero__card-delta--warm">live · +18.4%</span>
+            <svg class="hero__card-spark" viewBox="0 0 160 22" preserveAspectRatio="none">
+              <polyline points="0,16 20,13 40,14 60,9 80,11 100,6 120,8 140,3 160,5" fill="none" stroke="#ff8a5b" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         LOGOS STRIP
+         ========================================================= -->
+    <section class="logos" aria-label="Индустрии, с которыми работаем">
+      <div class="container">
+        <p class="logos__label">Закрываем задачи в индустриях</p>
+        <div class="logos__chips">
+          <span class="logos__chip">E-commerce</span>
+          <span class="logos__chip">Авто</span>
+          <span class="logos__chip">Недвижимость</span>
+          <span class="logos__chip">FMCG · ритейл</span>
+          <span class="logos__chip">Банки · финтех</span>
+          <span class="logos__chip">Телеком</span>
+          <span class="logos__chip">EdTech</span>
+          <span class="logos__chip">Fashion</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         APPROACH (Problem / Solution)
+         ========================================================= -->
+    <section class="section section--alt approach">
+      <div class="container approach__grid">
+        <div class="approach__heading">
+          <span class="eyebrow">Наш подход</span>
+          <h2>Programmatic должен быть прозрачным.<br>А не «на слово».</h2>
+        </div>
+        <div class="approach__list">
+          <div class="approach__item">
+            <p class="approach__old">Агентство показывает только итог в конце месяца</p>
+            <p class="approach__new">У вас кабинет с live-метриками: impressions, clicks, CTR, CPA — по устройствам, гео и креативам, в разрезе дня.</p>
+          </div>
+          <div class="approach__item">
+            <p class="approach__old">Закупка в одном канале и формате</p>
+            <p class="approach__new">Omnichannel: display, video, native, mobile in-app и CTV — через единую DSP.</p>
+          </div>
+          <div class="approach__item">
+            <p class="approach__old">Ставим фикс и надеемся, что сработает</p>
+            <p class="approach__new">Алгоритм торгуется на уровне аукциона: подстраивает ставку под вероятность конверсии тысячи раз в секунду.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PLATFORM
+         ========================================================= -->
+    <section class="section" id="platform">
+      <div class="container split">
+        <div class="split__text">
+          <span class="eyebrow">Платформа</span>
+          <h2>Один кабинет.<br>Каждый показ — на экране.</h2>
+          <p>Realtime-дашборд, который мы открываем клиенту с первого дня кампании. Без отчётов в Excel и слайдов «по запросу».</p>
+          <ul class="split__list">
+            <li>Live-метрики без задержки в 24 часа</li>
+            <li>Разрезы по устройствам, демографии, гео, креативам</li>
+            <li>Выгрузка в CSV в один клик по любому срезу</li>
+            <li>White-label доступ для команды клиента и агентства</li>
+          </ul>
+        </div>
+        <div class="split__mock">
+          <!-- TODO: заменить на реальный screenshot кабинета (1440×900, @2x) -->
+          <img src="/assets/dashboard_mock.svg" alt="Кабинет Boost! Agency — дашборд рекламодателя с live-метриками">
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         CHANNELS
+         ========================================================= -->
+    <section class="section section--alt" id="channels">
+      <div class="container">
+        <div class="section__head">
+          <span class="eyebrow">Каналы</span>
+          <h2>Покупаем медиа везде, где ваша аудитория.</h2>
+          <p>Шесть форматов в одной закупке. Переключаемся между ними на лету по performance-сигналам.</p>
+        </div>
+        <div class="channels__grid">
+          <article class="channel-card">
+            <div class="channel-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg></div>
+            <h3>Display</h3>
+            <p>Баннерные форматы на премиальных площадках. Retargeting + prospecting в одной стратегии.</p>
+          </article>
+          <article class="channel-card">
+            <div class="channel-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <h3>Video</h3>
+            <p>In-stream, outstream, rewarded. Вертикаль и горизонталь — один креатив, десятки плейсментов.</p>
+          </article>
+          <article class="channel-card">
+            <div class="channel-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/></svg></div>
+            <h3>Native</h3>
+            <p>Рекламные блоки в формате площадки. Выше CTR, ниже баннерная слепота.</p>
+          </article>
+          <article class="channel-card">
+            <div class="channel-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+            <h3>Mobile in-app</h3>
+            <p>Rewarded, interstitial, playable. Работаем с топ-SDK и аудиториями приложений.</p>
+          </article>
+          <article class="channel-card channel-card--warm">
+            <div class="channel-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+            <h3>CTV</h3>
+            <p>Реклама на Smart TV и стриминговых платформах. Brand-safety и post-view измерение.</p>
+          </article>
+          <article class="channel-card">
+            <div class="channel-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></div>
+            <h3>Retargeting</h3>
+            <p>Возвращаем посетителей с сайта и ушедших из воронки. Динамические креативы под товар.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ALGO
+         ========================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <span class="eyebrow">Технология</span>
+          <h2>Алгоритм, который торгуется за вас.</h2>
+          <p>Три слоя оптимизации, встроенные в нашу DSP. Работают одновременно, а не подменяют друг друга.</p>
+        </div>
+        <div class="algo__grid">
+          <article class="algo-card">
+            <h3>Auction&#8209;time ML</h3>
+            <p>Переоцениваем ставку в моменте аукциона. Учитываем time-of-day, устройство, историю пользователя и creative-fit. Сотни признаков, тысячи переоценок в секунду.</p>
+          </article>
+          <article class="algo-card">
+            <h3>Audience Intelligence</h3>
+            <p>Собираем аудитории из first-party и 3rd-party сигналов плюс lookalike. Сегменты работают сразу во всех каналах — display, video, native, CTV.</p>
+          </article>
+          <article class="algo-card">
+            <h3>Brand Safety</h3>
+            <p>Whitelist и blacklist по доменам и IAB-категориям, pre-bid фильтрация, post-campaign viewability-отчёт. Бренд не встанет рядом с нежелательным контентом.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ANALYTICS / TRANSPARENCY
+         ========================================================= -->
+    <section class="section section--alt" id="analytics">
+      <div class="container split split--reverse">
+        <div class="split__text">
+          <span class="eyebrow">Прозрачность</span>
+          <h2>Не прячем метрики —<br>показываем их.</h2>
+          <p>Каждая метрика, которую видим мы, доступна клиенту. В том же кабинете, в том же разрезе. Без «подождите, соберу отчёт».</p>
+          <ul class="split__list">
+            <li>Impressions, Clicks, CTR, CPM, CPC, CPA, ROAS</li>
+            <li>Разрез по устройствам, возрасту и полу</li>
+            <li>Аналитика по каждому креативу</li>
+            <li>Daily breakdown — по дням и часам</li>
+            <li>Экспорт в CSV / XLSX по любому срезу</li>
+            <li>White-label доступ для команды клиента</li>
+          </ul>
+        </div>
+        <div class="split__mock">
+          <!-- TODO: заменить на реальный screenshot раздела Reporting -->
+          <img src="/assets/analytics_mock.svg" alt="Кабинет Boost! Agency — раздел Reporting с разрезами по устройствам и дням">
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         RESULTS
+         ========================================================= -->
+    <section class="section results">
+      <div class="container">
+        <div class="section__head section__head--centered">
+          <span class="eyebrow">Результаты</span>
+          <h2>Цифры, за которыми стоят кампании.</h2>
+        </div>
+        <div class="results__grid">
+          <div class="result">
+            <span class="result__value result__value--success" data-target="2.3" data-format="x%.1f">×2.3</span>
+            <span class="result__label">средний рост ROAS после перехода на нашу платформу</span>
+          </div>
+          <div class="result">
+            <span class="result__value result__value--success" data-target="41" data-format="-%d%%">−41%</span>
+            <span class="result__label">снижение CPA по целевому действию за первые 6 недель</span>
+          </div>
+          <div class="result">
+            <span class="result__value result__value--warm" data-target="67" data-format="+%d%%">+67%</span>
+            <span class="result__label">рост CTR на видео-форматах против предыдущей закупки</span>
+          </div>
+          <div class="result">
+            <span class="result__value result__value--accent" data-target="50" data-format="%d+">50+</span>
+            <span class="result__label">SSP и бирж в едином закупочном стеке</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         CASE STUDY
+         ========================================================= -->
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section__head">
+          <span class="eyebrow">Кейс</span>
+          <h2>×3.1 ROAS за 6 недель — e-commerce.</h2>
+        </div>
+        <article class="case__card">
+          <div>
+            <span class="case__label">E-commerce · Fashion retail</span>
+            <span class="case__logo">Клиент под&nbsp;NDA</span>
+            <h3 class="case__headline">От performance-плато к росту в 3&nbsp;раза.</h3>
+            <p class="case__desc">Клиент упёрся в потолок в одном канале закупки. Перенесли стратегию на omnichannel-programmatic с auction-time ML и динамическими креативами. За 6 недель переобучили алгоритм на свежих конверсиях.</p>
+            <a href="contact/" class="case__link">Обсудить похожую задачу →</a>
+          </div>
+          <div class="case__stats">
+            <div class="case__stat">
+              <div class="case__stat-label">ROAS</div>
+              <div class="case__stat-value">×3.1</div>
+              <div class="case__stat-sub">было ×1.0</div>
+            </div>
+            <div class="case__stat">
+              <div class="case__stat-label">CPA</div>
+              <div class="case__stat-value">−47%</div>
+              <div class="case__stat-sub">к неделе 6</div>
+            </div>
+            <div class="case__stat">
+              <div class="case__stat-label">Impressions</div>
+              <div class="case__stat-value">82M</div>
+              <div class="case__stat-sub">в 5 каналах</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PROCESS — How it works
+         ========================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <span class="eyebrow">Как это работает</span>
+          <h2>Четыре шага от заявки до первого отчёта.</h2>
+        </div>
+        <div class="process__grid">
+          <div class="process__step">
+            <span class="process__num">01</span>
+            <h3>Brief</h3>
+            <p>Ваш продукт, KPI, бюджет. Одна встреча 30 минут — получаем полную картину.</p>
+          </div>
+          <div class="process__step">
+            <span class="process__num">02</span>
+            <h3>Setup</h3>
+            <p>Стратегия, сегменты, креативы, трекинг. 3–5 рабочих дней до старта.</p>
+          </div>
+          <div class="process__step">
+            <span class="process__num">03</span>
+            <h3>Launch</h3>
+            <p>Закупка 24/7 во всех каналах. Алгоритм оптимизирует на уровне аукциона.</p>
+          </div>
+          <div class="process__step">
+            <span class="process__num">04</span>
+            <h3>Report</h3>
+            <p>Кабинет + еженедельный звонок с аналитиком. Видно всё — от показа до покупки.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         CONTACT FORM
+         ========================================================= -->
+    <section class="section section--alt" id="contact">
+      <div class="container contact__grid">
+        <div class="contact__text">
+          <span class="eyebrow">Заявка</span>
+          <h2>Расскажите о задаче.<br>Вернёмся в&nbsp;течение рабочего дня.</h2>
+          <p>Пришлём медиаплан под ваш KPI и дадим демо-доступ в кабинет с реальными данными.</p>
+          <ul class="contact__benefits">
+            <li>Медиаплан и прогноз по KPI — за 48 часов</li>
+            <li>Демо-доступ в кабинет с живой кампанией</li>
+            <li>NDA по запросу перед брифом</li>
+          </ul>
+          <div class="contact__channels">
+            <div>Или напрямую:</div>
+            <a href="mailto:hello@boost.agency">hello@boost.agency</a>
+            <a href="https://t.me/boost_agency" target="_blank" rel="noopener">Telegram: @boost_agency</a>
+          </div>
+        </div>
+
+        <div data-include="partials/lead-form.html"></div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         FAQ
+         ========================================================= -->
+    <section class="section">
+      <div class="container faq__grid">
+        <div class="faq__heading">
+          <span class="eyebrow">FAQ</span>
+          <h2>Вопросы, которые задают чаще всего.</h2>
+        </div>
+        <div class="faq__list">
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Какой минимальный бюджет для запуска?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <p class="faq__lead">От $5 000 в месяц — минимум для обучения алгоритма…</p>
+            <div class="faq__a"><div class="faq__a-inner"><p>От $5 000/мес — это минимум, при котором алгоритм успевает обучиться и вы получаете значимые performance-результаты. Для брендов с меньшим бюджетом рекомендуем сначала собрать first-party сегменты.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Сколько времени занимает запуск?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <p class="faq__lead">3–5 рабочих дней от брифа до первого показа…</p>
+            <div class="faq__a"><div class="faq__a-inner"><p>От брифа до первого показа — 3–5 рабочих дней. За это время собираем стратегию, сегменты, трекинг и адаптируем креативы. Если креативы готовы — запускаем быстрее.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>В каких странах и гео работаете?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <p class="faq__lead">Россия, СНГ, Восточная Европа — ядро, по запросу MENA и Западная Европа…</p>
+            <div class="faq__a"><div class="faq__a-inner"><p>Россия, СНГ и Восточная Европа — основной рынок. По запросу — MENA и Западная Европа. По каждому гео показываем прозрачную performance-картину в кабинете.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Какие форматы отчётности?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <p class="faq__lead">Live-кабинет 24/7 + еженедельный звонок с аналитиком…</p>
+            <div class="faq__a"><div class="faq__a-inner"><p>Live-кабинет 24/7 + weekly-звонок с аналитиком. По запросу — PDF-отчёт в конце месяца, интеграция по API в вашу BI-систему, экспорт в CSV/XLSX.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Какая модель оплаты — фикс, % или CPA?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <p class="faq__lead">Три модели — % от бюджета, фикс-фи или CPA/CPO…</p>
+            <div class="faq__a"><div class="faq__a-inner"><p>Работаем по трём моделям: % от медийного бюджета, фикс-фи за управление или CPA/CPO для устоявшихся воронок. Выбираем модель под зрелость performance-данных.</p></div></div>
+          </article>
+          <article class="faq__item">
+            <button class="faq__q" aria-expanded="false">
+              <span>Чем отличаетесь от «обычного» рекламного агентства?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <p class="faq__lead">Собственная DSP + прозрачный кабинет — никаких чёрных ящиков…</p>
+            <div class="faq__a"><div class="faq__a-inner"><p>Собственная демандная платформа + прозрачный кабинет, в котором клиент видит всё, что видим мы. Никаких «чёрных ящиков», сводных отчётов в конце месяца и ручного рисования цифр в Excel.</p></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="company">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <img src="/assets/logo_boost_light.svg" alt="Boost! Agency">
+        <p class="footer__tagline">Programmatic-реклама без чёрного ящика. Performance, в котором видно каждый клик.</p>
+        <address class="footer__contact">
+          <a href="tel:+998935634905">+998 93 563 49 05</a>
+          <a href="mailto:hello@boost.agency">hello@boost.agency</a>
+          <span>Ташкент, Площадь Хамида&nbsp;Олимжана, 4Б</span>
+        </address>
+        <div class="footer__social">
+          <a href="https://t.me/boost_agency" aria-label="Telegram" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 3 2 10.5l6 2.5 2.5 6L14 15l5 4 3-16z"/></svg>
+          </a>
+          <a href="mailto:hello@boost.agency" aria-label="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>Платформа</h4>
+        <ul>
+          <li><a href="platform/">Обзор</a></li>
+          <li><a href="channels/">Каналы</a></li>
+          <li><a href="technology/">Технология</a></li>
+          <li><a href="analytics/">Аналитика</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Услуги</h4>
+        <ul>
+          <li><a href="self-launch/">Самостоятельный запуск</a></li>
+          <li><a href="topup/">Пополнение кабинетов</a></li>
+          <li><a href="sites/">Сайты и лендинги</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Компания</h4>
+        <ul>
+          <li><a href="about/">О нас</a></li>
+          <li><a href="cases/">Кейсы</a></li>
+          <li><a href="process/">Как это работает</a></li>
+          <li><a href="faq/">FAQ</a></li>
+          <li><a href="contact/">Контакты</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Юридическое</h4>
+        <ul>
+          <li><a href="privacy/">Политика конфиденциальности</a></li>
+          <li><a href="terms/">Условия использования</a></li>
+          <li><a href="data-processing/">Обработка данных</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Boost! Agency</span>
+      <span>Сделано с расчётом на прозрачность</span>
+    </div>
+  </div>
+</footer>
+
+  <script src="/main.js"></script>
+</body>
+</html>

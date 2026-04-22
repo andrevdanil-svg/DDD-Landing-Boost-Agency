@@ -1011,6 +1011,80 @@ body.is-menu-open .header__burger span:nth-child(3) { transform: translateY(-6.5
 .form__checkbox a { color: var(--accent-light); text-decoration: underline; }
 .form__submit { align-self: flex-start; }
 
+/* ============================================================
+   LANGUAGE SWITCHER & BANNER
+   ============================================================ */
+.lang-switcher {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+}
+.lang-switcher:empty { display: none; }
+.lang-switcher__link {
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  transition: color var(--dur-med) var(--ease-out), background var(--dur-med) var(--ease-out);
+}
+.lang-switcher__link:hover { color: var(--text-primary); }
+.lang-switcher__link.is-active {
+  background: var(--accent);
+  color: #fff;
+  cursor: default;
+  pointer-events: none;
+}
+.lang-switcher--mobile { align-self: flex-start; margin-bottom: var(--space-5); }
+
+.lang-banner {
+  position: fixed;
+  top: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent-ring);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 12px 16px;
+  max-width: 92vw;
+  animation: langBannerIn 0.4s var(--ease-out);
+}
+.lang-banner[hidden] { display: none; }
+.lang-banner__inner { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+.lang-banner__text { font-size: var(--fs-small); color: var(--text-primary); }
+.lang-banner__btn {
+  padding: 8px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
+  transition: background var(--dur-med) var(--ease-out);
+}
+.lang-banner__btn:hover { background: var(--accent-hover); }
+.lang-banner__close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color var(--dur-med) var(--ease-out);
+}
+.lang-banner__close:hover { color: var(--text-primary); }
+
+@keyframes langBannerIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 /* Honeypot — visually hidden but focusable for bots only */
 .form__honeypot {
   position: absolute;

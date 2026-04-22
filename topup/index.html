@@ -6,12 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Пополнение рекламных кабинетов Google Ads, Meta, DV360, Яндекс.Директ — Boost! Agency</title>
   <meta name="description" content="Пополняем рекламные кабинеты Google Ads, Meta, DV360 и Яндекс.Директ из РФ. Безналичный перевод в рублях, закрывающие документы, зачисление в течение рабочего дня.">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/styles.css">
   <link rel="canonical" href="https://boostagency.uz/topup/">
+  <link rel="alternate" hreflang="ru" href="https://boostagency.uz/topup/">
+  <link rel="alternate" hreflang="en" href="https://boostagency.uz/en/topup/">
+  <link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/topup/">
+  <link rel="alternate" hreflang="x-default" href="https://boostagency.uz/topup/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Boost! Agency">
   <meta property="og:url" content="https://boostagency.uz/topup/">
@@ -25,11 +29,18 @@
   <meta name="twitter:image" content="https://boostagency.uz/assets/og-image.svg">
 </head>
 <body>
+  <div class="lang-banner" id="lang-banner" hidden>
+    <div class="lang-banner__inner">
+      <span class="lang-banner__text" id="lang-banner-text"></span>
+      <a class="lang-banner__btn" id="lang-banner-switch" href="#"></a>
+      <button class="lang-banner__close" id="lang-banner-close" aria-label="Close" type="button">×</button>
+    </div>
+  </div>
 
   <header class="header" role="banner">
   <div class="container header__inner">
     <a href="/" class="header__logo" aria-label="Boost! Agency — на главную">
-      <img src="assets/logo_boost_light.svg" alt="Boost! Agency">
+      <img src="/assets/logo_boost_light.svg" alt="Boost! Agency">
     </a>
     <nav class="header__nav" aria-label="Главная навигация">
       <a href="platform/">Платформа</a>
@@ -61,6 +72,7 @@
       <a href="cases/">Кейсы</a>
       <a href="about/">Компания</a>
     </nav>
+    <div class="lang-switcher" id="lang-switcher" aria-label="Language"></div>
     <a href="contact/" class="btn btn--primary header__cta">Хочу Boost!</a>
     <button class="header__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
@@ -69,6 +81,7 @@
 </header>
 
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="lang-switcher lang-switcher--mobile" id="lang-switcher-mobile" aria-label="Language"></div>
   <a href="platform/">Платформа</a>
   <a href="channels/">Каналы</a>
   <a href="technology/">Технология</a>
@@ -87,7 +100,7 @@
 
     <section class="section hero">
       <div class="hero__bg" aria-hidden="true">
-        <img src="assets/hero_pattern.svg" alt="">
+        <img src="/assets/hero_pattern.svg" alt="">
       </div>
       <div class="container">
         <div class="hero__inner">
@@ -111,25 +124,25 @@
       <div class="container">
         <div class="platforms__grid">
           <div class="channel-card platforms__card">
-            <div class="platforms__logo"><img src="assets/platforms/google-ads.png" alt="Google Ads"></div>
+            <div class="platforms__logo"><img src="/assets/platforms/google-ads.png" alt="Google Ads"></div>
             <h3>Google Ads</h3>
             <p>Search, Display, YouTube, Performance Max. Пополнение в USD / EUR через зарубежное юрлицо-агент. Закрывающие — в рублях.</p>
             <span class="case__link">Запросить условия по платформе →</span>
           </div>
           <div class="channel-card platforms__card">
-            <div class="platforms__logo"><img src="assets/platforms/meta.png" alt="Meta Ads"></div>
+            <div class="platforms__logo"><img src="/assets/platforms/meta.png" alt="Meta Ads"></div>
             <h3>Meta Ads</h3>
             <p>Facebook и Instagram Ads. Пополняем рекламные аккаунты в Business Manager, помогаем с разблокировкой и прохождением модерации.</p>
             <span class="case__link">Запросить условия по платформе →</span>
           </div>
           <div class="channel-card platforms__card">
-            <div class="platforms__logo"><img src="assets/platforms/dv360.png" alt="Display & Video 360"></div>
+            <div class="platforms__logo"><img src="/assets/platforms/dv360.png" alt="Display & Video 360"></div>
             <h3>DV360</h3>
             <p>Display &amp; Video 360 — enterprise-DSP от Google. Премиальный инвентарь, CTV, programmatic guaranteed. Работаем по seat-контракту.</p>
             <span class="case__link">Запросить условия по платформе →</span>
           </div>
           <div class="channel-card platforms__card">
-            <div class="platforms__logo"><img src="assets/platforms/yandex-direct.png" alt="Яндекс.Директ"></div>
+            <div class="platforms__logo"><img src="/assets/platforms/yandex-direct.png" alt="Яндекс.Директ"></div>
             <h3>Яндекс.Директ</h3>
             <p>Поиск, РСЯ, Яндекс.Видео, Промостраницы. Прямое пополнение в рублях, закрывающие документы — в день оплаты.</p>
             <span class="case__link">Запросить условия по платформе →</span>
@@ -187,7 +200,7 @@
   <div class="container">
     <div class="footer__grid">
       <div class="footer__brand">
-        <img src="assets/logo_boost_light.svg" alt="Boost! Agency">
+        <img src="/assets/logo_boost_light.svg" alt="Boost! Agency">
         <p class="footer__tagline">Programmatic-реклама без чёрного ящика. Performance, в котором видно каждый клик.</p>
         <address class="footer__contact">
           <a href="tel:+998935634905">+998 93 563 49 05</a>
@@ -246,6 +259,6 @@
   </div>
 </footer>
 
-  <script src="main.js"></script>
+  <script src="/main.js"></script>
 </body>
 </html>

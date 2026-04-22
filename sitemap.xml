@@ -1,133 +1,705 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://boostagency.uz/about/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/about/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/about/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/about/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/about/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/about/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/about/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/about/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/about/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/analytics/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/analytics/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/analytics/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/analytics/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/analytics/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/analytics/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/analytics/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/analytics/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/analytics/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/analytics/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/analytics/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/analytics/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/analytics/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/analytics/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/analytics/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/cases/auto-dealer/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/auto-dealer/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/auto-dealer/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/auto-dealer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/auto-dealer/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/cases/auto-dealer/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/auto-dealer/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/auto-dealer/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/auto-dealer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/auto-dealer/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/cases/auto-dealer/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/auto-dealer/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/auto-dealer/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/auto-dealer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/auto-dealer/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/cases/fashion-retail/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/fashion-retail/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/fashion-retail/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/fashion-retail/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/fashion-retail/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/cases/fashion-retail/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/fashion-retail/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/fashion-retail/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/fashion-retail/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/fashion-retail/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/cases/fashion-retail/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/fashion-retail/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/fashion-retail/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/fashion-retail/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/fashion-retail/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/cases/fmcg-brand/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/fmcg-brand/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/fmcg-brand/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/fmcg-brand/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/fmcg-brand/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/cases/fmcg-brand/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/fmcg-brand/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/fmcg-brand/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/fmcg-brand/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/fmcg-brand/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/cases/fmcg-brand/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/fmcg-brand/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/fmcg-brand/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/fmcg-brand/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/fmcg-brand/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/cases/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/cases/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/cases/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/cases/real-estate-developer/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/real-estate-developer/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/real-estate-developer/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/real-estate-developer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/real-estate-developer/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/cases/real-estate-developer/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/real-estate-developer/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/real-estate-developer/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/real-estate-developer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/real-estate-developer/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/cases/real-estate-developer/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/cases/real-estate-developer/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/cases/real-estate-developer/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/cases/real-estate-developer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/cases/real-estate-developer/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/channels/ctv/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/ctv/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/ctv/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/ctv/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/ctv/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/channels/ctv/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/ctv/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/ctv/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/ctv/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/ctv/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/channels/ctv/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/ctv/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/ctv/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/ctv/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/ctv/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/channels/display/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/display/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/display/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/display/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/display/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/channels/display/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/display/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/display/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/display/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/display/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/channels/display/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/display/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/display/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/display/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/display/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/channels/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/channels/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/channels/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/channels/mobile/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/mobile/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/mobile/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/mobile/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/mobile/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/channels/mobile/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/mobile/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/mobile/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/mobile/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/mobile/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/channels/mobile/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/mobile/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/mobile/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/mobile/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/mobile/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/channels/native/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/native/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/native/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/native/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/native/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/channels/native/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/native/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/native/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/native/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/native/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/channels/native/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/native/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/native/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/native/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/native/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/channels/retargeting/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/retargeting/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/retargeting/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/retargeting/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/retargeting/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/channels/retargeting/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/retargeting/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/retargeting/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/retargeting/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/retargeting/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/channels/retargeting/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/retargeting/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/retargeting/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/retargeting/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/retargeting/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/channels/video/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/video/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/video/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/video/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/video/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/channels/video/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/video/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/video/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/video/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/video/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/channels/video/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/channels/video/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/channels/video/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/channels/video/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/channels/video/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/contact/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/contact/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/contact/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/contact/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/contact/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/contact/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/data-processing/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/data-processing/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/data-processing/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/data-processing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/data-processing/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/data-processing/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/data-processing/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/data-processing/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/data-processing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/data-processing/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/data-processing/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/data-processing/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/data-processing/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/data-processing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/data-processing/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/faq/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/faq/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/faq/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/faq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/faq/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/faq/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/faq/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/faq/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/faq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/faq/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/faq/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/faq/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/faq/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/faq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/faq/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/platform/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/platform/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/platform/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/platform/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/platform/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/platform/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/platform/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/platform/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/platform/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/platform/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/platform/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/platform/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/platform/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/platform/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/platform/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/privacy/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/privacy/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/privacy/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/privacy/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/privacy/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/privacy/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/process/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/process/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/process/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/process/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/process/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/process/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/process/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/process/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/process/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/process/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/process/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/process/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/process/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/process/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/process/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/self-launch/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/self-launch/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/self-launch/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/self-launch/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/self-launch/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/self-launch/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/self-launch/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/self-launch/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/self-launch/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/self-launch/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/self-launch/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/self-launch/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/self-launch/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/self-launch/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/self-launch/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/sites/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/sites/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/sites/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/sites/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/sites/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/sites/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/sites/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/sites/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/sites/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/sites/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/sites/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/sites/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/sites/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/sites/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/sites/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/technology/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/technology/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/technology/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/technology/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/technology/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/technology/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/technology/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/technology/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/technology/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/technology/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/technology/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/technology/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/technology/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/technology/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/technology/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/terms/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/terms/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/terms/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/terms/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/terms/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/terms/"/>
   </url>
   <url>
     <loc>https://boostagency.uz/topup/</loc>
     <lastmod>2026-04-23</lastmod>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/topup/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/topup/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/topup/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/topup/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/en/topup/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/topup/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/topup/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/topup/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/topup/"/>
+  </url>
+  <url>
+    <loc>https://boostagency.uz/uz/topup/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://boostagency.uz/topup/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://boostagency.uz/en/topup/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/topup/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://boostagency.uz/topup/"/>
   </url>
 </urlset>

@@ -1,0 +1,72 @@
+<form class="form" id="contact-form" action="https://platform.boostagency.uz/api/leads" method="post" novalidate>
+  <div class="form__row">
+    <div class="form__field">
+      <label for="f-first">Имя</label>
+      <input id="f-first" name="first_name" type="text" placeholder="Имя" required>
+    </div>
+    <div class="form__field">
+      <label for="f-last">Фамилия</label>
+      <input id="f-last" name="last_name" type="text" placeholder="Фамилия" required>
+    </div>
+  </div>
+  <div class="form__field">
+    <label for="f-email">Рабочий email</label>
+    <input id="f-email" name="email" type="email" placeholder="client@company.com" required>
+  </div>
+  <div class="form__row">
+    <div class="form__field">
+      <label for="f-company">Компания</label>
+      <input id="f-company" name="company" type="text" placeholder="Название компании" required>
+    </div>
+    <div class="form__field">
+      <label for="f-role">Должность</label>
+      <input id="f-role" name="role" type="text" placeholder="Head of Marketing">
+    </div>
+  </div>
+  <div class="form__row">
+    <div class="form__field">
+      <label for="f-phone">Телефон</label>
+      <input id="f-phone" name="phone" type="tel" placeholder="+998 90 123 45 67" pattern="[\+\d\s\-\(\)]{7,20}" title="Номер с кодом страны — например, +998 90 123 45 67">
+    </div>
+    <div class="form__field">
+      <label for="f-site">Сайт</label>
+      <input id="f-site" name="website" type="url" placeholder="https://company.com">
+    </div>
+  </div>
+  <div class="form__field">
+    <label for="f-budget">Бюджет на месяц</label>
+    <select id="f-budget" name="budget" required>
+      <option value="" disabled selected hidden>Выберите диапазон</option>
+      <option>до $5 000</option>
+      <option>$5 000 – $20 000</option>
+      <option>$20 000 – $50 000</option>
+      <option>от $50 000</option>
+      <option>Пока не знаю</option>
+    </select>
+  </div>
+  <div class="form__field">
+    <label for="f-msg">Что хотите обсудить?</label>
+    <textarea id="f-msg" name="message" rows="4" placeholder="Коротко о продукте, KPI и текущей ситуации"></textarea>
+  </div>
+  <div class="form__honeypot" aria-hidden="true">
+    <label for="f-hp-url">Не заполняйте это поле</label>
+    <input id="f-hp-url" name="website_url" type="text" tabindex="-1" autocomplete="off">
+  </div>
+  <label class="form__checkbox">
+    <input type="checkbox" name="consent" required>
+    <span>Согласен на обработку персональных данных в соответствии с <a href="privacy/">Политикой конфиденциальности</a>.</span>
+  </label>
+  <div class="form__error" id="form-error" role="alert" aria-live="polite" hidden>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span class="form__error-text">Не удалось отправить заявку. Попробуйте ещё раз или напишите нам на <a href="mailto:hello@boost.agency">hello@boost.agency</a>.</span>
+  </div>
+  <button type="submit" class="btn btn--primary btn--large form__submit">Отправить заявку</button>
+</form>
+
+<div class="form__success" id="form-success" role="status" aria-live="polite">
+  <div class="form__success-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h3>Заявка принята</h3>
+  <p>Менеджер напишет на указанный email в течение рабочего дня.</p>
+</div>

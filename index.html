@@ -7,12 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Boost! Agency — Programmatic-реклама без чёрного ящика</title>
   <meta name="description" content="Performance-реклама через programmatic. Закупаем display, video, native и CTV через десятки бирж и SSP. Прозрачный кабинет с live-аналитикой для каждого рекламодателя.">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/styles.css">
   <link rel="canonical" href="https://boostagency.uz/">
+  <link rel="alternate" hreflang="ru" href="https://boostagency.uz/">
+  <link rel="alternate" hreflang="en" href="https://boostagency.uz/en/">
+  <link rel="alternate" hreflang="uz" href="https://boostagency.uz/uz/">
+  <link rel="alternate" hreflang="x-default" href="https://boostagency.uz/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Boost! Agency">
   <meta property="og:url" content="https://boostagency.uz/">
@@ -55,11 +59,18 @@
   </script>
 </head>
 <body>
+  <div class="lang-banner" id="lang-banner" hidden>
+    <div class="lang-banner__inner">
+      <span class="lang-banner__text" id="lang-banner-text"></span>
+      <a class="lang-banner__btn" id="lang-banner-switch" href="#"></a>
+      <button class="lang-banner__close" id="lang-banner-close" aria-label="Close" type="button">×</button>
+    </div>
+  </div>
 
   <header class="header" role="banner">
   <div class="container header__inner">
     <a href="/" class="header__logo" aria-label="Boost! Agency — на главную">
-      <img src="assets/logo_boost_light.svg" alt="Boost! Agency">
+      <img src="/assets/logo_boost_light.svg" alt="Boost! Agency">
     </a>
     <nav class="header__nav" aria-label="Главная навигация">
       <a href="platform/">Платформа</a>
@@ -91,6 +102,7 @@
       <a href="cases/">Кейсы</a>
       <a href="about/">Компания</a>
     </nav>
+    <div class="lang-switcher" id="lang-switcher" aria-label="Language"></div>
     <a href="contact/" class="btn btn--primary header__cta">Хочу Boost!</a>
     <button class="header__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
@@ -99,6 +111,7 @@
 </header>
 
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="lang-switcher lang-switcher--mobile" id="lang-switcher-mobile" aria-label="Language"></div>
   <a href="platform/">Платформа</a>
   <a href="channels/">Каналы</a>
   <a href="technology/">Технология</a>
@@ -120,7 +133,7 @@
          ========================================================= -->
     <section class="section hero">
       <div class="hero__bg" aria-hidden="true">
-        <img src="assets/hero_pattern.svg" alt="">
+        <img src="/assets/hero_pattern.svg" alt="">
       </div>
       <div class="container">
         <div class="hero__inner">
@@ -233,7 +246,7 @@
         </div>
         <div class="split__mock">
           <!-- TODO: заменить на реальный screenshot кабинета (1440×900, @2x) -->
-          <img src="assets/dashboard_mock.svg" alt="Кабинет Boost! Agency — дашборд рекламодателя с live-метриками">
+          <img src="/assets/dashboard_mock.svg" alt="Кабинет Boost! Agency — дашборд рекламодателя с live-метриками">
         </div>
       </div>
     </section>
@@ -330,7 +343,7 @@
         </div>
         <div class="split__mock">
           <!-- TODO: заменить на реальный screenshot раздела Reporting -->
-          <img src="assets/analytics_mock.svg" alt="Кабинет Boost! Agency — раздел Reporting с разрезами по устройствам и дням">
+          <img src="/assets/analytics_mock.svg" alt="Кабинет Boost! Agency — раздел Reporting с разрезами по устройствам и дням">
         </div>
       </div>
     </section>
@@ -530,7 +543,7 @@
   <div class="container">
     <div class="footer__grid">
       <div class="footer__brand">
-        <img src="assets/logo_boost_light.svg" alt="Boost! Agency">
+        <img src="/assets/logo_boost_light.svg" alt="Boost! Agency">
         <p class="footer__tagline">Programmatic-реклама без чёрного ящика. Performance, в котором видно каждый клик.</p>
         <address class="footer__contact">
           <a href="tel:+998935634905">+998 93 563 49 05</a>
@@ -589,6 +602,6 @@
   </div>
 </footer>
 
-  <script src="main.js"></script>
+  <script src="/main.js"></script>
 </body>
 </html>

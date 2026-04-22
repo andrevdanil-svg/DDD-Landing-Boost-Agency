@@ -21,6 +21,8 @@
     bindResultCounters();
     bindFaq();
     bindContactForm();
+    initLangSwitcher();
+    initLangBanner();
   }
 
   /* ---------- Nav dropdown (Услуги) ---------- */
@@ -202,6 +204,65 @@
         q.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
     });
+  }
+
+  /* ---------- Language switcher ---------- */
+  const LANG_LABELS = { ru: 'RU', en: 'EN', uz: 'UZ' };
+
+  function initLangSwitcher() {
+    const targets = document.querySelectorAll('#lang-switcher, #lang-switcher-mobile');
+    if (!targets.length) return;
+    const currentLang = document.documentElement.lang || 'ru';
+    const alts = Array.from(document.querySelectorAll('link[rel="alternate"][hreflang]'))
+      .filter((l) => l.hreflang !== 'x-default');
+    if (!alts.length) return;
+
+    const html = alts.map((l) => {
+      const isActive = l.hreflang === currentLang;
+      const cls = 'lang-switcher__link' + (isActive ? ' is-active' : '');
+      const label = LANG_LABELS[l.hreflang] || l.hreflang.toUpperCase();
+      return `<a href="${l.href}" class="${cls}" lang="${l.hreflang}" hreflang="${l.hreflang}">${label}</a>`;
+    }).join('');
+
+    targets.forEach((t) => { t.innerHTML = html; });
+  }
+
+  /* ---------- Language detection banner ---------- */
+  const LANG_BANNER_MSG = {
+    ru: 'Переключиться на русскую версию?',
+    en: 'Switch to the English version?',
+    uz: "O'zbekcha versiyaga o'tishni xohlaysizmi?",
+  };
+  const LANG_BANNER_ACTION = { ru: 'На русский', en: 'Switch', uz: "O'tish" };
+
+  function initLangBanner() {
+    const banner = document.getElementById('lang-banner');
+    if (!banner) return;
+    if (localStorage.getItem('langBannerDismissed') === '1') return;
+
+    const currentLang = document.documentElement.lang || 'ru';
+    const userLang = (navigator.language || '').slice(0, 2).toLowerCase();
+    if (!LANG_LABELS[userLang] || userLang === currentLang) return;
+
+    const alt = document.querySelector(`link[rel="alternate"][hreflang="${userLang}"]`);
+    if (!alt) return;
+
+    const textEl = document.getElementById('lang-banner-text');
+    const btnEl = document.getElementById('lang-banner-switch');
+    const closeEl = document.getElementById('lang-banner-close');
+    if (!textEl || !btnEl || !closeEl) return;
+
+    textEl.textContent = LANG_BANNER_MSG[userLang] || '';
+    btnEl.href = alt.href;
+    btnEl.textContent = LANG_BANNER_ACTION[userLang] || 'Switch';
+    btnEl.setAttribute('hreflang', userLang);
+
+    closeEl.addEventListener('click', () => {
+      banner.hidden = true;
+      try { localStorage.setItem('langBannerDismissed', '1'); } catch (e) {}
+    });
+
+    banner.hidden = false;
   }
 
   /* ---------- Contact form ---------- */
