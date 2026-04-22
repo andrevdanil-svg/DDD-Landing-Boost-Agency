@@ -205,28 +205,39 @@
   }
 
   /* ---------- Contact form ---------- */
-  // LEADS_API: переопределить через <meta name="leads-api" content="https://api.example.com/leads"> либо window.LEADS_API.
-  // Если лендинг раздаётся тем же сервером (FastAPI mount /landing) — используем относительный /leads.
-  // Иначе можно переопределить через <meta name="leads-api" content="https://api.example.com/leads">.
+  // LEADS_API: переопределить через <meta name="leads-api"> либо window.LEADS_API.
   const LEADS_API =
     (document.querySelector('meta[name="leads-api"]')?.content) ||
     window.LEADS_API ||
-    '/leads';
+    'https://platform.boostagency.uz/api/leads';
 
   function bindContactForm() {
     const form = document.getElementById('contact-form');
     const success = document.getElementById('form-success');
     if (!form || !success) return;
     const submitBtn = form.querySelector('button[type="submit"]');
+    const errorEl = document.getElementById('form-error');
+
+    const showError = () => { if (errorEl) errorEl.hidden = false; };
+    const hideError = () => { if (errorEl) errorEl.hidden = true; };
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      hideError();
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
 
       const fd = new FormData(form);
+
+      // Honeypot: hidden field that only bots auto-fill. If filled — drop silently.
+      if ((fd.get('website_url') || '').toString().trim() !== '') {
+        form.style.display = 'none';
+        success.classList.add('is-visible');
+        return;
+      }
+
       const payload = {
         first_name: fd.get('first_name') || '',
         last_name: fd.get('last_name') || '',
@@ -258,7 +269,8 @@
         success.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
       } catch (err) {
         console.error('Lead submit failed:', err);
-        alert('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам на hello@boost.agency');
+        showError();
+        errorEl?.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.textContent = originalText;
