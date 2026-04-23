@@ -724,15 +724,11 @@ body.is-menu-open .header__burger span:nth-child(3) { transform: translateY(-6.5
 /* ============================================================
    ALGO
    ============================================================ */
-/* Асимметрия: первая карточка шире и выше */
 .algo__grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-4);
 }
-.algo__grid > .algo-card:nth-child(1) { grid-column: span 6; grid-row: span 2; }
-.algo__grid > .algo-card:nth-child(2) { grid-column: span 6; }
-.algo__grid > .algo-card:nth-child(3) { grid-column: span 6; }
 .algo-card {
   padding: var(--space-7);
   border: 1px solid var(--border);
