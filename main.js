@@ -276,36 +276,42 @@
       desc: 'Пришлём за 48 часов. Оставьте контакты — менеджер напишет в течение рабочего дня.',
       name: 'Как к вам обращаться?',
       email: 'client@company.com',
+      phone: '+998 90 123 45 67',
       btn: 'Получить медиаплан',
       sending: 'Отправляем…',
       close: 'Закрыть',
       successTitle: 'Готово!',
       successDesc: 'Менеджер напишет в течение рабочего дня.',
-      errorMsg: 'Не удалось отправить. Напишите нам на andrevdanil@gmail.com',
+      errorMsg: 'Не удалось отправить. Попробуйте ещё раз или напишите на andrevdanil@gmail.com',
+      consent: 'Нажимая «Получить медиаплан», вы соглашаетесь с <a href="privacy/">Политикой конфиденциальности</a>.',
     },
     en: {
       title: 'Want a KPI-based media plan?',
       desc: "We'll send it within 48 hours. Leave your contacts — a manager will reply within one business day.",
       name: 'Your name',
       email: 'client@company.com',
+      phone: '+998 90 123 45 67',
       btn: 'Get the media plan',
       sending: 'Sending…',
       close: 'Close',
       successTitle: 'Done!',
       successDesc: 'A manager will reply within one business day.',
-      errorMsg: "Couldn't send. Please email us at andrevdanil@gmail.com",
+      errorMsg: "Couldn't send. Please try again or email us at andrevdanil@gmail.com",
+      consent: 'By clicking "Get the media plan" you agree to the <a href="privacy/">Privacy Policy</a>.',
     },
     uz: {
       title: 'KPI asosida mediaplan olishni xohlaysizmi?',
       desc: '48 soat ichida yuboramiz. Kontaktlaringizni qoldiring — menejer ish kuni davomida javob beradi.',
       name: 'Ismingiz',
       email: 'client@company.com',
+      phone: '+998 90 123 45 67',
       btn: 'Mediaplan olish',
       sending: 'Yuborilmoqda…',
       close: 'Yopish',
       successTitle: 'Tayyor!',
       successDesc: 'Menejer ish kuni davomida javob beradi.',
-      errorMsg: "Yuborib bo'lmadi. Bizga yozing: andrevdanil@gmail.com",
+      errorMsg: "Yuborib bo'lmadi. Qayta urinib ko'ring yoki yozing: andrevdanil@gmail.com",
+      consent: '«Mediaplan olish»ni bosish orqali <a href="privacy/">Maxfiylik siyosati</a>ga rozilik bildirasiz.',
     },
   };
 
@@ -335,11 +341,14 @@
         '<form class="lead-popup__form" id="lead-popup-form" novalidate>' +
           '<input name="first_name" type="text" placeholder="' + t.name + '" required autocomplete="given-name">' +
           '<input name="email" type="email" placeholder="' + t.email + '" required autocomplete="email">' +
+          '<input name="phone" type="tel" placeholder="' + t.phone + '" pattern="[\\+\\d\\s\\-\\(\\)]{7,20}" autocomplete="tel">' +
           '<div class="lead-popup__hp" aria-hidden="true">' +
             '<label for="pp-hp">Leave empty</label>' +
             '<input id="pp-hp" name="website_url" type="text" tabindex="-1" autocomplete="off">' +
           '</div>' +
           '<button type="submit" class="btn btn--primary btn--large">' + t.btn + '</button>' +
+          '<p class="lead-popup__consent">' + t.consent + '</p>' +
+          '<div class="lead-popup__error" id="lead-popup-error" hidden>' + t.errorMsg + '</div>' +
         '</form>' +
         '<div class="lead-popup__success" id="lead-popup-success" hidden>' +
           '<strong>' + t.successTitle + '</strong>' +
@@ -378,8 +387,11 @@
       if (e.key === 'Escape' && !wrap.hidden) hide();
     });
 
+    const errorEl = wrap.querySelector('#lead-popup-error');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (errorEl) errorEl.hidden = true;
       if (!form.checkValidity()) { form.reportValidity(); return; }
       const fd = new FormData(form);
       // Honeypot — bots fill it; drop silently.
@@ -391,12 +403,20 @@
       submitBtn.disabled = true; submitBtn.textContent = t.sending;
 
       try {
+        // Match full shape of the main contact form so backend validation passes.
         const res = await fetch(LEADS_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             first_name: fd.get('first_name') || '',
+            last_name: '',
             email: fd.get('email') || '',
+            company: '',
+            role: '',
+            phone: fd.get('phone') || '',
+            website: '',
+            budget: '',
+            message: '',
             source: 'landing-popup',
           }),
         });
@@ -409,7 +429,7 @@
       } catch (err) {
         console.error('Popup lead submit failed:', err);
         submitBtn.disabled = false; submitBtn.textContent = original;
-        alert(t.errorMsg);
+        if (errorEl) errorEl.hidden = false;
       }
     });
   }
