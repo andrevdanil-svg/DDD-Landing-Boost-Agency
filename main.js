@@ -417,7 +417,7 @@
             website: '',
             budget: '',
             message: '',
-            source: 'landing-popup',
+            source: leadSource('popup'),
           }),
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -440,6 +440,14 @@
     (document.querySelector('meta[name="leads-api"]')?.content) ||
     window.LEADS_API ||
     'https://platform.boostagency.uz/api/leads';
+
+  // Build a "source" value that shows in the lead record which form fired
+  // and which page the user was on. Format: "<form> · <path>".
+  // Example: "landing · /cases/fashion-retail/"  or  "popup · /about/".
+  function leadSource(formType) {
+    const path = (window.location.pathname || '/') + (window.location.search || '');
+    return formType + ' · ' + path;
+  }
 
   function bindContactForm() {
     const form = document.getElementById('contact-form');
@@ -478,7 +486,7 @@
         website: fd.get('website') || '',
         budget: fd.get('budget') || '',
         message: fd.get('message') || '',
-        source: 'landing',
+        source: leadSource('landing'),
       };
 
       const originalText = submitBtn?.textContent;
