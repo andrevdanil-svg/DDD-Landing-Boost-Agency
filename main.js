@@ -167,6 +167,7 @@
 
     const animate = (el) => {
       const target = parseFloat(el.dataset.target);
+      if (isNaN(target)) return; // skip stats without data-target
       const tpl = el.dataset.format || '%d';
       const start = performance.now();
       const dur = 1400;
