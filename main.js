@@ -158,10 +158,11 @@
 
     const format = (v, tpl) => {
       // simple printf-like: %d, %.1f, x%.1f, +%d%%, -%d%%, %d+
-      if (tpl.indexOf('%.1f') !== -1) {
-        return tpl.replace('%.1f', v.toFixed(1));
-      }
-      return tpl.replace('%d', Math.round(v));
+      // %% must be decoded AFTER numeric substitution so literal % renders correctly.
+      const withNum = tpl.indexOf('%.1f') !== -1
+        ? tpl.replace('%.1f', v.toFixed(1))
+        : tpl.replace('%d', Math.round(v));
+      return withNum.replace(/%%/g, '%');
     };
 
     const animate = (el) => {
