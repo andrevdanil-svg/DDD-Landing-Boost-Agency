@@ -23,6 +23,7 @@
     bindContactForm();
     initLangSwitcher();
     initLangBanner();
+    initLeadPopup();
   }
 
   /* ---------- Nav dropdown (Услуги) ---------- */
@@ -265,6 +266,152 @@
     });
 
     banner.hidden = false;
+  }
+
+  /* ---------- Lead popup (60-second time trigger) ---------- */
+  const POPUP_DELAY_MS = 60 * 1000;
+  const POPUP_COPY = {
+    ru: {
+      title: 'Хотите медиаплан под ваш KPI?',
+      desc: 'Пришлём за 48 часов. Оставьте контакты — менеджер напишет в течение рабочего дня.',
+      name: 'Как к вам обращаться?',
+      email: 'client@company.com',
+      btn: 'Получить медиаплан',
+      sending: 'Отправляем…',
+      close: 'Закрыть',
+      successTitle: 'Готово!',
+      successDesc: 'Менеджер напишет в течение рабочего дня.',
+      errorMsg: 'Не удалось отправить. Напишите нам на andrevdanil@gmail.com',
+    },
+    en: {
+      title: 'Want a KPI-based media plan?',
+      desc: "We'll send it within 48 hours. Leave your contacts — a manager will reply within one business day.",
+      name: 'Your name',
+      email: 'client@company.com',
+      btn: 'Get the media plan',
+      sending: 'Sending…',
+      close: 'Close',
+      successTitle: 'Done!',
+      successDesc: 'A manager will reply within one business day.',
+      errorMsg: "Couldn't send. Please email us at andrevdanil@gmail.com",
+    },
+    uz: {
+      title: 'KPI asosida mediaplan olishni xohlaysizmi?',
+      desc: '48 soat ichida yuboramiz. Kontaktlaringizni qoldiring — menejer ish kuni davomida javob beradi.',
+      name: 'Ismingiz',
+      email: 'client@company.com',
+      btn: 'Mediaplan olish',
+      sending: 'Yuborilmoqda…',
+      close: 'Yopish',
+      successTitle: 'Tayyor!',
+      successDesc: 'Menejer ish kuni davomida javob beradi.',
+      errorMsg: "Yuborib bo'lmadi. Bizga yozing: andrevdanil@gmail.com",
+    },
+  };
+
+  function initLeadPopup() {
+    // Suppress if user already dismissed/submitted earlier.
+    try {
+      if (sessionStorage.getItem('leadPopupShown') === '1') return;
+      if (localStorage.getItem('leadSubmitted') === '1') return;
+    } catch (e) { /* private mode — continue */ }
+
+    const lang = (document.documentElement.lang || 'ru').slice(0, 2);
+    const t = POPUP_COPY[lang] || POPUP_COPY.ru;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'lead-popup';
+    wrap.id = 'lead-popup';
+    wrap.setAttribute('role', 'dialog');
+    wrap.setAttribute('aria-modal', 'true');
+    wrap.setAttribute('aria-labelledby', 'lead-popup-title');
+    wrap.hidden = true;
+    wrap.innerHTML =
+      '<div class="lead-popup__backdrop" data-popup-close></div>' +
+      '<div class="lead-popup__card">' +
+        '<button class="lead-popup__close" type="button" data-popup-close aria-label="' + t.close + '">×</button>' +
+        '<h3 class="lead-popup__title" id="lead-popup-title">' + t.title + '</h3>' +
+        '<p class="lead-popup__desc">' + t.desc + '</p>' +
+        '<form class="lead-popup__form" id="lead-popup-form" novalidate>' +
+          '<input name="first_name" type="text" placeholder="' + t.name + '" required autocomplete="given-name">' +
+          '<input name="email" type="email" placeholder="' + t.email + '" required autocomplete="email">' +
+          '<div class="lead-popup__hp" aria-hidden="true">' +
+            '<label for="pp-hp">Leave empty</label>' +
+            '<input id="pp-hp" name="website_url" type="text" tabindex="-1" autocomplete="off">' +
+          '</div>' +
+          '<button type="submit" class="btn btn--primary btn--large">' + t.btn + '</button>' +
+        '</form>' +
+        '<div class="lead-popup__success" id="lead-popup-success" hidden>' +
+          '<strong>' + t.successTitle + '</strong>' +
+          '<p>' + t.successDesc + '</p>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(wrap);
+
+    const form = wrap.querySelector('#lead-popup-form');
+    const success = wrap.querySelector('#lead-popup-success');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    const show = () => {
+      wrap.hidden = false;
+      document.body.classList.add('is-popup-open');
+      try { sessionStorage.setItem('leadPopupShown', '1'); } catch (e) {}
+      if (window.dataLayer) window.dataLayer.push({ event: 'lead_popup_shown' });
+      // Focus first input for a11y
+      requestAnimationFrame(() => form.querySelector('input').focus());
+    };
+    const hide = () => {
+      wrap.hidden = true;
+      document.body.classList.remove('is-popup-open');
+    };
+
+    const timer = setTimeout(show, POPUP_DELAY_MS);
+
+    wrap.addEventListener('click', (e) => {
+      if (e.target.hasAttribute('data-popup-close')) {
+        clearTimeout(timer);
+        hide();
+        if (window.dataLayer) window.dataLayer.push({ event: 'lead_popup_dismissed' });
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !wrap.hidden) hide();
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const fd = new FormData(form);
+      // Honeypot — bots fill it; drop silently.
+      if ((fd.get('website_url') || '').toString().trim() !== '') {
+        success.hidden = false; form.style.display = 'none';
+        return;
+      }
+      const original = submitBtn.textContent;
+      submitBtn.disabled = true; submitBtn.textContent = t.sending;
+
+      try {
+        const res = await fetch(LEADS_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            first_name: fd.get('first_name') || '',
+            email: fd.get('email') || '',
+            source: 'landing-popup',
+          }),
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        form.style.display = 'none';
+        success.hidden = false;
+        try { localStorage.setItem('leadSubmitted', '1'); } catch (e) {}
+        if (window.dataLayer) window.dataLayer.push({ event: 'lead_popup_submitted' });
+        setTimeout(hide, 3500);
+      } catch (err) {
+        console.error('Popup lead submit failed:', err);
+        submitBtn.disabled = false; submitBtn.textContent = original;
+        alert(t.errorMsg);
+      }
+    });
   }
 
   /* ---------- Contact form ---------- */
