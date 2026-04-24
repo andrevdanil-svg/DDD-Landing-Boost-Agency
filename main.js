@@ -366,6 +366,7 @@
       document.body.classList.add('is-popup-open');
       try { sessionStorage.setItem('leadPopupShown', '1'); } catch (e) {}
       if (window.dataLayer) window.dataLayer.push({ event: 'lead_popup_shown' });
+      popupOpenedAt = Date.now();
       // Focus first input for a11y
       requestAnimationFrame(() => form.querySelector('input').focus());
     };
@@ -388,6 +389,7 @@
     });
 
     const errorEl = wrap.querySelector('#lead-popup-error');
+    let popupOpenedAt = 0;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -396,6 +398,11 @@
       const fd = new FormData(form);
       // Honeypot — bots fill it; drop silently.
       if ((fd.get('website_url') || '').toString().trim() !== '') {
+        success.hidden = false; form.style.display = 'none';
+        return;
+      }
+      // Min time since popup opened — bots submit instantly.
+      if (Date.now() - popupOpenedAt < 3000) {
         success.hidden = false; form.style.display = 'none';
         return;
       }
@@ -455,6 +462,7 @@
     if (!form || !success) return;
     const submitBtn = form.querySelector('button[type="submit"]');
     const errorEl = document.getElementById('form-error');
+    const formRenderedAt = Date.now(); // min-time-to-submit check
 
     const showError = () => { if (errorEl) errorEl.hidden = false; };
     const hideError = () => { if (errorEl) errorEl.hidden = true; };
@@ -471,6 +479,14 @@
 
       // Honeypot: hidden field that only bots auto-fill. If filled — drop silently.
       if ((fd.get('website_url') || '').toString().trim() !== '') {
+        form.style.display = 'none';
+        success.classList.add('is-visible');
+        return;
+      }
+
+      // Minimum time-to-submit: real users spend at least ~3 s reading & typing.
+      // Anything faster is almost certainly an auto-filled bot. Drop silently.
+      if (Date.now() - formRenderedAt < 3000) {
         form.style.display = 'none';
         success.classList.add('is-visible');
         return;
