@@ -467,6 +467,32 @@
     const showError = () => { if (errorEl) errorEl.hidden = false; };
     const hideError = () => { if (errorEl) errorEl.hidden = true; };
 
+    // "Already sent" state — показываем, если пользователь уже оставлял заявку.
+    const ALREADY_SENT_COPY = {
+      ru: { title: 'Заявка уже отправлена', desc: 'Наш менеджер свяжется с Вами в ближайшее время.' },
+      en: { title: 'Request already sent', desc: 'Our manager will get back to you shortly.' },
+      uz: { title: 'Ariza allaqachon yuborilgan', desc: "Menejerimiz tez orada siz bilan bog'lanadi." },
+    };
+    const showAlreadySent = () => {
+      const lang = (document.documentElement.lang || 'ru').slice(0, 2);
+      const copy = ALREADY_SENT_COPY[lang] || ALREADY_SENT_COPY.ru;
+      const titleEl = success.querySelector('h3');
+      const descEl = success.querySelector('p');
+      if (titleEl) titleEl.textContent = copy.title;
+      if (descEl) descEl.textContent = copy.desc;
+      form.style.display = 'none';
+      success.classList.add('is-visible');
+    };
+
+    // На загрузке проверяем флаг и, если заявка уже отправлялась, сразу
+    // прячем форму и показываем сообщение "уже отправлена".
+    try {
+      if (localStorage.getItem('leadSubmitted') === '1') {
+        showAlreadySent();
+        return; // не вешаем submit-обработчик
+      }
+    } catch (e) { /* приватный режим — пропускаем */ }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       hideError();
@@ -518,6 +544,7 @@
           body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        try { localStorage.setItem('leadSubmitted', '1'); } catch (e) {}
         form.style.display = 'none';
         success.classList.add('is-visible');
         success.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
