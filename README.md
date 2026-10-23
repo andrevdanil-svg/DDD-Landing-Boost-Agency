@@ -20,7 +20,7 @@
 ├── privacy/ · terms/ · data-processing/
 └── assets/
     ├── logo_boost*.svg / favicon.svg / hero_pattern.svg
-    ├── og-image.svg             превью для соцсетей (1200×630)
+    ├── og-image.png / .svg       превью для соцсетей 1200×630 (PNG — для соцсетей, SVG — исходник)
     ├── dashboard_mock.svg       ⚠ placeholder — заменить на скрин кабинета
     ├── analytics_mock.svg       ⚠ placeholder — заменить на скрин аналитики
     └── platforms/               логотипы внешних платформ (DV360, Google Ads, Meta, Yandex)
@@ -78,7 +78,7 @@ PY
 
 - [ ] Подключить Google Analytics 4 и Яндекс.Метрику (user делает вручную).
 - [ ] Заменить `assets/dashboard_mock.svg` и `assets/analytics_mock.svg` реальными скриншотами кабинета platform.boostagency.uz.
-- [ ] Рендерить `assets/og-image.svg` в PNG для максимальной совместимости соцсетей (Telegram, Facebook).
+- [x] Рендерить `assets/og-image.svg` в PNG для максимальной совместимости соцсетей (Telegram, Facebook).
 - [ ] Английская и узбекская локализация (см. задачу в переписке).
 
 ## SEO
