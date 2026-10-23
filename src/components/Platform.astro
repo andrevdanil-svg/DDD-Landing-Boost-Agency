@@ -2,10 +2,10 @@
 // ПРОТОТИП: копия интерфейса кабинета на демонстрационных данных.
 // В проде — реальные скриншоты / записанное демо кабинета.
 const steps = [
-  { id: 'overview', title: 'Обзор', text: 'Показы, клики, CTR, CPM, CPC и ROAS по каждой кампании — на одном экране, по дням и часам.' },
+  { id: 'overview', title: 'Обзор', text: 'Показы, клики, CTR, CPM, CPC и ROAS по каждой кампании\u00a0— на одном экране, по дням и часам.' },
   { id: 'audience', title: 'Аудитория', text: 'Разрез по устройствам, возрасту и полу: видно, кто на самом деле видит рекламу.' },
-  { id: 'creatives', title: 'Креативы', text: 'Статистика по каждому креативу — что работает, а что пора заменить.' },
-  { id: 'export', title: 'Выгрузка', text: 'Любой срез — в CSV или XLSX в один клик. Без запроса менеджеру.' },
+  { id: 'creatives', title: 'Креативы', text: 'Статистика по каждому креативу\u00a0— что работает, а что пора заменить.' },
+  { id: 'export', title: 'Выгрузка', text: 'Любой срез\u00a0— в CSV или XLSX в один клик. Без запроса менеджеру.' },
 ];
 
 const kpis = [
@@ -49,7 +49,7 @@ const rows = [
     <span class="path">/platform</span>
     <h2 id="pl-title" class="h2">Кабинет, в&nbsp;котором видно каждый показ</h2>
     <p class="pl__sub">
-      Каждая метрика, которую видим мы, доступна вам — в&nbsp;том&nbsp;же кабинете и&nbsp;в&nbsp;том&nbsp;же разрезе.
+      Каждая метрика, которую видим мы, доступна вам&nbsp;— в&nbsp;том&nbsp;же кабинете и&nbsp;в&nbsp;том&nbsp;же разрезе.
     </p>
   </div>
 
@@ -85,7 +85,7 @@ const rows = [
             <rect x="3" y="7" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect>
             <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="currentColor" stroke-width="1.4"></path>
           </svg>
-          <span>platform.boostagency.uz/reporting</span>
+          <span class="app__url">platform.boostagency.uz/reporting</span>
           <span class="app__demo">демо-данные</span>
         </div>
 
@@ -299,7 +299,10 @@ const rows = [
     font: 400 12px/1 var(--f-mono);
     color: var(--text-3);
   }
+  .app__url { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .app__demo {
+    flex: none;
+    white-space: nowrap;
     margin-left: auto;
     padding: 4px 8px;
     border: 1px dashed var(--line-strong);
@@ -475,7 +478,8 @@ const rows = [
     .pl__step[aria-selected='true'] { background: var(--text); color: var(--bg); border-color: var(--text); }
     .pl__num, .pl__text, .pl__bar { display: none; }
     .pl__title { font-size: 15px; }
-    .pl__mtext { display: block; margin-top: 14px; color: var(--text-2); font-size: 16px; min-height: 3em; }
+    /* высота под самую длинную подпись (3 строки), чтобы кабинет не прыгал при смене вкладки */
+    .pl__mtext { display: block; margin-top: 14px; color: var(--text-2); font-size: 16px; line-height: 1.55; min-height: 4.65em; }
   }
 
   @media (max-width: 640px) {
