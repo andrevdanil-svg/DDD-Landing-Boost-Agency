@@ -1,0 +1,81 @@
+---
+const text =
+  'Мы — programmatic-агентство из Ташкента. Покупаем рекламу на десятках бирж, торгуемся за каждый показ и ничего не прячем: всё, что видим мы, клиент видит в своём кабинете.';
+const words = text.split(' ');
+
+const facts = [
+  { n: '200+', l: 'кампаний с 2019 года' },
+  { n: '6', l: 'форматов в одной закупке — от баннеров до Smart TV' },
+  { n: '48 ч', l: 'от заявки до готового медиаплана' },
+];
+---
+
+<section class="mf" id="about" aria-labelledby="mf-title">
+  <div class="wrap">
+    <span class="path">/about</span>
+    <h2 id="mf-title" class="sr-only">О компании</h2>
+    <p class="mf__text">
+      {words.map((w) => <><span class="w">{w}</span>{' '}</>)}
+    </p>
+    <ul class="mf__facts">
+      {
+        facts.map((f) => (
+          <li>
+            <strong>{f.n}</strong>
+            <span>{f.l}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .mf {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(96px, 18vh, 200px) clamp(72px, 12vh, 140px);
+  }
+  .mf__text {
+    margin-top: clamp(28px, 5vh, 56px);
+    max-width: 21em;
+    font: 600 clamp(28px, 4.3vw, 64px)/1.08 var(--f-display);
+    letter-spacing: -0.028em;
+    text-wrap: pretty;
+  }
+
+  /* слова «проявляются» строка за строкой по мере прокрутки — только CSS, без JS */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .w {
+        animation: word-in linear both;
+        animation-timeline: view();
+        animation-range: entry 5% cover 38%;
+      }
+    }
+  }
+  @keyframes word-in {
+    from { opacity: 0.14; }
+    to { opacity: 1; }
+  }
+
+  .mf__facts {
+    list-style: none;
+    margin-top: clamp(56px, 10vh, 112px);
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+  .mf__facts li { display: grid; align-content: start; gap: 10px; padding: 28px 24px 0 0; }
+  .mf__facts li + li { padding-left: 24px; border-left: 1px solid var(--line); }
+  .mf__facts strong {
+    font: 700 clamp(40px, 4.4vw, 64px)/1 var(--f-display);
+    letter-spacing: -0.035em;
+  }
+  .mf__facts span { color: var(--text-2); font-size: 16px; max-width: 26ch; }
+
+  @media (max-width: 760px) {
+    .mf__facts { grid-template-columns: minmax(0, 1fr); border-top: 0; }
+    .mf__facts li, .mf__facts li + li { padding: 20px 0; border-left: 0; border-top: 1px solid var(--line); }
+  }
+</style>

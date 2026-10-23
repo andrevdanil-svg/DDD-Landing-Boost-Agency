@@ -1,0 +1,161 @@
+---
+import Arrow from './Arrow.astro';
+
+// Цифры — из текущих страниц кейсов на boostagency.uz
+const cases = [
+  { v: '×3,1', m: 'ROAS', who: 'Fashion-ритейл', note: 'за 6 недель · CPA −47%', href: '/cases/fashion-retail/' },
+  { v: '−52%', m: 'CPL на тест-драйв', who: 'Автодилер', note: 'к 8-й неделе · доходимость в салон +38%', href: '/cases/auto-dealer/' },
+  { v: '−48%', m: 'CPA на активированную карту', who: 'Банк', note: 'было $85 · активация +63%', href: '/cases/banking-fintech/' },
+  { v: '×4', m: 'заявок на показ квартиры', who: 'Девелопер', note: 'к 12-й неделе · CPA брони −34%', href: '/cases/real-estate-developer/' },
+  { v: '−43%', m: 'CPL на пробный урок', who: 'Онлайн-школа', note: 'за 10 недель · 3,2K новых учеников', href: '/cases/edtech-school/' },
+  { v: '+31%', m: 'brand lift', who: 'FMCG-бренд', note: 'purchase intent · охват 3+ — 11,4M', href: '/cases/fmcg-brand/' },
+];
+
+type Ch = { digit: number } | { char: string };
+const split = (v: string): Ch[] => [...v].map((c) => (/\d/.test(c) ? { digit: Number(c) } : { char: c }));
+const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+---
+
+<section class="rs" id="results" aria-labelledby="rs-title">
+  <div class="wrap">
+    <div class="rs__head">
+      <span class="path">/cases</span>
+      <h2 id="rs-title" class="h2">Что получили клиенты</h2>
+    </div>
+
+    <ol class="rs__list">
+      {
+        cases.map((k) => (
+          <li class="rs__row" data-odo>
+            <a href={k.href}>
+              <span class="rs__num">
+                <span class="sr-only">{k.v}</span>
+                <span class="rs__digits" aria-hidden="true">
+                  {split(k.v).map((ch, i) =>
+                    'digit' in ch ? (
+                      <span class="odo" style={`--d:${ch.digit};--i:${i}`}>
+                        <span class="odo__strip">
+                          {DIGITS.map((n) => (
+                            <span>{n}</span>
+                          ))}
+                        </span>
+                      </span>
+                    ) : (
+                      <span>{ch.char}</span>
+                    ),
+                  )}
+                </span>
+              </span>
+              <span class="rs__what">
+                <b>{k.m}</b>
+                <span>{k.who}</span>
+              </span>
+              <span class="rs__note">{k.note}</span>
+              <span class="rs__go">
+                Кейс <Arrow />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+
+    <a class="rs__all" href="/cases/">Все кейсы <Arrow /></a>
+  </div>
+</section>
+
+<style>
+  .rs {
+    background: var(--accent);
+    color: #fff;
+    padding-block: clamp(96px, 16vh, 180px);
+  }
+  .rs .path { color: rgb(255 255 255 / 0.75); }
+  .rs__head { display: grid; gap: 24px; margin-bottom: clamp(40px, 7vh, 72px); }
+
+  .rs__list { list-style: none; padding: 0; border-bottom: 1px solid rgb(255 255 255 / 0.3); }
+  .rs__row a {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr) auto;
+    column-gap: var(--gap);
+    align-items: center;
+    padding-block: clamp(18px, 3vh, 30px);
+    border-top: 1px solid rgb(255 255 255 / 0.3);
+  }
+
+  .rs__num {
+    font: 800 clamp(60px, 9.4vw, 150px)/1 var(--f-display);
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    transition: transform 0.5s var(--ease);
+  }
+  .rs__digits { display: inline-flex; }
+  .odo { display: inline-block; height: 1em; overflow: hidden; }
+  .odo__strip {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(calc(var(--d) * -1em));
+    transition: transform 1.8s var(--ease) calc(var(--i) * 80ms);
+  }
+  .odo__strip span { display: block; height: 1em; }
+  /* до появления в кадре — на нуле; без JS цифры сразу стоят на месте */
+  :global(.js) .rs__row:not(.is-in) .odo__strip { transform: translateY(0); }
+
+  .rs__what { display: grid; gap: 4px; }
+  .rs__what b { font: 600 clamp(17px, 1.5vw, 21px)/1.25 var(--f-display); letter-spacing: -0.01em; }
+  .rs__what span { color: rgb(255 255 255 / 0.85); font-size: 15px; }
+  .rs__note { color: rgb(255 255 255 / 0.85); font: 400 13.5px/1.5 var(--f-mono); }
+  .rs__go {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 600 14px/1 var(--f-display);
+    white-space: nowrap;
+  }
+  .rs__go :global(svg) { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
+  .rs__row a:hover .rs__num { transform: translateX(10px); }
+  .rs__row a:hover .rs__go :global(svg) { transform: translateX(4px); }
+
+  .rs__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #fff;
+    font: 600 17px/1 var(--f-display);
+  }
+  .rs__all :global(svg) { width: 16px; height: 16px; }
+
+  @media (max-width: 1000px) {
+    .rs__row a { grid-template-columns: minmax(0, 1fr) auto; row-gap: 12px; }
+    .rs__num { grid-column: 1 / -1; }
+    .rs__what { grid-column: 1; }
+    .rs__note { grid-column: 1; }
+    .rs__go { grid-column: 2; grid-row: 2 / span 2; align-self: end; }
+  }
+  @media (max-width: 640px) {
+    .rs__go { font-size: 0; gap: 0; }
+    .rs__go :global(svg) { width: 20px; height: 20px; }
+  }
+</style>
+
+<script>
+  const rows = document.querySelectorAll<HTMLElement>('[data-odo]');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    rows.forEach((r) => r.classList.add('is-in'));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        });
+      },
+      { threshold: 0.45 },
+    );
+    rows.forEach((r) => io.observe(r));
+  }
+</script>

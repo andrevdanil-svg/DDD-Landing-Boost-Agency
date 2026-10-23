@@ -1,0 +1,283 @@
+---
+import Arrow from './Arrow.astro';
+
+// ПРОТОТИП: число и лента — демонстрационные. В проде берём сумму показов из платформы.
+const TOTAL_IMPRESSIONS = 2418337905;
+const total = new Intl.NumberFormat('ru-RU').format(TOTAL_IMPRESSIONS);
+
+let seed = 7;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+function pick<T>(list: T[]): T {
+  return list[Math.floor(rnd() * list.length)];
+}
+
+const formats = [
+  { f: 'DISPLAY', p: ['Новостной портал', 'Маркетплейс', 'Спортивный сайт', 'Портал вакансий'], min: 0.18, max: 1.4 },
+  { f: 'VIDEO', p: ['Pre-roll · 15 сек', 'Онлайн-кинотеатр', 'Видео в статье'], min: 0.9, max: 3.2 },
+  { f: 'NATIVE', p: ['Лента рекомендаций', 'Статья в медиа'], min: 0.25, max: 1.1 },
+  { f: 'CTV', p: ['Smart TV · 30 сек', 'Smart TV · 15 сек'], min: 2.4, max: 6.5 },
+  { f: 'IN-APP', p: ['Мобильная игра', 'Приложение погоды', 'Такси-приложение'], min: 0.2, max: 1.6 },
+];
+
+let sec = 14 * 3600 + 2 * 60 + 7;
+const events = Array.from({ length: 24 }, () => {
+  const fm = pick(formats);
+  sec += 1 + Math.floor(rnd() * 4);
+  const time = [Math.floor(sec / 3600), Math.floor(sec / 60) % 60, sec % 60]
+    .map((n) => String(n).padStart(2, '0'))
+    .join(':');
+  return {
+    time,
+    format: fm.f,
+    place: pick(fm.p),
+    bid: (fm.min + rnd() * (fm.max - fm.min)).toFixed(2),
+    won: rnd() > 0.38,
+  };
+});
+const tape = [...events, ...events];
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__cols" aria-hidden="true">
+    {Array.from({ length: 12 }, () => <span />)}
+  </div>
+
+  <div class="wrap hero__body">
+    <div class="hero__meta" data-in style="--d:0">
+      <h1 id="hero-title" class="hero__kicker">Programmatic-агентство в&nbsp;Ташкенте</h1>
+      <span class="hero__live"><i></i>Торги идут сейчас</span>
+    </div>
+
+    <p class="hero__count" data-in style="--d:1">
+      <span class="sr-only">Более 2,4 миллиарда</span>
+      <span aria-hidden="true" data-counter={TOTAL_IMPRESSIONS}>{total}</span>
+    </p>
+
+    <p class="hero__lead" data-in style="--d:2">
+      показов купили для&nbsp;клиентов — и&nbsp;каждый можно найти <u>в&nbsp;кабинете</u>.
+    </p>
+
+    <div class="hero__aside" data-in style="--d:3">
+      <p>
+        Закупаем display, video, native и&nbsp;CTV на&nbsp;десятках бирж. Ставку за&nbsp;каждый показ считает
+        алгоритм, а&nbsp;вы видите её в&nbsp;отчёте — без менеджера-посредника.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="https://t.me/andrevdanil">Обсудить задачу в&nbsp;Telegram <Arrow /></a>
+        <a class="btn btn--ghost" href="#contact">Медиаплан за&nbsp;48&nbsp;часов</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tape" data-in style="--d:4">
+    <div class="tape__label"><i></i>Аукцион</div>
+    <div class="tape__viewport" title="Иллюстрация: так выглядит лента ставок в кабинете">
+      <div class="tape__track">
+        {
+          tape.map((e, i) => (
+            <span class="ev" aria-hidden={i >= events.length ? 'true' : undefined}>
+              <span class="ev__t">{e.time}</span>
+              <span class="ev__f">{e.format}</span>
+              <span class="ev__p">{e.place}</span>
+              <span class="ev__b">${e.bid}</span>
+              <span class:list={['ev__s', e.won ? 'ev__s--won' : 'ev__s--lost']}>
+                {e.won ? '✓ выиграна' : '× перебита'}
+              </span>
+            </span>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: calc(100svh - var(--header-h));
+    display: flex;
+    flex-direction: column;
+    overflow: clip;
+  }
+
+  .hero__cols {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    max-width: var(--max);
+    margin-inline: auto;
+    padding-inline: var(--pad);
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    pointer-events: none;
+  }
+  .hero__cols span { border-inline: 1px solid var(--line); opacity: 0.5; }
+
+  .hero__body {
+    position: relative;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    align-content: end;
+    padding-block: clamp(32px, 8vh, 96px) clamp(36px, 7vh, 80px);
+    container-type: inline-size;
+  }
+
+  .hero__meta {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: clamp(20px, 5vh, 56px);
+    font: 500 13px/1.3 var(--f-mono);
+    color: var(--text-2);
+  }
+  .hero__kicker { font: inherit; letter-spacing: 0.01em; }
+
+  .hero__live { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
+  .hero__live i, .tape__label i {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: ping 2.2s var(--ease) infinite;
+  }
+  @keyframes ping {
+    0% { box-shadow: 0 0 0 0 rgb(62 207 142 / 0.55); }
+    70%, 100% { box-shadow: 0 0 0 9px rgb(62 207 142 / 0); }
+  }
+
+  .hero__count {
+    grid-column: 1 / -1;
+    margin-left: -0.05em;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(34px, 12.6cqi, 200px);
+    line-height: 0.86;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .hero__lead {
+    grid-column: 1 / span 7;
+    margin-top: clamp(18px, 3vh, 36px);
+    font: 600 clamp(22px, 2.8vw, 42px)/1.12 var(--f-display);
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+  .hero__lead u {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.16em;
+  }
+
+  .hero__aside {
+    grid-column: 9 / -1;
+    align-self: end;
+    display: grid;
+    gap: 24px;
+  }
+  .hero__aside p { color: var(--text-2); max-width: 42ch; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  /* лента аукциона */
+  .tape {
+    position: relative;
+    display: flex;
+    height: 52px;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+    font: 400 12.5px/1 var(--f-mono);
+    color: var(--text-2);
+  }
+  .tape__label {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-inline: var(--pad) 20px;
+    border-right: 1px solid var(--line);
+    color: var(--text);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tape__viewport {
+    flex: 1;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 4%, #000 92%, transparent);
+  }
+  .tape__track {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    animation: tape 110s linear infinite;
+  }
+  .tape:hover .tape__track { animation-play-state: paused; }
+  @keyframes tape { to { transform: translateX(-50%); } }
+
+  .ev {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-inline: 22px;
+    border-right: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .ev__t { color: var(--text-3); }
+  .ev__f { color: var(--text); font-weight: 500; letter-spacing: 0.04em; }
+  .ev__b { color: var(--text); }
+  .ev__s--won { color: var(--green); }
+  .ev__s--lost { color: var(--text-3); }
+
+  /* появление первого экрана */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-in] { animation: rise 1s var(--ease) both; animation-delay: calc(var(--d) * 90ms + 80ms); }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+  }
+
+  @media (max-width: 1000px) {
+    .hero__lead { grid-column: 1 / -1; }
+    .hero__aside { grid-column: 1 / -1; margin-top: 32px; }
+  }
+
+  @media (max-width: 640px) {
+    .hero__cols { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 16px; }
+    .hero__cols span:nth-child(n + 5) { display: none; }
+    .hero__body { column-gap: 16px; align-content: center; }
+    .hero__meta { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .hero__cta { flex-direction: column; }
+    .hero__cta .btn { width: 100%; }
+    .tape__label { padding-inline: 16px 14px; }
+  }
+</style>
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-counter]');
+  if (el) {
+    const target = Number(el.dataset.counter);
+    const fmt = new Intl.NumberFormat('ru-RU');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let value = reduce ? target : target - 240000;
+    const render = () => { el.textContent = fmt.format(Math.round(value)); };
+    render();
+
+    if (!reduce) {
+      const from = value;
+      const t0 = performance.now();
+      const intro = (t: number) => {
+        const k = Math.min(1, (t - t0) / 1800);
+        value = from + (target - from) * (1 - Math.pow(1 - k, 4));
+        render();
+        if (k < 1) requestAnimationFrame(intro);
+        else window.setInterval(() => { value += 40 + Math.random() * 140; render(); }, 320);
+      };
+      requestAnimationFrame(intro);
+    }
+  }
+</script>

@@ -1,0 +1,159 @@
+---
+import Arrow from './Arrow.astro';
+
+const TELEGRAM = 'https://t.me/andrevdanil';
+const budgets = ['до $5 000', '$5 000 – $20 000', '$20 000 – $50 000', 'от $50 000'];
+---
+
+<section class="ct" id="contact" aria-labelledby="ct-title" data-contact>
+  <div class="wrap">
+    <span class="path">/contact</span>
+    <h2 id="ct-title" class="h2 ct__title">Пришлите задачу — вернём медиаплан за&nbsp;48&nbsp;часов</h2>
+
+    <div class="ct__ways">
+      <div class="ct__tg">
+        <p class="ct__k">Быстрее всего</p>
+        <p class="ct__big">Telegram</p>
+        <p class="ct__muted">Ответим в&nbsp;течение рабочего дня. Можно сразу с&nbsp;брифом или ссылкой на&nbsp;сайт.</p>
+        <a class="btn btn--primary" href={TELEGRAM}>Написать в&nbsp;Telegram <Arrow /></a>
+      </div>
+
+      <form class="ct__form" novalidate data-form>
+        <p class="ct__k">Или оставьте контакт</p>
+        <label class="field">
+          <span>Имя</span>
+          <input name="name" autocomplete="name" required />
+        </label>
+        <label class="field">
+          <span>Телефон или Telegram</span>
+          <input name="contact" autocomplete="tel" inputmode="tel" placeholder="+998 __ ___ __ __ или @username" required />
+        </label>
+        <label class="field">
+          <span>Бюджет в месяц <em>— необязательно</em></span>
+          <select name="budget">
+            <option value="">Пока не знаю</option>
+            {budgets.map((b) => <option>{b}</option>)}
+          </select>
+        </label>
+        <button class="btn btn--ghost" type="submit">Получить медиаплан</button>
+        <p class="ct__legal">
+          Нажимая кнопку, вы соглашаетесь с&nbsp;<a href="/privacy/">политикой конфиденциальности</a>.
+        </p>
+        <p class="ct__ok" role="status" hidden data-ok>Спасибо! Напишем в&nbsp;течение рабочего дня.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="wrap ft__in">
+    <img src="/brand/logo_boost_light.svg" alt="Boost! Agency" width="106" height="22" />
+    <nav aria-label="Документы">
+      <a href="/privacy/">Политика конфиденциальности</a>
+      <a href="/terms/">Условия</a>
+    </nav>
+    <span>© 2026 Boost! Agency · Ташкент</span>
+  </div>
+</footer>
+
+<style>
+  .ct { border-top: 1px solid var(--line); padding-block: clamp(96px, 16vh, 180px) clamp(64px, 10vh, 120px); }
+  .ct__title { max-width: 15em; margin-top: 24px; }
+
+  .ct__ways {
+    margin-top: clamp(48px, 8vh, 88px);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+  .ct__tg, .ct__form { padding-top: 32px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+  .ct__tg { padding-right: clamp(24px, 4vw, 64px); }
+  .ct__form { padding-left: clamp(24px, 4vw, 64px); border-left: 1px solid var(--line); align-items: stretch; }
+
+  .ct__k { font: 500 12px/1 var(--f-mono); color: var(--text-3); }
+  .ct__big { font: 700 clamp(40px, 5vw, 72px)/1 var(--f-display); letter-spacing: -0.035em; }
+  .ct__muted { color: var(--text-2); max-width: 36ch; margin-bottom: 8px; }
+
+  .field { display: grid; gap: 8px; }
+  .field span { font-size: 14px; color: var(--text-2); }
+  .field em { font-style: normal; color: var(--text-3); }
+  .field input, .field select {
+    height: 52px;
+    width: 100%;
+    padding: 0 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--bg-raised);
+    color: var(--text);
+    font: 400 16px/1 var(--f-text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field input::placeholder { color: var(--text-3); }
+  .field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'><path d='M1 1.5 6 6.5l5-5' stroke='%23a8a8b4' stroke-width='1.5' stroke-linecap='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgb(101 91 250 / 0.3);
+  }
+  .field input[aria-invalid='true'] { border-color: var(--coral); }
+  /* автозаполнение Chrome/Safari не должно красить поле в белый/жёлтый */
+  .field input:-webkit-autofill,
+  .field input:-webkit-autofill:hover,
+  .field input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 100px var(--bg-raised) inset;
+    -webkit-text-fill-color: var(--text);
+    caret-color: var(--text);
+    transition: background-color 9999s;
+  }
+
+  .ct__form .btn { margin-top: 8px; }
+  .ct__legal { font-size: 13px; color: var(--text-3); }
+  .ct__legal a { text-decoration: underline; text-underline-offset: 3px; }
+  .ct__ok { color: var(--green); }
+
+  .ft { border-top: 1px solid var(--line); }
+  .ft__in {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 32px;
+    padding-block: 32px;
+    color: var(--text-3);
+    font-size: 14px;
+  }
+  .ft__in img { height: 22px; width: auto; }
+  .ft__in nav { display: flex; gap: 24px; }
+  .ft__in nav a:hover { color: var(--text); }
+  .ft__in > span { margin-left: auto; }
+
+  @media (max-width: 860px) {
+    .ct__ways { grid-template-columns: minmax(0, 1fr); border-top: 0; }
+    .ct__tg, .ct__form { padding: 28px 0; border-top: 1px solid var(--line); border-left: 0; }
+    .ct__tg .btn { width: 100%; }
+    .ft__in { padding-bottom: 104px; }
+    .ft__in > span { margin-left: 0; }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let ok = true;
+    form.querySelectorAll<HTMLInputElement>('input[required]').forEach((input) => {
+      const bad = input.value.trim().length < 2;
+      input.setAttribute('aria-invalid', String(bad));
+      if (bad && ok) input.focus();
+      if (bad) ok = false;
+    });
+    if (!ok) return;
+    // ПРОТОТИП: отправка не подключена. В проде — POST на platform.boostagency.uz/api/leads.
+    form.querySelector<HTMLElement>('[data-ok]')!.hidden = false;
+    form.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled = true;
+  });
+</script>

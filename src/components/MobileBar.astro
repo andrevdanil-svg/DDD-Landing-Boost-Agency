@@ -1,0 +1,50 @@
+---
+import Arrow from './Arrow.astro';
+---
+
+<div class="mbar" data-mbar>
+  <a class="btn" href="https://t.me/andrevdanil">Написать в&nbsp;Telegram <Arrow /></a>
+</div>
+
+<style>
+  .mbar { display: none; }
+  @media (max-width: 860px) {
+    .mbar {
+      display: block;
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      z-index: 40;
+      transform: translateY(160%);
+      transition: transform 0.45s var(--ease);
+    }
+    .mbar.is-on { transform: none; }
+    /* белая — чтобы читалась и на тёмном фоне, и на фиолетовом блоке результатов */
+    .mbar .btn { width: 100%; background: var(--text); color: var(--bg); box-shadow: 0 12px 32px -8px rgb(0 0 0 / 0.7); }
+    .mbar .btn :global(svg) { color: var(--accent); }
+  }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-mbar]');
+  const contact = document.querySelector<HTMLElement>('[data-contact]');
+  let pastHero = false;
+  let atContact = false;
+  const sync = () => bar?.classList.toggle('is-on', pastHero && !atContact);
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      pastHero = window.scrollY > window.innerHeight * 0.7;
+      sync();
+    },
+    { passive: true },
+  );
+  if (contact && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      atContact = e.isIntersecting;
+      sync();
+    }).observe(contact);
+  }
+</script>

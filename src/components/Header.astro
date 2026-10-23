@@ -1,0 +1,131 @@
+---
+const nav = [
+  { href: '#platform', label: 'Платформа' },
+  { href: '/channels/', label: 'Каналы' },
+  { href: '#results', label: 'Кейсы' },
+  { href: '/process/', label: 'Как работаем' },
+];
+---
+
+<header class="hdr" data-hdr>
+  <div class="wrap hdr__in">
+    <a href="/" class="hdr__logo" aria-label="Boost! Agency — на главную">
+      <img src="/brand/logo_boost_light.svg" alt="" width="116" height="24" />
+    </a>
+    <nav class="hdr__nav" aria-label="Основная навигация">
+      {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+    </nav>
+    <div class="hdr__end">
+      <div class="hdr__lang" role="group" aria-label="Язык сайта">
+        <a href="/" aria-current="page">RU</a>
+        <a href="/en/" lang="en">EN</a>
+        <a href="/uz/" lang="uz">UZ</a>
+      </div>
+      <a class="btn btn--primary btn--sm hdr__cta" href="#contact">Обсудить задачу</a>
+      <button class="hdr__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Открыть меню" data-burger>
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="menu" id="menu" hidden data-menu>
+    <nav class="wrap menu__nav" aria-label="Мобильное меню">
+      {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+      <a href="#contact">Контакты</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hdr {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s var(--ease);
+  }
+  .hdr.is-scrolled { border-bottom-color: var(--line); }
+
+  .hdr__in {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .hdr__logo img { height: 24px; width: auto; }
+
+  .hdr__nav {
+    display: flex;
+    gap: 28px;
+    margin-left: 16px;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+  .hdr__nav a { transition: color 0.2s; }
+  .hdr__nav a:hover { color: var(--text); }
+
+  .hdr__end { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+
+  .hdr__lang { display: flex; font: 500 12px/1 var(--f-mono); }
+  .hdr__lang a { padding: 10px 6px; color: var(--text-3); transition: color 0.2s; }
+  .hdr__lang a:hover, .hdr__lang a[aria-current] { color: var(--text); }
+
+  .hdr__burger { display: none; width: 44px; height: 44px; position: relative; }
+  .hdr__burger span {
+    position: absolute;
+    left: 12px; right: 12px;
+    height: 1.5px;
+    background: var(--text);
+    transition: transform 0.3s var(--ease);
+  }
+  .hdr__burger span:first-child { top: 18px; }
+  .hdr__burger span:last-child { top: 25px; }
+  .hdr__burger[aria-expanded='true'] span:first-child { transform: translateY(3.5px) rotate(45deg); }
+  .hdr__burger[aria-expanded='true'] span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+
+  .menu {
+    position: fixed;
+    inset: var(--header-h) 0 0;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    overflow-y: auto;
+  }
+  .menu__nav { display: flex; flex-direction: column; padding-block: 8px 40px; }
+  .menu__nav a {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    font: 600 28px/1.1 var(--f-display);
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 900px) {
+    .hdr__nav, .hdr__cta { display: none; }
+    .hdr__burger { display: block; }
+    .hdr__end { gap: 4px; }
+  }
+</style>
+
+<script>
+  const hdr = document.querySelector<HTMLElement>('[data-hdr]');
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  const onScroll = () => hdr?.classList.toggle('is-scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const setMenu = (open: boolean) => {
+    if (!burger || !menu) return;
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+    menu.hidden = !open;
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  };
+  burger?.addEventListener('click', () => setMenu(burger.getAttribute('aria-expanded') !== 'true'));
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setMenu(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setMenu(false);
+  });
+</script>
