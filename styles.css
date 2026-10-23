@@ -1146,7 +1146,8 @@ body.is-popup-open { overflow: hidden; }
 }
 .lead-popup__form { display: flex; flex-direction: column; gap: var(--space-3); }
 .lead-popup__form input[type="text"],
-.lead-popup__form input[type="email"] {
+.lead-popup__form input[type="email"],
+.lead-popup__form input[type="tel"] {
   padding: 14px 16px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
