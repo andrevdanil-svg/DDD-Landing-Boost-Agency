@@ -1,4 +1,6 @@
 ---
+import LangSwitch from './LangSwitch.astro';
+
 const nav = [
   { href: '#platform', label: 'Платформа' },
   { href: '/channels/', label: 'Каналы' },
@@ -16,11 +18,7 @@ const nav = [
       {nav.map((n) => <a href={n.href}>{n.label}</a>)}
     </nav>
     <div class="hdr__end">
-      <div class="hdr__lang" role="group" aria-label="Язык сайта">
-        <a href="/" aria-current="page">RU</a>
-        <a href="/en/" lang="en">EN</a>
-        <a href="/uz/" lang="uz">UZ</a>
-      </div>
+      <LangSwitch current="ru" />
       <a class="btn btn--primary btn--sm hdr__cta" href="#contact">Обсудить задачу</a>
       <button class="hdr__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Открыть меню" data-burger>
         <span></span><span></span>
@@ -65,10 +63,6 @@ const nav = [
   .hdr__nav a:hover { color: var(--text); }
 
   .hdr__end { margin-left: auto; display: flex; align-items: center; gap: 16px; }
-
-  .hdr__lang { display: flex; font: 500 12px/1 var(--f-mono); }
-  .hdr__lang a { padding: 10px 6px; color: var(--text-3); transition: color 0.2s; }
-  .hdr__lang a:hover, .hdr__lang a[aria-current] { color: var(--text); }
 
   .hdr__burger { display: none; width: 44px; height: 44px; position: relative; }
   .hdr__burger span {
