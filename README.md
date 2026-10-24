@@ -1,90 +1,26 @@
-# Boost! Agency — Landing
+# Boost! Agency — сайт boostagency.uz
 
-Статический лендинг на собственном домене `boostagency.uz`, развёрнут через GitHub Pages. Форма лидов отправляет данные в платформу на `platform.boostagency.uz/api/leads`.
+Ветка `main` — **готовая сборка**, её «как есть» раздаёт GitHub Pages (домен в `CNAME`).
+Руками здесь ничего не правим: каждый деплой перезаписывает файлы целиком.
 
-Дизайн — dark enterprise, бренд-акцент `#655BFA`. Стек: HTML + CSS + один `main.js` без зависимостей.
-
-## Структура
-
-```
-.
-├── index.html                   главная (14 секций)
-├── styles.css                   все стили, :root-токены
-├── main.js                      формы, FAQ, меню, анимации (~270 строк)
-├── sitemap.xml / robots.txt
-├── CNAME                        boostagency.uz
-├── partials/
-│   └── lead-form.html           единственный разделяемый партиал — форма лидов
-├── about/ · analytics/ · cases/ · channels/ · contact/ · faq/
-├── platform/ · process/ · self-launch/ · sites/ · technology/ · topup/
-├── privacy/ · terms/ · data-processing/
-└── assets/
-    ├── logo_boost*.svg / favicon.svg / hero_pattern.svg
-    ├── og-image.png / .svg       превью для соцсетей 1200×630 (PNG — для соцсетей, SVG — исходник)
-    ├── dashboard_mock.svg       ⚠ placeholder — заменить на скрин кабинета
-    ├── analytics_mock.svg       ⚠ placeholder — заменить на скрин аналитики
-    └── platforms/               логотипы внешних платформ (DV360, Google Ads, Meta, Yandex)
-```
-
-**Навигация:** header и footer вшиты (inline) в каждую страницу — чтобы сайт корректно отображался без JS и нормально индексировался. Исходники лежат в `partials/header.html` и `partials/footer.html` как reference — **правки в partials нужно распространять на все страницы** (см. раздел «Правка хедера/футера»).
-
-**Форма лидов:** описана в `partials/lead-form.html`, подгружается `main.js` через `data-include` на главной и на `/contact/`. Изменение формы в одном файле автоматически попадает в обе страницы.
-
-## Локальный запуск
-
-```bash
-cd /Users/danilandreev/Documents/Claude/DDD-Landing-Boost-Agency
-python3 -m http.server 8000
-```
-
-Открыть → <http://localhost:8000>
+Исходники — Astro, ветка `redesign` (локально — worktree `~/Documents/Claude/boost-landing-v2`).
+Старый статический сайт сохранён в ветке `legacy-site`.
 
 ## Деплой
 
-GitHub Pages деплоит автоматически при push в `main`. Файл `CNAME` держит домен `boostagency.uz`.
-
 ```bash
-git add .
-git commit -m "landing: <что изменилось>"
-git push origin main
+cd ~/Documents/Claude/boost-landing-v2
+./scripts/deploy.sh            # astro build → копия dist/ сюда → коммит в main
+git -C ../boost-landing push origin main
 ```
 
-После деплоя нужно **Cmd+Shift+R** в браузере, чтобы сбросить кеш CSS/JS.
+Скрипт откажется работать, если здесь не `main` или есть незакоммиченные изменения.
+Файлы `README.md`, `.gitignore` и `.git` он не трогает.
 
-## Правка хедера/футера
+## Что важно
 
-1. Править `partials/header.html` или `partials/footer.html`.
-2. Прогнать небольшой скрипт, чтобы синхронизировать изменения во всех HTML-страницах:
-
-```bash
-python3 - <<'PY'
-import os, glob
-root = os.getcwd()
-with open(f"{root}/partials/header.html") as f: header = f.read().rstrip()
-with open(f"{root}/partials/footer.html") as f: footer = f.read().rstrip()
-# заменяем ранее вшитые блоки по первой строке-маркеру — см. <header class="header"...> / <footer class="footer"...>
-# (точный паттерн зависит от изменений; обычно проще переинлайнить руками)
-PY
-```
-
-Если изменения крупные — проще пересобрать инлайн через пару минут работы. Форма `partials/lead-form.html` этого не требует (она грузится через fetch).
-
-## Переменные и настройки
-
-- `<meta name="leads-api">` — переопределяет endpoint формы. По умолчанию (fallback в `main.js`) используется `https://platform.boostagency.uz/api/leads`.
-- `<base href>` — скрипт в `<head>` ставит корректный base: `/` для собственных доменов, `/DDD-Landing-Boost-Agency/` для github.io-превью.
-
-## Что ещё нужно доделать
-
-- [ ] Подключить Google Analytics 4 и Яндекс.Метрику (user делает вручную).
-- [ ] Заменить `assets/dashboard_mock.svg` и `assets/analytics_mock.svg` реальными скриншотами кабинета platform.boostagency.uz.
-- [x] Рендерить `assets/og-image.svg` в PNG для максимальной совместимости соцсетей (Telegram, Facebook).
-- [ ] Английская и узбекская локализация (см. задачу в переписке).
-
-## SEO
-
-Подключено: `canonical`, Open Graph, Twitter Cards, JSON-LD Organization (на главной), `sitemap.xml`, `robots.txt`.
-
-При добавлении новой страницы:
-1. Скопировать `<head>` с существующей страницы, обновить `<title>`, `<meta name="description">`, `og:*`, `twitter:*` и `canonical`.
-2. Добавить URL в `sitemap.xml`.
+- `.nojekyll` обязателен — без него Pages не отдаст папку `_astro/` со стилями и скриптами.
+- Форма заявки шлёт `POST https://platform.boostagency.uz/api/leads` (имя, телефон/Telegram, бюджет).
+  Домен сайта должен быть в `CORS_ORIGINS` бэкенда платформы.
+- `/en/…` и `/uz/…` — переадресации на русские страницы, пока нет переводов.
+- Карта сайта: `sitemap-index.xml` (+ копия `sitemap.xml` по старому адресу).
