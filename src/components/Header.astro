@@ -1,6 +1,4 @@
 ---
-import LangSwitch from './LangSwitch.astro';
-
 const nav = [
   { href: '/#services', label: 'Услуги' },
   { href: '/#platform', label: 'Кабинет' },
@@ -21,7 +19,6 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
       {nav.map((n) => <a href={n.href}>{n.label}</a>)}
     </nav>
     <div class="hdr__end">
-      <LangSwitch current="ru" />
       <a class="btn btn--primary btn--sm hdr__cta" href={contactHref}>Обсудить задачу</a>
       <button class="hdr__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Открыть меню" data-burger>
         <span></span><span></span>
