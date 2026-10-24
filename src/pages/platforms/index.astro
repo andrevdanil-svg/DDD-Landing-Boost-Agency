@@ -6,6 +6,10 @@ import CtaBand from '../../components/CtaBand.astro';
 import { platforms, categories, categoryOrder, tagline } from '../../data/platforms';
 import type { Section } from '../../data/pages';
 
+// 21 площадка, 23 площадки, 25 площадок
+const plural = (n: number, [one, few, many]: [string, string, string]) =>
+  n % 10 === 1 && n % 100 !== 11 ? one : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? few : many;
+
 const sections: Section[] = categoryOrder
   .map((c) => ({ c, items: platforms.filter((p) => p.category === c) }))
   .filter((g) => g.items.length)
@@ -25,7 +29,7 @@ const sections: Section[] = categoryOrder
   <PageHero
     hero={{
       title: 'Рекламные площадки',
-      lead: `${platforms.length} площадок: маркетплейсы и доставка, приложения, онлайн-кинотеатры и музыка, рекламные сети, отраслевые аудитории и SMS. Соберём медиаплан из нескольких площадок и запустим кампанию по одному договору.`,
+      lead: `${platforms.length} ${plural(platforms.length, ['площадка', 'площадки', 'площадок'])}:маркетплейсы и доставка, приложения, онлайн-кинотеатры и музыка, рекламные сети, отраслевые аудитории и SMS. Соберём медиаплан из нескольких площадок и запустим кампанию по одному договору.`,
     }}
   />
   <Sections sections={sections} />
