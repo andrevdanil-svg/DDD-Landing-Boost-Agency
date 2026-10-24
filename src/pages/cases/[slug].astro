@@ -110,15 +110,30 @@ const { c, next } = Astro.props;
   .cs__sub { color: rgb(255 255 255 / 0.85); }
 
   /* задача и шаги */
-  .cb { padding-block: clamp(80px, 14vh, 160px); }
-  .cb__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 96px); }
-  .cb h2 { font: 700 clamp(28px, 3vw, 44px)/1.05 var(--f-display); letter-spacing: -0.03em; text-wrap: balance; }
-  .cb__task p { margin-top: 24px; color: var(--text-2); font-size: 18px; max-width: 46ch; }
-  .cb__steps ol { list-style: none; padding: 0; margin-top: 32px; border-bottom: 1px solid var(--line); }
-  .cb__steps li { display: grid; grid-template-columns: 56px minmax(0, 1fr); padding-block: 24px; border-top: 1px solid var(--line); }
-  .cb__n { font: 700 24px/1.2 var(--f-display); color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .cb { padding-block: var(--sec-y); }
+  .cb__grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(40px, 5vw, 80px); }
+  .cb h2 { font: 700 clamp(26px, min(2.8vw, 5vh), 44px)/1.05 var(--f-display); letter-spacing: -0.03em; text-wrap: balance; }
+  .cb__task p { margin-top: clamp(14px, 3vh, 24px); color: var(--text-2); font-size: 16px; max-width: 52ch; }
+  /* четыре шага сеткой 2×2 — блок помещается в экран */
+  .cb__steps ol {
+    list-style: none;
+    padding: 0;
+    margin-top: clamp(16px, 3.4vh, 32px);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gap);
+  }
+  .cb__steps li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 12px;
+    align-content: start;
+    padding-block: clamp(14px, 2.4vh, 24px);
+    border-top: 1px solid var(--line);
+  }
+  .cb__n { font: 700 21px/1.25 var(--f-display); color: var(--accent); font-variant-numeric: tabular-nums; }
   .cb__steps h3 { font: 600 21px/1.25 var(--f-display); letter-spacing: -0.015em; }
-  .cb__steps p { margin-top: 8px; color: var(--text-2); }
+  .cb__steps p { margin-top: 8px; color: var(--text-2); font-size: 16px; }
 
   /* следующий кейс */
   .next { display: block; border-top: 1px solid var(--line); transition: background-color 0.3s var(--ease); }
@@ -148,13 +163,28 @@ const { c, next } = Astro.props;
   .next:hover .next__go { background: var(--accent); border-color: var(--accent); }
 
   @media (max-width: 900px) {
-    .cb__grid { grid-template-columns: minmax(0, 1fr); }
+    /* задача и шаги друг под другом — отдельные блоки через линию */
+    .cb__grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .cb__steps { margin-top: var(--sec-y); padding-top: var(--sec-y); border-top: 1px solid var(--line); }
   }
   @media (max-width: 640px) {
     .cs__grid { grid-template-columns: minmax(0, 1fr); }
     .cs__grid li, .cs__grid li:first-child { padding: 24px 0; }
     .cs__grid li + li { border-left: 0; border-top: 1px solid rgb(255 255 255 / 0.3); }
-    .cb__steps li { grid-template-columns: 40px minmax(0, 1fr); }
+    /* шаги листаются вбок */
+    .cb__steps ol {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 80%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin-inline: calc(var(--pad) * -1);
+      padding-inline: var(--pad);
+      scroll-padding-inline: var(--pad);
+      scrollbar-width: none;
+    }
+    .cb__steps ol::-webkit-scrollbar { display: none; }
+    .cb__steps li { scroll-snap-align: start; }
     .next__go { width: 44px; height: 44px; }
   }
 </style>

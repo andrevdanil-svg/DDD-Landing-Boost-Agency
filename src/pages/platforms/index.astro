@@ -3,7 +3,7 @@ import Page from '../../layouts/Page.astro';
 import PageHero from '../../components/PageHero.astro';
 import Sections from '../../components/Sections.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { platforms, categories, categoryOrder } from '../../data/platforms';
+import { platforms, categories, categoryOrder, tagline } from '../../data/platforms';
 import type { Section } from '../../data/pages';
 
 const sections: Section[] = categoryOrder
@@ -14,7 +14,7 @@ const sections: Section[] = categoryOrder
     id: g.c,
     title: categories[g.c].title,
     intro: categories[g.c].text,
-    items: g.items.map((p) => ({ title: p.name, text: p.lead, href: `/platforms/${p.slug}/` })),
+    items: g.items.map((p) => ({ title: p.name, text: tagline(p), href: `/platforms/${p.slug}/` })),
   }));
 ---
 

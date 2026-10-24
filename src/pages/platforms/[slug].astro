@@ -3,7 +3,7 @@ import Page from '../../layouts/Page.astro';
 import PageHero from '../../components/PageHero.astro';
 import Sections from '../../components/Sections.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { platforms, categories, nameIn } from '../../data/platforms';
+import { platforms, categories, nameIn, tagline } from '../../data/platforms';
 import type { Section } from '../../data/pages';
 
 export function getStaticPaths() {
@@ -36,8 +36,9 @@ if (p.targeting.length || p.useCases.length) {
 if (siblings.length) {
   sections.push({
     type: 'list',
-    title: `Ещё: ${cat.title.toLowerCase()}`,
-    items: siblings.map((s) => ({ title: s.name, text: s.lead, href: `/platforms/${s.slug}/` })),
+    // строчная первая буква, но аббревиатуры («SMS», «DSP») не трогаем
+    title: `Ещё: ${/^.\p{Ll}/u.test(cat.title) ? cat.title[0].toLowerCase() + cat.title.slice(1) : cat.title}`,
+    items: siblings.map((s) => ({ title: s.name, text: tagline(s), href: `/platforms/${s.slug}/` })),
   });
 }
 ---
