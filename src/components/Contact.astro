@@ -41,11 +41,16 @@ const { heading: Heading = 'h2' } = Astro.props;
             {budgets.map((b) => <option>{b}</option>)}
           </select>
         </label>
+        <!-- ловушка для ботов: человек это поле не видит и не заполняет -->
+        <input class="ct__hp" name="website_url" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <button class="btn btn--ghost" type="submit">Получить медиаплан</button>
         <p class="ct__legal">
           Нажимая кнопку, вы соглашаетесь с&nbsp;<a href="/privacy/">политикой конфиденциальности</a>.
         </p>
         <p class="ct__ok" role="status" hidden data-ok>Спасибо! Напишем в&nbsp;течение рабочего дня.</p>
+        <p class="ct__err" role="alert" hidden data-err>
+          Не&nbsp;получилось отправить. Попробуйте ещё раз или напишите в&nbsp;<a href={TELEGRAM}>Telegram</a>.
+        </p>
       </form>
     </div>
   </div>
@@ -109,6 +114,9 @@ const { heading: Heading = 'h2' } = Astro.props;
   .ct__legal { font-size: 13px; color: var(--text-3); }
   .ct__legal a { text-decoration: underline; text-underline-offset: 3px; }
   .ct__ok { color: var(--green); }
+  .ct__err { color: var(--coral); }
+  .ct__err a { text-decoration: underline; text-underline-offset: 3px; }
+  .ct__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 
   @media (max-width: 860px) {
     .ct__ways { grid-template-columns: minmax(0, 1fr); }
@@ -133,9 +141,17 @@ const { heading: Heading = 'h2' } = Astro.props;
 </style>
 
 <script>
+  const LEADS_API = 'https://platform.boostagency.uz/api/leads';
+
   const form = document.querySelector<HTMLFormElement>('[data-form]');
-  form?.addEventListener('submit', (e) => {
+  const renderedAt = Date.now();
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const okEl = form.querySelector<HTMLElement>('[data-ok]')!;
+    const errEl = form.querySelector<HTMLElement>('[data-err]')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    errEl.hidden = true;
+
     let ok = true;
     form.querySelectorAll<HTMLInputElement>('input[required]').forEach((input) => {
       const bad = input.value.trim().length < 2;
@@ -144,8 +160,37 @@ const { heading: Heading = 'h2' } = Astro.props;
       if (bad) ok = false;
     });
     if (!ok) return;
-    // ПРОТОТИП: отправка не подключена. В проде — POST на platform.boostagency.uz/api/leads.
-    form.querySelector<HTMLElement>('[data-ok]')!.hidden = false;
-    form.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled = true;
+
+    const done = () => {
+      okEl.hidden = false;
+      btn.disabled = true;
+    };
+    const fd = new FormData(form);
+    // боты заполняют скрытое поле или отправляют форму быстрее человека — молча «принимаем»
+    if (String(fd.get('website_url') || '').trim() || Date.now() - renderedAt < 3000) return done();
+
+    const label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Отправляем…';
+    try {
+      const res = await fetch(LEADS_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          first_name: String(fd.get('name')).trim(),
+          phone: String(fd.get('contact')).trim(),
+          budget: String(fd.get('budget') || ''),
+          source: 'landing · ' + location.pathname + location.search,
+        }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      btn.textContent = label;
+      done();
+    } catch (err) {
+      console.error('Lead submit failed:', err);
+      btn.textContent = label;
+      btn.disabled = false;
+      errEl.hidden = false;
+    }
   });
 </script>
