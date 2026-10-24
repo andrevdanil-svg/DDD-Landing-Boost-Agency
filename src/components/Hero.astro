@@ -5,6 +5,9 @@ import { TELEGRAM } from '../data/contacts';
 // ПРОТОТИП: число демонстрационное. В проде берём сумму показов из платформы.
 const TOTAL_IMPRESSIONS = 2418337905;
 const total = new Intl.NumberFormat('ru-RU').format(TOTAL_IMPRESSIONS);
+
+// Показы по месяцам за последний год, % от максимума (демо) — столбцы встают ровно по колонкам сетки
+const months = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
 ---
 
 <section class="hero">
@@ -13,6 +16,10 @@ const total = new Intl.NumberFormat('ru-RU').format(TOTAL_IMPRESSIONS);
   </div>
 
   <div class="wrap hero__body">
+    <div class="hero__chart" aria-hidden="true">
+      {months.map((h, i) => <i style={`--h:${h}%;--i:${i}`} />)}
+    </div>
+
     <p class="hero__count" data-in style="--d:0">
       <span class="sr-only">Более 2,4 миллиарда</span>
       <span aria-hidden="true" data-counter={TOTAL_IMPRESSIONS}>{total}</span>
@@ -65,10 +72,38 @@ const total = new Intl.NumberFormat('ru-RU').format(TOTAL_IMPRESSIONS);
     flex: 1;
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr) auto auto auto;
     column-gap: var(--gap);
-    align-content: end;
-    padding-block: clamp(40px, 10vh, 120px) clamp(48px, 9vh, 104px);
+    padding-block: clamp(24px, 5vh, 64px) clamp(48px, 9vh, 104px);
     container-type: inline-size;
+  }
+
+  /* График роста: заполняет верх экрана и «стекает» в счётчик под ним */
+  .hero__chart {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    align-items: end;
+    min-height: clamp(96px, 18vh, 420px);
+    margin-bottom: clamp(16px, 3vh, 32px);
+  }
+  .hero__chart i {
+    height: var(--h);
+    border-top: 2px solid rgb(101 91 250 / 0.65);
+    background: linear-gradient(to bottom, rgb(101 91 250 / 0.2), rgb(101 91 250 / 0));
+    transform-origin: bottom;
+  }
+  .hero__chart i:last-child {
+    border-top-color: var(--accent);
+    background: linear-gradient(to bottom, rgb(101 91 250 / 0.42), rgb(101 91 250 / 0));
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__chart i {
+      animation: bar-grow 1.4s var(--ease) both;
+      animation-delay: calc(var(--i) * 55ms + 150ms);
+    }
+    @keyframes bar-grow { from { transform: scaleY(0); } }
   }
 
   .hero__count {
@@ -120,9 +155,12 @@ const total = new Intl.NumberFormat('ru-RU').format(TOTAL_IMPRESSIONS);
   }
 
   @media (max-width: 640px) {
-    .hero__cols { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 16px; }
-    .hero__cols span:nth-child(n + 5) { display: none; }
-    .hero__body { column-gap: 16px; align-content: center; }
+    /* на телефоне — последние 6 месяцев, линии сетки совпадают со столбцами */
+    .hero__cols { grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 16px; }
+    .hero__cols span:nth-child(n + 7) { display: none; }
+    .hero__body { column-gap: 16px; }
+    .hero__chart { grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 16px; }
+    .hero__chart i:nth-child(-n + 6) { display: none; }
     .hero__cta { flex-direction: column; }
     .hero__cta .btn { width: 100%; }
   }

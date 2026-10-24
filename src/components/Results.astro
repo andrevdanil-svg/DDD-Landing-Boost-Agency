@@ -8,7 +8,7 @@ const cases = [
   { v: '−48%', m: 'CPA на активированную карту', who: 'Банк', note: 'было $85 · активация +63%', href: '/cases/banking-fintech/' },
   { v: '×4', m: 'заявок на показ квартиры', who: 'Девелопер', note: 'к 12-й неделе · CPA брони −34%', href: '/cases/real-estate-developer/' },
   { v: '−43%', m: 'CPL на пробный урок', who: 'Онлайн-школа', note: 'за 10 недель · 3,2K новых учеников', href: '/cases/edtech-school/' },
-  { v: '+31%', m: 'brand lift', who: 'FMCG-бренд', note: 'purchase intent · охват 3+\u00a0— 11,4M', href: '/cases/fmcg-brand/' },
+  { v: '+31%', m: 'brand lift', who: 'FMCG-бренд', note: 'purchase intent · охват 3+ — 11,4M', href: '/cases/fmcg-brand/' },
 ];
 
 type Ch = { digit: number } | { char: string };
@@ -17,15 +17,16 @@ const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 ---
 
 <section class="rs" id="results" aria-labelledby="rs-title">
-  <div class="wrap">
+  <div class="wrap rs__in">
     <div class="rs__head">
-      <h2 id="rs-title" class="h2">Что получили клиенты</h2>
+      <h2 id="rs-title" class="h2 rs__title">Что получили клиенты</h2>
+      <a class="rs__all" href="/cases/">Все кейсы <Arrow /></a>
     </div>
 
-    <ol class="rs__list">
+    <ol class="rs__grid">
       {
         cases.map((k) => (
-          <li class="rs__row" data-odo>
+          <li class="rs__cell" data-odo>
             <a href={k.href}>
               <span class="rs__num">
                 <span class="sr-only">{k.v}</span>
@@ -50,43 +51,77 @@ const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
                 <span>{k.who}</span>
               </span>
               <span class="rs__note">{k.note}</span>
-              <span class="rs__go">
-                Кейс <Arrow />
+              <span class="rs__go" aria-hidden="true">
+                <Arrow />
               </span>
             </a>
           </li>
         ))
       }
     </ol>
-
-    <a class="rs__all" href="/cases/">Все кейсы <Arrow /></a>
   </div>
 </section>
 
 <style>
+  /* Весь блок — ровно в один экран: размеры зависят и от ширины, и от высоты окна */
   .rs {
+    --line-on-accent: rgb(255 255 255 / 0.3);
+    min-height: calc(100svh - var(--header-h));
+    display: flex;
+    align-items: center;
+    padding-block: clamp(32px, 7vh, 88px);
     background: var(--accent);
     color: #fff;
-    padding-block: clamp(96px, 16vh, 180px);
   }
-  .rs__head { margin-bottom: clamp(40px, 7vh, 72px); }
+  .rs__in { width: 100%; }
 
-  .rs__list { list-style: none; padding: 0; border-bottom: 1px solid rgb(255 255 255 / 0.3); }
-  .rs__row a {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr) auto;
-    column-gap: var(--gap);
-    align-items: center;
-    padding-block: clamp(18px, 3vh, 30px);
-    border-top: 1px solid rgb(255 255 255 / 0.3);
+  .rs__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-bottom: clamp(20px, 5vh, 56px);
   }
+  .rs__title { font-size: clamp(32px, min(5vw, 8vh), 84px); }
+  .rs__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #fff;
+    font: 600 16px/1 var(--f-display);
+  }
+  .rs__all :global(svg) { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
+  .rs__all:hover :global(svg) { transform: translateX(3px); }
+
+  .rs__grid {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--line-on-accent);
+  }
+  .rs__cell { border-bottom: 1px solid var(--line-on-accent); }
+  .rs__cell:not(:nth-child(3n + 1)) { border-left: 1px solid var(--line-on-accent); }
+
+  .rs__cell a {
+    position: relative;
+    height: 100%;
+    display: grid;
+    align-content: start;
+    gap: clamp(6px, 1.2vh, 12px);
+    padding: clamp(16px, 3.4vh, 36px) clamp(16px, 2.2vw, 32px);
+    transition: background-color 0.3s var(--ease);
+  }
+  .rs__cell:nth-child(3n + 1) a { padding-left: 0; }
+  .rs__cell a:hover { background: rgb(10 10 16 / 0.07); }
 
   .rs__num {
-    font: 800 clamp(60px, 9.4vw, 150px)/1 var(--f-display);
+    font: 800 clamp(44px, min(6.6vw, 11vh), 112px)/1 var(--f-display);
     letter-spacing: -0.05em;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-    transition: transform 0.5s var(--ease);
   }
   .rs__digits { display: inline-flex; }
   .odo { display: inline-block; height: 1em; overflow: hidden; }
@@ -98,51 +133,51 @@ const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   }
   .odo__strip span { display: block; height: 1em; }
   /* до появления в кадре — на нуле; без JS цифры сразу стоят на месте */
-  :global(.js) .rs__row:not(.is-in) .odo__strip { transform: translateY(0); }
+  :global(.js) .rs__cell:not(.is-in) .odo__strip { transform: translateY(0); }
 
-  .rs__what { display: grid; gap: 4px; }
-  .rs__what b { font: 600 clamp(17px, 1.5vw, 21px)/1.25 var(--f-display); letter-spacing: -0.01em; }
+  .rs__what { display: grid; gap: 2px; }
+  .rs__what b { font: 600 clamp(16px, 1.3vw, 19px)/1.3 var(--f-display); letter-spacing: -0.01em; }
   .rs__what span { color: rgb(255 255 255 / 0.85); font-size: 15px; }
-  .rs__note { color: rgb(255 255 255 / 0.85); font: 400 15px/1.5 var(--f-text); }
+  .rs__note { color: rgb(255 255 255 / 0.8); font-size: 14px; line-height: 1.45; }
+
   .rs__go {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font: 600 14px/1 var(--f-display);
-    white-space: nowrap;
+    position: absolute;
+    top: clamp(16px, 3.4vh, 36px);
+    right: clamp(16px, 2.2vw, 32px);
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(255 255 255 / 0.45);
+    border-radius: 50%;
+    transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
   }
-  .rs__go :global(svg) { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
-  .rs__row a:hover .rs__num { transform: translateX(10px); }
-  .rs__row a:hover .rs__go :global(svg) { transform: translateX(4px); }
+  .rs__go :global(svg) { width: 16px; height: 16px; }
+  .rs__cell a:hover .rs__go { background: #fff; color: var(--accent); }
 
-  .rs__all {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 40px;
-    padding-bottom: 6px;
-    border-bottom: 2px solid #fff;
-    font: 600 17px/1 var(--f-display);
-  }
-  .rs__all :global(svg) { width: 16px; height: 16px; }
-
-  @media (max-width: 1000px) {
-    .rs__row a { grid-template-columns: minmax(0, 1fr) auto; row-gap: 12px; }
-    .rs__num { grid-column: 1 / -1; }
-    .rs__what { grid-column: 1; }
-    .rs__note { grid-column: 1; }
-    .rs__go { grid-column: 2; grid-row: 2 / span 2; align-self: end; }
-  }
-  @media (max-width: 640px) {
-    .rs__go { font-size: 0; gap: 0; }
-    .rs__go :global(svg) { width: 20px; height: 20px; }
+  /* телефон: 2 колонки, без второстепенной строки — чтобы тоже влезло в экран */
+  @media (max-width: 760px) {
+    /* запас под закреплённую кнопку Telegram внизу экрана */
+    .rs { padding-block: 24px 88px; }
+    .rs__title { font-size: 30px; }
+    .rs__head { margin-bottom: 16px; }
+    .rs__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .rs__cell:not(:nth-child(3n + 1)) { border-left: 0; }
+    .rs__cell:nth-child(3n + 1) a { padding-left: 14px; }
+    .rs__cell:nth-child(2n) { border-left: 1px solid var(--line-on-accent); }
+    .rs__cell:nth-child(2n + 1) a { padding-left: 0; }
+    .rs__cell a { padding: 12px 12px 12px 14px; gap: 6px; }
+    .rs__num { font-size: clamp(36px, 11vw, 48px); }
+    .rs__what b { font-size: 15px; }
+    .rs__what span { font-size: 13.5px; }
+    .rs__note, .rs__go { display: none; }
   }
 </style>
 
 <script>
-  const rows = document.querySelectorAll<HTMLElement>('[data-odo]');
+  const cells = document.querySelectorAll<HTMLElement>('[data-odo]');
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
-    rows.forEach((r) => r.classList.add('is-in'));
+    cells.forEach((c) => c.classList.add('is-in'));
   } else {
     const io = new IntersectionObserver(
       (entries) => {
@@ -152,8 +187,8 @@ const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
           io.unobserve(e.target);
         });
       },
-      { threshold: 0.45 },
+      { threshold: 0.4 },
     );
-    rows.forEach((r) => io.observe(r));
+    cells.forEach((c) => io.observe(c));
   }
 </script>
