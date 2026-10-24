@@ -2,10 +2,10 @@
 // ПРОТОТИП: копия интерфейса кабинета на демонстрационных данных.
 // В проде — реальные скриншоты / записанное демо кабинета.
 const steps = [
-  { id: 'overview', title: 'Обзор', text: 'Показы, клики, CTR, CPM, CPC и ROAS по каждой кампании\u00a0— на одном экране, по дням и часам.' },
+  { id: 'overview', title: 'Обзор', text: 'Показы, клики, CTR, CPM, CPC и ROAS по каждой кампании — на одном экране, по дням и часам.' },
   { id: 'audience', title: 'Аудитория', text: 'Разрез по устройствам, возрасту и полу: видно, кто на самом деле видит рекламу.' },
-  { id: 'creatives', title: 'Креативы', text: 'Статистика по каждому креативу\u00a0— что работает, а что пора заменить.' },
-  { id: 'export', title: 'Выгрузка', text: 'Любой срез\u00a0— в CSV или XLSX в один клик. Без запроса менеджеру.' },
+  { id: 'creatives', title: 'Креативы', text: 'Статистика по каждому креативу — что работает, а что пора заменить.' },
+  { id: 'export', title: 'Выгрузка', text: 'Любой срез — в CSV или XLSX в один клик. Без запроса менеджеру.' },
 ];
 
 const kpis = [
@@ -29,19 +29,21 @@ const devices: [string, number][] = [['Смартфон', 71], ['Десктоп'
 const ages: [string, number, number][] = [['18–24', 14, 11], ['25–34', 31, 24], ['35–44', 22, 19], ['45–54', 12, 10], ['55+', 6, 5]];
 
 const creatives = [
-  { name: 'Весна · 300×250', ctr: '2,41%', tag: 'Лидер', tone: 'good', kind: 'square' },
-  { name: 'Весна · 728×90', ctr: '0,92%', tag: 'В норме', tone: 'neutral', kind: 'wide' },
-  { name: 'Видео · 15 сек', ctr: '0,37%', tag: 'Заменить', tone: 'bad', kind: 'video' },
+  { name: 'Весна, 300×250', ctr: '2,41%', tag: 'Лидер', tone: 'good', kind: 'square' },
+  { name: 'Весна, 728×90', ctr: '0,92%', tag: 'В норме', tone: 'neutral', kind: 'wide' },
+  { name: 'Видео, 15 сек', ctr: '0,37%', tag: 'Заменить', tone: 'bad', kind: 'video' },
 ];
 
 const rows = [
-  ['24.04', '162 418', '2 207', '1,36%', '$412'],
-  ['25.04', '171 903', '2 318', '1,35%', '$436'],
-  ['26.04', '158 220', '2 051', '1,30%', '$401'],
-  ['27.04', '149 774', '2 093', '1,40%', '$388'],
-  ['28.04', '176 512', '2 401', '1,36%', '$447'],
-  ['29.04', '183 065', '2 512', '1,37%', '$461'],
+  ['24 апр', '162 418', '2 207', '1,36%', '$412'],
+  ['25 апр', '171 903', '2 318', '1,35%', '$436'],
+  ['26 апр', '158 220', '2 051', '1,30%', '$401'],
+  ['27 апр', '149 774', '2 093', '1,40%', '$388'],
+  ['28 апр', '176 512', '2 401', '1,36%', '$447'],
+  ['29 апр', '183 065', '2 512', '1,37%', '$461'],
 ];
+
+const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сравнение', 'Алерты'];
 ---
 
 <section class="pl" id="platform" aria-labelledby="pl-title">
@@ -78,135 +80,117 @@ const rows = [
       </div>
 
       <div class="app">
-        <div class="app__bar">
-          <svg viewBox="0 0 16 16" width="12" height="12" fill="none" aria-hidden="true">
-            <rect x="3" y="7" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect>
-            <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="currentColor" stroke-width="1.4"></path>
-          </svg>
-          <span class="app__url">platform.boostagency.uz/reporting</span>
-          <span class="app__demo">демо-данные</span>
-        </div>
+        <nav class="app__side" aria-hidden="true">
+          {nav.map((n) => <span class:list={[{ 'is-on': n === 'Отчёты' }]}>{n}</span>)}
+        </nav>
 
-        <div class="app__body">
-          <aside class="app__side" aria-hidden="true">
-            <img src="/brand/logo_boost_mark.svg" alt="" width="22" height="22" />
-            <span><i></i>Кампании</span>
-            <span class="is-on"><i></i>Отчёты</span>
-            <span><i></i>Креативы</span>
-            <span><i></i>A/B сравнение</span>
-            <span><i></i>Алерты</span>
-          </aside>
+        <div class="app__main">
+          <!-- Обзор -->
+          <div class="view" id="view-overview" role="tabpanel" aria-labelledby="tab-overview" data-view data-active>
+            <div class="v-head">
+              <div><b>Весна-2026, ритейл</b><span>1–30 апреля</span></div>
+              <span class="v-filter">Все каналы <i></i></span>
+            </div>
+            <div class="kpis">
+              {
+                kpis.map((k) => (
+                  <div class="kpi">
+                    <span>{k.l}</span>
+                    <b>{k.v}</b>
+                    <em class:list={[k.up ? 'up' : 'down']}>{k.d}</em>
+                  </div>
+                ))
+              }
+            </div>
+            <div class="chart">
+              <div class="chart__head"><span>Показы по дням</span></div>
+              <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="pl-fill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#655bfa" stop-opacity="0.3"></stop>
+                    <stop offset="1" stop-color="#655bfa" stop-opacity="0"></stop>
+                  </linearGradient>
+                </defs>
+                {[0.25, 0.5, 0.75].map((g) => <line x1="0" x2={W} y1={H * g} y2={H * g} class="grid" />)}
+                <path d={area} fill="url(#pl-fill)"></path>
+                <path d={line} class="stroke"></path>
+              </svg>
+            </div>
+          </div>
 
-          <div class="app__main">
-            <!-- Обзор -->
-            <div class="view" id="view-overview" role="tabpanel" aria-labelledby="tab-overview" data-view data-active>
-              <div class="v-head">
-                <div><b>Весна-2026 · Ритейл</b><span>1–30 апреля</span></div>
-                <span class="chip">Все каналы</span>
-              </div>
-              <div class="kpis">
+          <!-- Аудитория -->
+          <div class="view" id="view-audience" role="tabpanel" aria-labelledby="tab-audience" data-view>
+            <div class="v-head">
+              <div><b>Аудитория</b><span>Весна-2026, 1–30 апреля</span></div>
+              <span class="v-filter">По показам <i></i></span>
+            </div>
+            <div class="aud">
+              <div class="aud__col">
+                <h3>Устройства</h3>
                 {
-                  kpis.map((k) => (
-                    <div class="kpi">
-                      <span>{k.l}</span>
-                      <b>{k.v}</b>
-                      <em class:list={[k.up ? 'up' : 'down']}>{k.d}</em>
+                  devices.map(([name, v]) => (
+                    <div class="hbar">
+                      <span>{name}</span>
+                      <div class="hbar__track"><i style={`--v:${v}%`} /></div>
+                      <b>{v}%</b>
                     </div>
                   ))
                 }
               </div>
-              <div class="chart">
-                <div class="chart__head"><span>Показы по дням</span><span class="chart__lg"><i></i>апрель</span></div>
-                <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
-                  <defs>
-                    <linearGradient id="pl-fill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stop-color="#655bfa" stop-opacity="0.32"></stop>
-                      <stop offset="1" stop-color="#655bfa" stop-opacity="0"></stop>
-                    </linearGradient>
-                  </defs>
-                  {[0.25, 0.5, 0.75].map((g) => <line x1="0" x2={W} y1={H * g} y2={H * g} class="grid" />)}
-                  <path d={area} fill="url(#pl-fill)"></path>
-                  <path d={line} class="stroke"></path>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Аудитория -->
-            <div class="view" id="view-audience" role="tabpanel" aria-labelledby="tab-audience" data-view>
-              <div class="v-head">
-                <div><b>Аудитория</b><span>Весна-2026 · 1–30 апреля</span></div>
-                <span class="chip">Показы</span>
-              </div>
-              <div class="aud">
-                <div class="panel">
-                  <h3>Устройства</h3>
+              <div class="aud__col">
+                <h3>Возраст и пол</h3>
+                <div class="vbars">
                   {
-                    devices.map(([name, v]) => (
-                      <div class="hbar">
-                        <span>{name}</span>
-                        <div class="hbar__track"><i style={`--v:${v}%`} /></div>
-                        <b>{v}%</b>
+                    ages.map(([a, m, f]) => (
+                      <div class="vbar">
+                        <div class="vbar__cols">
+                          <i class="m" style={`--v:${m * 3}%`} />
+                          <i class="f" style={`--v:${f * 3}%`} />
+                        </div>
+                        <span>{a}</span>
                       </div>
                     ))
                   }
                 </div>
-                <div class="panel">
-                  <h3>Возраст и пол</h3>
-                  <div class="vbars">
-                    {
-                      ages.map(([a, m, f]) => (
-                        <div class="vbar">
-                          <div class="vbar__cols">
-                            <i class="m" style={`--v:${m * 3}%`} />
-                            <i class="f" style={`--v:${f * 3}%`} />
-                          </div>
-                          <span>{a}</span>
-                        </div>
-                      ))
-                    }
-                  </div>
-                  <div class="legend"><span><i class="m"></i>Мужчины</span><span><i class="f"></i>Женщины</span></div>
-                </div>
+                <div class="legend"><span><i class="m"></i>Мужчины</span><span><i class="f"></i>Женщины</span></div>
               </div>
             </div>
+          </div>
 
-            <!-- Креативы -->
-            <div class="view" id="view-creatives" role="tabpanel" aria-labelledby="tab-creatives" data-view>
-              <div class="v-head">
-                <div><b>Креативы</b><span>Весна-2026 · по CTR</span></div>
-                <span class="chip">3 активных</span>
-              </div>
-              <div class="cr">
-                {
-                  creatives.map((c) => (
-                    <div class="cr__card">
-                      <div class:list={['cr__thumb', `cr__thumb--${c.kind}`]}>
-                        <i />
-                        <i />
-                      </div>
-                      <div class="cr__meta">
-                        <b>{c.name}</b>
-                        <span>CTR {c.ctr}</span>
-                      </div>
-                      <span class:list={['tag', `tag--${c.tone}`]}>{c.tag}</span>
+          <!-- Креативы -->
+          <div class="view" id="view-creatives" role="tabpanel" aria-labelledby="tab-creatives" data-view>
+            <div class="v-head">
+              <div><b>Креативы</b><span>Весна-2026, по CTR</span></div>
+              <span class="v-filter">Активные <i></i></span>
+            </div>
+            <div class="cr">
+              {
+                creatives.map((c) => (
+                  <div class="cr__item">
+                    <div class:list={['cr__thumb', `cr__thumb--${c.kind}`]}>
+                      <i />
+                      <i />
                     </div>
-                  ))
-                }
-              </div>
+                    <b>{c.name}</b>
+                    <span class="cr__ctr">CTR {c.ctr}</span>
+                    <span class:list={['cr__status', `cr__status--${c.tone}`]}>{c.tag}</span>
+                  </div>
+                ))
+              }
             </div>
+          </div>
 
-            <!-- Выгрузка -->
-            <div class="view" id="view-export" role="tabpanel" aria-labelledby="tab-export" data-view>
-              <div class="v-head">
-                <div><b>Отчёт по дням</b><span>Весна-2026 · все каналы</span></div>
-                <span class="chip chip--accent">Выгрузить XLSX</span>
-              </div>
-              <table class="tbl">
-                <thead><tr><th>Дата</th><th>Показы</th><th>Клики</th><th>CTR</th><th>Расход</th></tr></thead>
-                <tbody>{rows.map((row) => <tr>{row.map((c) => <td>{c}</td>)}</tr>)}</tbody>
-              </table>
-              <div class="toast"><i>✓</i> report_apr.xlsx готов · 42 КБ</div>
+          <!-- Выгрузка -->
+          <div class="view" id="view-export" role="tabpanel" aria-labelledby="tab-export" data-view>
+            <div class="v-head">
+              <div><b>Отчёт по дням</b><span>Весна-2026, все каналы</span></div>
+              <span class="v-btn">Выгрузить XLSX</span>
             </div>
+            <table class="tbl">
+              <thead><tr><th>Дата</th><th>Показы</th><th>Клики</th><th>CTR</th><th>Расход</th></tr></thead>
+              <tbody>{rows.map((row) => <tr>{row.map((c) => <td>{c}</td>)}</tr>)}</tbody>
+            </table>
+            <p class="done"><i>✓</i> Файл report_april.xlsx скачан</p>
           </div>
         </div>
       </div>
@@ -236,7 +220,6 @@ const rows = [
   .pl__step {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
     padding: 18px 0 18px 22px;
     text-align: left;
     opacity: 0.42;
@@ -248,7 +231,7 @@ const rows = [
     max-height: 0;
     overflow: hidden;
     color: var(--text-2);
-    font-size: 15.5px;
+    font-size: 16px;
     line-height: 1.5;
     transition: max-height 0.45s var(--ease), margin 0.45s var(--ease);
   }
@@ -269,54 +252,31 @@ const rows = [
   .pl__step[aria-selected='true'] .pl__bar i { --p: var(--step-progress, 1); }
   .pl__mtext { display: none; }
 
-  /* ── окно кабинета ── */
+  /* ── кабинет: та же типографика, что у сайта — без рамок-карточек и служебных плашек ── */
   .app {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
     min-width: 0;
     height: 600px;
     border: 1px solid var(--line-strong);
-    border-radius: 16px;
+    border-radius: 20px;
     background: var(--bg-app);
     overflow: hidden;
     box-shadow: 0 40px 120px -48px rgb(0 0 0 / 0.9);
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.4;
   }
-  .app__bar {
-    flex: none;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0 14px;
-    border-bottom: 1px solid var(--line);
-    font: 400 12px/1 var(--f-text);
-    color: var(--text-3);
-  }
-  .app__url { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .app__demo {
-    flex: none;
-    white-space: nowrap;
-    margin-left: auto;
-    padding: 4px 8px;
-    border: 1px dashed var(--line-strong);
-    border-radius: 6px;
-  }
-  .app__body { flex: 1; min-height: 0; display: grid; grid-template-columns: 184px minmax(0, 1fr); }
+
   .app__side {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    padding: 16px 10px;
+    padding: 28px 14px;
     border-right: 1px solid var(--line);
     color: var(--text-2);
   }
-  .app__side img { margin: 2px 8px 18px; }
-  .app__side span { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
-  .app__side i { width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.5; }
-  .app__side .is-on { background: rgb(255 255 255 / 0.05); color: var(--text); }
-  .app__side .is-on i { background: var(--accent); opacity: 1; }
+  .app__side span { padding: 10px 14px; border-radius: 10px; }
+  .app__side .is-on { background: rgb(255 255 255 / 0.06); color: var(--text); }
 
   .app__main { position: relative; min-height: 0; }
   .view {
@@ -324,8 +284,8 @@ const rows = [
     inset: 0;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    padding: 20px 22px;
+    gap: 24px;
+    padding: 28px 32px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
@@ -338,67 +298,71 @@ const rows = [
     transition-delay: 0s;
   }
 
-  .v-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  .v-head div { display: grid; gap: 2px; }
-  .v-head b { font: 600 15px/1.2 var(--f-display); }
-  .v-head div span { color: var(--text-3); font-size: 12px; }
-  .chip {
-    flex: none;
-    padding: 7px 11px;
-    border: 1px solid var(--line-strong);
-    border-radius: 8px;
-    color: var(--text-2);
-    font-size: 12px;
+  .v-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .v-head div { display: grid; gap: 4px; }
+  .v-head b { font: 600 20px/1.2 var(--f-display); letter-spacing: -0.015em; }
+  .v-head div span { color: var(--text-2); font-size: 15px; }
+  .v-filter { display: inline-flex; align-items: center; gap: 8px; color: var(--text-2); white-space: nowrap; }
+  .v-filter i {
+    width: 7px; height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
   }
-  .chip--accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .v-btn {
+    flex: none;
+    padding: 9px 14px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    font: 600 14px/1.2 var(--f-display);
+  }
 
-  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-  .kpi { display: grid; gap: 6px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; }
-  .kpi span { color: var(--text-3); font-size: 12px; }
-  .kpi b { font: 700 22px/1 var(--f-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-  .kpi em { font: 500 12px/1 var(--f-text); font-style: normal; font-variant-numeric: tabular-nums; }
+  /* метрики — колонками через тонкие линии, без карточек */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-block: 1px solid var(--line);
+  }
+  .kpi { display: grid; gap: 4px; padding: 18px 20px; }
+  .kpi:first-child { padding-left: 0; }
+  .kpi + .kpi { border-left: 1px solid var(--line); }
+  .kpi span { color: var(--text-2); font-size: 15px; }
+  .kpi b { font: 700 30px/1.1 var(--f-display); letter-spacing: -0.025em; font-variant-numeric: tabular-nums; }
+  .kpi em { font-style: normal; font-size: 14px; font-variant-numeric: tabular-nums; }
   .up { color: var(--green); }
   .down { color: var(--coral); }
 
-  .chart {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 14px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-  }
-  .chart__head { display: flex; justify-content: space-between; color: var(--text-3); font-size: 12px; }
-  .chart__lg { display: inline-flex; align-items: center; gap: 6px; }
-  .chart__lg i { width: 10px; height: 2px; background: var(--accent); }
+  .chart { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 12px; }
+  .chart__head { color: var(--text-2); }
   .chart svg { flex: 1; width: 100%; min-height: 110px; }
   .chart .grid { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
-  .chart .stroke { fill: none; stroke: var(--accent); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+  .chart .stroke { fill: none; stroke: var(--accent); stroke-width: 2.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
 
-  .aud { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .panel { display: flex; flex-direction: column; gap: 14px; padding: 14px; border: 1px solid var(--line); border-radius: 10px; min-height: 0; }
-  .panel h3 { font: 600 13px/1.2 var(--f-text); color: var(--text-2); }
-  .hbar { display: grid; grid-template-columns: 76px minmax(0, 1fr) 36px; align-items: center; gap: 10px; }
+  .aud { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
+  .aud__col { display: flex; flex-direction: column; gap: 18px; min-height: 0; }
+  .aud__col h3 { font: 600 17px/1.2 var(--f-display); }
+  .hbar { display: grid; grid-template-columns: 92px minmax(0, 1fr) 42px; align-items: center; gap: 12px; }
   .hbar span { color: var(--text-2); }
-  .hbar b { text-align: right; font: 500 12px/1 var(--f-text); font-variant-numeric: tabular-nums; }
-  .hbar__track { height: 8px; border-radius: 4px; background: rgb(255 255 255 / 0.05); }
+  .hbar b { text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .hbar__track { height: 8px; border-radius: 4px; background: rgb(255 255 255 / 0.06); }
   .hbar__track i { display: block; height: 100%; width: var(--v); border-radius: 4px; background: var(--accent); }
-  .vbars { flex: 1; min-height: 90px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
-  .vbar { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
-  .vbar__cols { flex: 1; display: flex; align-items: flex-end; justify-content: center; gap: 3px; }
-  .vbar__cols i { width: 10px; height: var(--v); border-radius: 3px 3px 0 0; }
-  .vbar span { text-align: center; color: var(--text-3); font: 400 11px/1 var(--f-text); }
+  .vbars { flex: 1; min-height: 100px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  .vbar { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+  .vbar__cols { flex: 1; display: flex; align-items: flex-end; justify-content: center; gap: 4px; }
+  .vbar__cols i { width: 12px; height: var(--v); border-radius: 3px 3px 0 0; }
+  .vbar span { text-align: center; color: var(--text-2); font-size: 13px; }
   .m { background: var(--accent); }
   .f { background: var(--coral); }
-  .legend { display: flex; gap: 14px; color: var(--text-3); font-size: 12px; }
-  .legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .legend i { width: 8px; height: 8px; border-radius: 2px; }
+  .legend { display: flex; gap: 18px; color: var(--text-2); font-size: 14px; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .legend i { width: 10px; height: 10px; border-radius: 3px; }
 
-  .cr { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-content: start; }
-  .cr__card { display: grid; gap: 10px; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
-  .cr__thumb { position: relative; aspect-ratio: 4 / 3; border-radius: 6px; overflow: hidden; background: #191924; }
+  .cr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .cr__item { display: grid; gap: 4px; }
+  .cr__item b { margin-top: 10px; font-weight: 500; }
+  .cr__ctr { color: var(--text-2); font-variant-numeric: tabular-nums; }
+  .cr__thumb { position: relative; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; background: #191924; }
   .cr__thumb i { position: absolute; display: block; }
   .cr__thumb--square { background: var(--accent); }
   .cr__thumb--square i:first-child { left: 12%; top: 16%; width: 54%; height: 14%; background: #fff; border-radius: 3px; }
@@ -406,33 +370,22 @@ const rows = [
   .cr__thumb--wide i:first-child { left: 0; right: 0; top: 38%; height: 24%; background: #24243a; }
   .cr__thumb--wide i:last-child { right: 8%; top: 43%; width: 18%; height: 14%; background: var(--coral); border-radius: 3px; }
   .cr__thumb--video { background: linear-gradient(160deg, #23233a, #121219); }
-  .cr__thumb--video i:first-child { left: 50%; top: 50%; translate: -40% -50%; border-left: 16px solid rgb(255 255 255 / 0.85); border-block: 10px solid transparent; }
+  .cr__thumb--video i:first-child { left: 50%; top: 50%; translate: -40% -50%; border-left: 18px solid rgb(255 255 255 / 0.85); border-block: 11px solid transparent; }
   .cr__thumb--video i:last-child { left: 8%; right: 8%; bottom: 10%; height: 3px; background: linear-gradient(90deg, #fff 30%, rgb(255 255 255 / 0.2) 30%); }
-  .cr__meta { display: grid; gap: 2px; }
-  .cr__meta b { font-weight: 500; }
-  .cr__meta span { color: var(--text-3); font: 400 12px/1.3 var(--f-text); font-variant-numeric: tabular-nums; }
-  .tag { justify-self: start; padding: 5px 8px; border-radius: 6px; font: 500 11.5px/1 var(--f-text); }
-  .tag--good { color: var(--green); background: rgb(62 207 142 / 0.12); }
-  .tag--neutral { color: var(--text-2); background: rgb(255 255 255 / 0.06); }
-  .tag--bad { color: var(--coral); background: rgb(255 138 91 / 0.12); }
+  /* статус — цветной текст с точкой, без плашки */
+  .cr__status { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+  .cr__status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .cr__status--good { color: var(--green); }
+  .cr__status--neutral { color: var(--text-2); }
+  .cr__status--bad { color: var(--coral); }
 
-  .tbl { width: 100%; border-collapse: collapse; font: 400 13px/1 var(--f-text); font-variant-numeric: tabular-nums; }
-  .tbl th { padding: 0 8px 10px; text-align: right; color: var(--text-3); font-weight: 400; border-bottom: 1px solid var(--line); }
-  .tbl td { padding: 11px 8px; text-align: right; border-bottom: 1px solid var(--line); }
+  .tbl { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .tbl th { padding: 0 10px 12px; text-align: right; color: var(--text-2); font-weight: 400; border-bottom: 1px solid var(--line); }
+  .tbl td { padding: 12px 10px; text-align: right; border-bottom: 1px solid var(--line); }
   .tbl th:first-child, .tbl td:first-child { text-align: left; padding-left: 0; }
-  .toast {
-    align-self: flex-end;
-    margin-top: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    border: 1px solid var(--line-strong);
-    border-radius: 10px;
-    background: var(--bg-raised);
-    font-size: 12.5px;
-  }
-  .toast i { color: var(--green); font-style: normal; }
+  .tbl th:last-child, .tbl td:last-child { padding-right: 0; }
+  .done { margin-top: auto; display: flex; align-items: center; gap: 10px; color: var(--text-2); }
+  .done i { color: var(--green); font-style: normal; }
 
   /* ── десктоп: прокрутка листает разделы ── */
   @media (min-width: 1001px) {
@@ -478,15 +431,23 @@ const rows = [
   }
 
   @media (max-width: 640px) {
-    .app { height: 500px; }
-    .app__body { grid-template-columns: minmax(0, 1fr); }
+    .app { grid-template-columns: minmax(0, 1fr); height: 520px; border-radius: 16px; }
     .app__side { display: none; }
-    .view { padding: 14px; }
+    .view { padding: 20px 18px; gap: 18px; }
+    .v-head b { font-size: 18px; }
     .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .aud { grid-template-columns: minmax(0, 1fr); }
-    .cr { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .cr__card:nth-child(3) { display: none; }
+    .kpi { padding: 14px 0 14px 16px; }
+    .kpi:nth-child(odd) { padding-left: 0; }
+    .kpi + .kpi { border-left: 0; }
+    .kpi:nth-child(even) { border-left: 1px solid var(--line); }
+    .kpi:nth-child(n + 3) { border-top: 1px solid var(--line); }
+    .kpi b { font-size: 24px; }
+    .aud { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .vbars { min-height: 80px; }
+    .cr { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .cr__item:nth-child(3) { display: none; }
     .tbl th:nth-child(4), .tbl td:nth-child(4) { display: none; }
+    .tbl td { padding-block: 10px; }
   }
 </style>
 
