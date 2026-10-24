@@ -46,17 +46,17 @@ const rows = [
 const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сравнение', 'Алерты'];
 ---
 
-<section class="pl" id="platform" aria-labelledby="pl-title">
-  <div class="wrap pl__head">
-    <h2 id="pl-title" class="h2">Кабинет, в&nbsp;котором видно каждый показ</h2>
-    <p class="pl__sub">
-      Каждая метрика, которую видим мы, доступна вам&nbsp;— в&nbsp;том&nbsp;же кабинете и&nbsp;в&nbsp;том&nbsp;же разрезе.
-    </p>
-  </div>
+<section class="pl" id="platform" aria-labelledby="pl-title" data-pl>
+  <div class="wrap">
+    <h2 id="pl-title" class="h2 pl__h">Кабинет, в&nbsp;котором видно каждый показ</h2>
 
-  <div class="pl__stage" data-stage>
-    <div class="wrap pl__sticky">
+    <!-- вкладки переключаются сами, пока блок на экране; клик — ручной режим -->
+    <div class="pl__body">
       <div class="pl__nav">
+        <p class="pl__sub">
+          Каждая метрика, которую видим мы, доступна вам&nbsp;— в&nbsp;том&nbsp;же кабинете и&nbsp;в&nbsp;том&nbsp;же
+          разрезе.
+        </p>
         <div class="pl__steps" role="tablist" aria-label="Разделы кабинета">
           {
             steps.map((st, i) => (
@@ -199,28 +199,23 @@ const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сра
 </section>
 
 <style>
-  .pl {
-    border-top: 1px solid var(--line);
-    padding-top: clamp(96px, 16vh, 180px);
-    padding-bottom: clamp(48px, 8vh, 96px);
-  }
-
-  .pl__head {
+  .pl { border-top: 1px solid var(--line); padding-block: var(--sec-y); }
+  /* заголовок в одну строку, чтобы кабинету хватило высоты экрана */
+  .pl__h { font-size: clamp(30px, min(3.6vw, 6.4vh), 60px); margin-bottom: var(--head-gap); }
+  .pl__body {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--gap);
-    row-gap: 24px;
-    margin-bottom: clamp(40px, 8vh, 80px);
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: clamp(32px, 4vw, 56px);
+    align-items: center;
   }
-  .pl__head .h2 { grid-column: 1 / span 8; }
-  .pl__sub { grid-column: 9 / -1; align-self: end; color: var(--text-2); max-width: 36ch; }
+  .pl__sub { color: var(--text-2); max-width: 36ch; margin-bottom: clamp(12px, 3vh, 28px); }
 
   /* ── шаги ── */
   .pl__steps { display: grid; gap: 2px; }
   .pl__step {
     position: relative;
     display: grid;
-    padding: 18px 0 18px 22px;
+    padding: clamp(10px, 1.8vh, 18px) 0 clamp(10px, 1.8vh, 18px) 22px;
     text-align: left;
     opacity: 0.42;
     transition: opacity 0.35s var(--ease);
@@ -238,18 +233,20 @@ const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сра
   .pl__step[aria-selected='true'] .pl__text { max-height: 7em; margin-top: 8px; }
   .pl__bar {
     position: absolute;
-    left: 0; top: 18px; bottom: 18px;
+    left: 0; top: 14px; bottom: 14px;
     width: 2px;
     background: var(--line-strong);
   }
   .pl__bar i {
     display: block;
     width: 100%;
-    height: calc(var(--p, 0) * 100%);
+    height: 0;
     background: var(--accent);
   }
-  .pl__step[data-done] .pl__bar i { --p: 1; }
-  .pl__step[aria-selected='true'] .pl__bar i { --p: var(--step-progress, 1); }
+  .pl__step[data-done] .pl__bar i, .pl__step[aria-selected='true'] .pl__bar i { height: 100%; }
+  /* автопереключение: полоска заполняется за время показа вкладки */
+  .pl[data-auto] .pl__step[aria-selected='true'] .pl__bar i { animation: pl-fill var(--pl-dur, 6s) linear both; }
+  @keyframes pl-fill { from { height: 0; } }
   .pl__mtext { display: none; }
 
   /* ── кабинет: та же типографика, что у сайта — без рамок-карточек и служебных плашек ── */
@@ -257,7 +254,8 @@ const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сра
     display: grid;
     grid-template-columns: 200px minmax(0, 1fr);
     min-width: 0;
-    height: 600px;
+    /* высота экрана минус шапка, отступы блока и заголовок */
+    height: clamp(380px, calc(100svh - var(--header-h) - 2 * var(--sec-y) - var(--head-gap) - 7vh), 620px);
     border: 1px solid var(--line-strong);
     border-radius: 20px;
     background: var(--bg-app);
@@ -387,24 +385,9 @@ const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сра
   .done { margin-top: auto; display: flex; align-items: center; gap: 10px; color: var(--text-2); }
   .done i { color: var(--green); font-style: normal; }
 
-  /* ── десктоп: прокрутка листает разделы ── */
-  @media (min-width: 1001px) {
-    .pl__stage { height: 300vh; }
-    .pl__sticky {
-      position: sticky;
-      top: calc(var(--header-h) + 24px);
-      height: calc(100svh - var(--header-h) - 48px);
-      display: grid;
-      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-      gap: 56px;
-      align-items: center;
-    }
-    .app { height: min(620px, 100%); }
-  }
-
-  /* ── планшет и телефон: обычные вкладки ── */
+  /* ── планшет и телефон: вкладки-кнопки над кабинетом ── */
   @media (max-width: 1000px) {
-    .pl__head .h2, .pl__sub { grid-column: 1 / -1; }
+    .pl__body { display: block; }
     .pl__nav { margin-bottom: 16px; }
     .pl__steps {
       display: flex;
@@ -430,34 +413,49 @@ const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сра
     .pl__mtext { display: block; margin-top: 14px; color: var(--text-2); font-size: 16px; line-height: 1.55; min-height: 4.65em; }
   }
 
+  /* телефон: блок в один экран — кабинет ужат по высоте, второстепенное скрыто */
   @media (max-width: 640px) {
-    .app { grid-template-columns: minmax(0, 1fr); height: 520px; border-radius: 16px; }
+    .pl__sub { display: none; }
+    .pl__nav { margin-bottom: 12px; }
+    .pl__mtext { margin-top: 10px; font-size: 15px; line-height: 1.45; min-height: 2.9em; }
+    .app {
+      grid-template-columns: minmax(0, 1fr);
+      height: clamp(270px, calc(100svh - var(--header-h) - 2 * var(--sec-y) - 222px), 520px);
+      border-radius: 16px;
+    }
     .app__side { display: none; }
-    .view { padding: 20px 18px; gap: 18px; }
-    .v-head b { font-size: 18px; }
+    .view { padding: 16px; gap: 14px; }
+    .v-head b { font-size: 17px; }
+    .v-head div span { font-size: 14px; }
     .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .kpi { padding: 14px 0 14px 16px; }
+    .kpi { padding: 10px 0 10px 14px; }
     .kpi:nth-child(odd) { padding-left: 0; }
     .kpi + .kpi { border-left: 0; }
     .kpi:nth-child(even) { border-left: 1px solid var(--line); }
-    .kpi:nth-child(n + 3) { border-top: 1px solid var(--line); }
+    .kpi:nth-child(n + 3) { display: none; }
     .kpi b { font-size: 24px; }
-    .aud { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-    .vbars { min-height: 80px; }
+    .chart svg { min-height: 60px; }
+    .aud { grid-template-columns: minmax(0, 1fr); }
+    .aud__col:nth-child(2) { display: none; }
     .cr { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
     .cr__item:nth-child(3) { display: none; }
     .tbl th:nth-child(4), .tbl td:nth-child(4) { display: none; }
-    .tbl td { padding-block: 10px; }
+    .tbl td { padding-block: 9px; }
+    .tbl tbody tr:nth-child(n + 5) { display: none; }
   }
 </style>
 
 <script>
-  const stage = document.querySelector<HTMLElement>('[data-stage]');
+  const root = document.querySelector<HTMLElement>('[data-pl]');
   const steps = [...document.querySelectorAll<HTMLButtonElement>('[data-step]')];
   const views = [...document.querySelectorAll<HTMLElement>('[data-view]')];
   const mtext = document.querySelector<HTMLElement>('[data-mtext]');
-  const desktop = window.matchMedia('(min-width: 1001px)');
+  const DUR = 6000;
   let active = -1;
+  let timer = 0;
+  let visible = false;
+  // автопереключение до первого клика; при «уменьшить движение» — сразу ручной режим
+  let auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const setActive = (i: number) => {
     if (i === active) return;
@@ -471,26 +469,19 @@ const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сра
     if (mtext) mtext.textContent = steps[i].querySelector('.pl__text')?.textContent ?? '';
   };
 
-  const onScroll = () => {
-    if (!stage || !desktop.matches) return;
-    const rect = stage.getBoundingClientRect();
-    const total = rect.height - window.innerHeight;
-    const p = Math.min(0.9999, Math.max(0, -rect.top / total));
-    const i = Math.floor(p * steps.length);
-    stage.style.setProperty('--step-progress', String(p * steps.length - i));
-    setActive(i);
+  // таймер идёт, только пока блок на экране; полоска вкладки перезапускается вместе с ним
+  const sync = () => {
+    window.clearInterval(timer);
+    const on = auto && visible;
+    root?.toggleAttribute('data-auto', on);
+    if (on) timer = window.setInterval(() => setActive((active + 1) % steps.length), DUR);
   };
 
   steps.forEach((step, k) => {
     step.addEventListener('click', () => {
-      if (stage && desktop.matches) {
-        const rect = stage.getBoundingClientRect();
-        const total = rect.height - window.innerHeight;
-        const y = window.scrollY + rect.top + (total * (k + 0.02)) / steps.length;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      } else {
-        setActive(k);
-      }
+      auto = false;
+      setActive(k);
+      sync();
     });
     step.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
@@ -501,7 +492,14 @@ const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сра
   });
 
   setActive(0);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  desktop.addEventListener('change', onScroll);
-  onScroll();
+  root?.style.setProperty('--pl-dur', `${DUR}ms`);
+  if (root) {
+    new IntersectionObserver(
+      ([e]) => {
+        visible = e.isIntersecting;
+        sync();
+      },
+      { threshold: 0.5 },
+    ).observe(root);
+  }
 </script>

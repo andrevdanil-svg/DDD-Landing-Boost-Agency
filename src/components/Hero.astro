@@ -33,7 +33,9 @@ const months = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
         <h1 class="hero__h1">Boost&nbsp;— рекламное агентство в&nbsp;Ташкенте.</h1>{' '}
         <p>
           Реклама в&nbsp;интернете, на&nbsp;ТВ, радио и&nbsp;улицах, сайты под&nbsp;трафик и&nbsp;пополнение рекламных
-          кабинетов. Результаты digital-кампаний&nbsp;— в&nbsp;личном кабинете, без менеджера-посредника.
+          кабинетов.<span class="hero__more">
+            Результаты digital-кампаний&nbsp;— в&nbsp;личном кабинете, без менеджера-посредника.</span
+          >
         </p>
       </div>
       <div class="hero__cta">
@@ -85,7 +87,7 @@ const months = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--gap);
     align-items: end;
-    min-height: clamp(96px, 18vh, 420px);
+    min-height: clamp(56px, 12vh, 420px);
     margin-bottom: clamp(16px, 3vh, 32px);
   }
   .hero__chart i {
@@ -161,7 +163,9 @@ const months = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
     .hero__body { column-gap: 16px; }
     .hero__chart { grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 16px; }
     .hero__chart i:nth-child(-n + 6) { display: none; }
-    .hero__cta { flex-direction: column; }
+    .hero__aside { margin-top: 24px; gap: 20px; }
+    .hero__more { display: none; }
+    .hero__cta { flex-direction: column; gap: 10px; }
     .hero__cta .btn { width: 100%; }
   }
 </style>

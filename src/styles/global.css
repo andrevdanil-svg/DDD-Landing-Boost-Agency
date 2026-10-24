@@ -24,6 +24,9 @@
   --max: 1400px;
   --gap: 24px;
   --header-h: 68px;
+  /* вертикальные отступы блоков считаем от высоты экрана: блок должен помещаться в один экран */
+  --sec-y: clamp(40px, 10vh, 128px);
+  --head-gap: clamp(24px, 5vh, 56px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -73,7 +76,7 @@ h1, h2, h3, h4 { overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto
 .h2 {
   font-family: var(--f-display);
   font-weight: 700;
-  font-size: clamp(36px, 5.6vw, 84px);
+  font-size: clamp(32px, min(5.4vw, 8.6vh), 84px);
   line-height: 0.98;
   letter-spacing: -0.035em;
   text-wrap: balance;
@@ -99,6 +102,10 @@ h1, h2, h3, h4 { overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto
 .btn--ghost { border: 1px solid var(--line-strong); color: var(--text); }
 .btn--ghost:hover { border-color: var(--text); }
 .btn--sm { min-height: 40px; padding: 0 16px; font-size: 14px; border-radius: 10px; }
+
+@media (max-width: 640px) {
+  :root { --sec-y: clamp(36px, 7vh, 64px); --head-gap: 20px; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

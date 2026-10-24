@@ -2,13 +2,14 @@
 // Без цен, ставок, скидок, агентских условий, минимальных бюджетов, брендов клиентов и контактов.
 export type PlatformCategory = 'retail' | 'apps' | 'video' | 'networks' | 'niche' | 'direct';
 
-export const categories: Record<PlatformCategory, { title: string; text: string }> = {
-  retail: { title: 'Ритейл-медиа и e-commerce', text: 'Реклама там, где покупают: маркетплейсы, доставка и ритейл-приложения.' },
-  apps: { title: 'Приложения и сервисы', text: 'Сервисы, которыми аудитория пользуется каждый день.' },
-  video: { title: 'Видео и аудио', text: 'Онлайн-кинотеатры, стриминг и музыка.' },
-  networks: { title: 'Рекламные сети и DSP', text: 'Доступ к тысячам сайтов и приложений через одну закупку.' },
-  niche: { title: 'Отраслевые аудитории', text: 'Врачи, фармацевты, родители и школьники.' },
-  direct: { title: 'SMS и прямые каналы', text: 'Прямые сообщения по базам абонентов.' },
+// short — подпись строки на главной на телефоне, где полное название не помещается
+export const categories: Record<PlatformCategory, { title: string; short: string; text: string }> = {
+  retail: { title: 'Ритейл-медиа и e-commerce', short: 'Ритейл', text: 'Реклама там, где покупают: маркетплейсы, доставка и ритейл-приложения.' },
+  apps: { title: 'Приложения и сервисы', short: 'Сервисы', text: 'Сервисы, которыми аудитория пользуется каждый день.' },
+  video: { title: 'Видео и аудио', short: 'Видео', text: 'Онлайн-кинотеатры, стриминг и музыка.' },
+  networks: { title: 'Рекламные сети и DSP', short: 'Сети и DSP', text: 'Доступ к тысячам сайтов и приложений через одну закупку.' },
+  niche: { title: 'Отраслевые аудитории', short: 'Отрасли', text: 'Врачи, фармацевты, родители и школьники.' },
+  direct: { title: 'SMS и прямые каналы', short: 'SMS', text: 'Прямые сообщения по базам абонентов.' },
 };
 
 export const categoryOrder: PlatformCategory[] = ['retail', 'apps', 'video', 'networks', 'niche', 'direct'];
