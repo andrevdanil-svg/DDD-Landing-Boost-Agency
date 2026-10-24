@@ -1,0 +1,34 @@
+---
+import Arrow from './Arrow.astro';
+import { TELEGRAM } from '../data/contacts';
+import { typo } from '../lib/typo';
+
+interface Props {
+  title: string;
+  primary?: string;
+  secondary?: { href: string; label: string };
+}
+const { title, primary = 'Обсудить задачу в Telegram', secondary } = Astro.props;
+---
+
+<section class="cta" data-contact>
+  <div class="wrap cta__in">
+    <h2 class="h2 cta__title">{typo(title)}</h2>
+    <div class="cta__btns">
+      <a class="btn btn--primary" href={TELEGRAM}>{primary} <Arrow /></a>
+      {secondary && <a class="btn btn--ghost" href={secondary.href}>{secondary.label}</a>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta { border-top: 1px solid var(--line); padding-block: clamp(80px, 14vh, 160px); }
+  .cta__in { display: grid; gap: 32px; justify-items: start; }
+  .cta__title { max-width: 16em; }
+  .cta__btns { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  @media (max-width: 640px) {
+    .cta__btns { flex-direction: column; width: 100%; }
+    .cta__btns .btn { width: 100%; }
+  }
+</style>

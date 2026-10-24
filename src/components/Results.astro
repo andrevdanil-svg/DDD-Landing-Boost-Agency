@@ -1,15 +1,17 @@
 ---
 import Arrow from './Arrow.astro';
 
-// Цифры — из текущих страниц кейсов на boostagency.uz
-const cases = [
-  { v: '×3,1', m: 'ROAS', who: 'Fashion-ритейл', note: 'за 6 недель · CPA −47%', href: '/cases/fashion-retail/' },
-  { v: '−52%', m: 'CPL на тест-драйв', who: 'Автодилер', note: 'к 8-й неделе · доходимость в салон +38%', href: '/cases/auto-dealer/' },
-  { v: '−48%', m: 'CPA на активированную карту', who: 'Банк', note: 'было $85 · активация +63%', href: '/cases/banking-fintech/' },
-  { v: '×4', m: 'заявок на показ квартиры', who: 'Девелопер', note: 'к 12-й неделе · CPA брони −34%', href: '/cases/real-estate-developer/' },
-  { v: '−43%', m: 'CPL на пробный урок', who: 'Онлайн-школа', note: 'за 10 недель · 3,2K новых учеников', href: '/cases/edtech-school/' },
-  { v: '+31%', m: 'brand lift', who: 'FMCG-бренд', note: 'purchase intent · охват 3+ — 11,4M', href: '/cases/fmcg-brand/' },
-];
+import { cases as data } from '../data/cases';
+import { typo } from '../lib/typo';
+
+interface Props {
+  heading?: 'h1' | 'h2';
+  title?: string;
+  showAll?: boolean;
+}
+const { heading: Heading = 'h2', title = 'Что получили клиенты', showAll = true } = Astro.props;
+
+const cases = data.map((c) => ({ v: c.card.value, m: c.card.metric, who: c.card.who, note: c.card.note, href: `/cases/${c.slug}/` }));
 
 type Ch = { digit: number } | { char: string };
 const split = (v: string): Ch[] => [...v].map((c) => (/\d/.test(c) ? { digit: Number(c) } : { char: c }));
@@ -19,8 +21,8 @@ const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 <section class="rs" id="results" aria-labelledby="rs-title">
   <div class="wrap rs__in">
     <div class="rs__head">
-      <h2 id="rs-title" class="h2 rs__title">Что получили клиенты</h2>
-      <a class="rs__all" href="/cases/">Все кейсы <Arrow /></a>
+      <Heading id="rs-title" class="h2 rs__title">{title}</Heading>
+      {showAll && <a class="rs__all" href="/cases/">Все кейсы <Arrow /></a>}
     </div>
 
     <ol class="rs__grid">
@@ -50,7 +52,7 @@ const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
                 <b>{k.m}</b>
                 <span>{k.who}</span>
               </span>
-              <span class="rs__note">{k.note}</span>
+              <span class="rs__note">{typo(k.note)}</span>
               <span class="rs__go" aria-hidden="true">
                 <Arrow />
               </span>

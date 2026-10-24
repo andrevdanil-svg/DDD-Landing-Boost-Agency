@@ -1,0 +1,95 @@
+---
+import { TELEGRAM } from '../data/contacts';
+
+const columns = [
+  {
+    title: 'Услуги',
+    links: [
+      { href: '/channels/', label: 'Реклама' },
+      { href: '/sites/', label: 'Сайты и лендинги' },
+      { href: '/topup/', label: 'Пополнение кабинетов' },
+      { href: '/self-launch/', label: 'Самостоятельный запуск' },
+    ],
+  },
+  {
+    title: 'Компания',
+    links: [
+      { href: '/platform/', label: 'Кабинет' },
+      { href: '/cases/', label: 'Кейсы' },
+      { href: '/process/', label: 'Как работаем' },
+      { href: '/about/', label: 'О компании' },
+      { href: '/faq/', label: 'Вопросы и ответы' },
+      { href: '/contact/', label: 'Контакты' },
+    ],
+  },
+  {
+    title: 'Документы',
+    links: [
+      { href: '/privacy/', label: 'Политика конфиденциальности' },
+      { href: '/terms/', label: 'Условия использования' },
+      { href: '/data-processing/', label: 'Обработка данных' },
+    ],
+  },
+];
+---
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft__grid">
+      <div class="ft__brand">
+        <a href="/" aria-label="Boost! Agency — на главную">
+          <img src="/brand/logo_boost_light.svg" alt="" width="126" height="26" />
+        </a>
+        <p>Digital-агентство в&nbsp;Ташкенте</p>
+        <a class="ft__tg" href={TELEGRAM}>Написать в&nbsp;Telegram</a>
+      </div>
+      {
+        columns.map((col) => (
+          <nav class="ft__col" aria-label={col.title}>
+            <h2>{col.title}</h2>
+            <ul>
+              {col.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+    <p class="ft__copy">© 2026 Boost! Agency</p>
+  </div>
+</footer>
+
+<style>
+  .ft { border-top: 1px solid var(--line); padding-block: clamp(48px, 8vh, 80px) 32px; }
+  .ft__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+    gap: 40px var(--gap);
+  }
+  .ft__brand { display: grid; align-content: start; justify-items: start; gap: 14px; }
+  .ft__brand img { height: 26px; width: auto; }
+  .ft__brand p { color: var(--text-2); }
+  .ft__tg { font: 600 15px/1.2 var(--f-display); border-bottom: 1.5px solid var(--accent); padding-bottom: 3px; }
+
+  .ft__col h2 { font: 600 15px/1.2 var(--f-display); margin-bottom: 16px; }
+  .ft__col ul { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .ft__col a { color: var(--text-2); transition: color 0.2s; }
+  .ft__col a:hover { color: var(--text); }
+
+  .ft__copy { margin-top: clamp(40px, 6vh, 64px); padding-top: 24px; border-top: 1px solid var(--line); color: var(--text-3); font-size: 14px; }
+
+  @media (max-width: 960px) {
+    .ft__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ft__brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 860px) {
+    /* место под закреплённую кнопку Telegram */
+    .ft { padding-bottom: 104px; }
+  }
+  @media (max-width: 480px) {
+    .ft__grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

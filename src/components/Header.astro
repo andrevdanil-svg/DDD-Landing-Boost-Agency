@@ -2,16 +2,19 @@
 import LangSwitch from './LangSwitch.astro';
 
 const nav = [
-  { href: '#services', label: 'Услуги' },
-  { href: '#platform', label: 'Кабинет' },
-  { href: '#results', label: 'Кейсы' },
+  { href: '/#services', label: 'Услуги' },
+  { href: '/#platform', label: 'Кабинет' },
+  { href: '/cases/', label: 'Кейсы' },
   { href: '/process/', label: 'Как работаем' },
 ];
+
+// на главной — якорь к форме, на остальных страницах — отдельная страница контактов
+const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
 ---
 
 <header class="hdr" data-hdr>
   <div class="wrap hdr__in">
-    <a href="/" class="hdr__logo" aria-label="Boost! Agency&nbsp;— на главную">
+    <a href="/" class="hdr__logo" aria-label="Boost! Agency — на главную">
       <img src="/brand/logo_boost_light.svg" alt="" width="116" height="24" />
     </a>
     <nav class="hdr__nav" aria-label="Основная навигация">
@@ -19,7 +22,7 @@ const nav = [
     </nav>
     <div class="hdr__end">
       <LangSwitch current="ru" />
-      <a class="btn btn--primary btn--sm hdr__cta" href="#contact">Обсудить задачу</a>
+      <a class="btn btn--primary btn--sm hdr__cta" href={contactHref}>Обсудить задачу</a>
       <button class="hdr__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Открыть меню" data-burger>
         <span></span><span></span>
       </button>
@@ -28,7 +31,7 @@ const nav = [
   <div class="menu" id="menu" hidden data-menu>
     <nav class="wrap menu__nav" aria-label="Мобильное меню">
       {nav.map((n) => <a href={n.href}>{n.label}</a>)}
-      <a href="#contact">Контакты</a>
+      <a href={contactHref}>Контакты</a>
     </nav>
   </div>
 </header>

@@ -1,27 +1,21 @@
 ---
-import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
+import Page from '../layouts/Page.astro';
 import Hero from '../components/Hero.astro';
 import Manifesto from '../components/Manifesto.astro';
 import Services from '../components/Services.astro';
 import Platform from '../components/Platform.astro';
 import Results from '../components/Results.astro';
 import Contact from '../components/Contact.astro';
-import MobileBar from '../components/MobileBar.astro';
 ---
 
-<Base
+<Page
   title="Boost! Agency — digital-агентство в Ташкенте"
   description="Digital-агентство в Ташкенте: реклама, сайты под трафик и пополнение рекламных кабинетов. Каждый показ и каждый доллар — в личном кабинете клиента."
 >
-  <Header />
-  <main>
-    <Hero />
-    <Manifesto />
-    <Services />
-    <Platform />
-    <Results />
-    <Contact />
-  </main>
-  <MobileBar />
-</Base>
+  <Hero />
+  <Manifesto />
+  <Services />
+  <Platform />
+  <Results />
+  <Contact />
+</Page>

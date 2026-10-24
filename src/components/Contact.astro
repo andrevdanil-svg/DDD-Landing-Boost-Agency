@@ -3,11 +3,16 @@ import Arrow from './Arrow.astro';
 import { TELEGRAM } from '../data/contacts';
 
 const budgets = ['до $5 000', '$5 000 – $20 000', '$20 000 – $50 000', 'от $50 000'];
+
+interface Props {
+  heading?: 'h1' | 'h2';
+}
+const { heading: Heading = 'h2' } = Astro.props;
 ---
 
 <section class="ct" id="contact" aria-labelledby="ct-title" data-contact>
   <div class="wrap">
-    <h2 id="ct-title" class="h2 ct__title">Пришлите задачу&nbsp;— вернём медиаплан за&nbsp;48&nbsp;часов</h2>
+    <Heading id="ct-title" class="h2 ct__title">Пришлите задачу&nbsp;— вернём медиаплан за&nbsp;48&nbsp;часов</Heading>
 
     <div class="ct__ways">
       <div class="ct__tg">
@@ -45,17 +50,6 @@ const budgets = ['до $5 000', '$5 000 – $20 000', '$20 000 – $50 000', 'о
     </div>
   </div>
 </section>
-
-<footer class="ft">
-  <div class="wrap ft__in">
-    <img src="/brand/logo_boost_light.svg" alt="Boost! Agency" width="106" height="22" />
-    <nav aria-label="Документы">
-      <a href="/privacy/">Политика конфиденциальности</a>
-      <a href="/terms/">Условия</a>
-    </nav>
-    <span>© 2026 Boost! Agency · Ташкент</span>
-  </div>
-</footer>
 
 <style>
   .ct { border-top: 1px solid var(--line); padding-block: clamp(96px, 16vh, 180px) clamp(64px, 10vh, 120px); }
@@ -117,27 +111,10 @@ const budgets = ['до $5 000', '$5 000 – $20 000', '$20 000 – $50 000', 'о
   .ct__legal a { text-decoration: underline; text-underline-offset: 3px; }
   .ct__ok { color: var(--green); }
 
-  .ft { border-top: 1px solid var(--line); }
-  .ft__in {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px 32px;
-    padding-block: 32px;
-    color: var(--text-3);
-    font-size: 14px;
-  }
-  .ft__in img { height: 22px; width: auto; }
-  .ft__in nav { display: flex; gap: 24px; }
-  .ft__in nav a:hover { color: var(--text); }
-  .ft__in > span { margin-left: auto; }
-
   @media (max-width: 860px) {
     .ct__ways { grid-template-columns: minmax(0, 1fr); border-top: 0; }
     .ct__tg, .ct__form { padding: 28px 0; border-top: 1px solid var(--line); border-left: 0; }
     .ct__tg .btn { width: 100%; }
-    .ft__in { padding-bottom: 104px; }
-    .ft__in > span { margin-left: 0; }
   }
 </style>
 
