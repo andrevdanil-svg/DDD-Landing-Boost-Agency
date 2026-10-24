@@ -1,0 +1,33 @@
+---
+// Старый сайт был на трёх языках. Пока переводов нет, адреса /en/… и /uz/…
+// ведут на русскую версию той же страницы, чтобы ссылки из поиска и закладок не давали 404.
+export function getStaticPaths() {
+  const legacy = [
+    '', 'about', 'analytics', 'cases', 'cases/auto-dealer', 'cases/banking-fintech', 'cases/edtech-school',
+    'cases/fashion-retail', 'cases/fmcg-brand', 'cases/real-estate-developer', 'channels', 'channels/ctv',
+    'channels/display', 'channels/mobile', 'channels/native', 'channels/retargeting', 'channels/video', 'contact',
+    'data-processing', 'faq', 'platform', 'privacy', 'process', 'self-launch', 'sites', 'technology', 'terms', 'topup',
+  ];
+  return ['en', 'uz'].flatMap((lang) =>
+    legacy.map((p) => ({ params: { lang, path: p || undefined }, props: { to: p ? `/${p}/` : '/' } })),
+  );
+}
+
+const { to } = Astro.props;
+const abs = new URL(to, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Boost! Agency</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={abs} />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <script is:inline define:vars={{ to }}>location.replace(to);</script>
+  </head>
+  <body>
+    <a href={to}>Перейти на страницу</a>
+  </body>
+</html>

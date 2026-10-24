@@ -1,0 +1,15 @@
+---
+import Page from '../layouts/Page.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Page title="Страница не найдена — Boost! Agency" description="Такой страницы на сайте нет." noindex>
+  <PageHero
+    hero={{
+      title: 'Такой страницы нет',
+      lead: 'Возможно, она переехала после обновления сайта. Начните с главной или напишите нам — подскажем.',
+      back: { href: '/', label: 'На главную' },
+      cta: true,
+    }}
+  />
+</Page>
