@@ -13,7 +13,7 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
 ---
 
 {
-  sections.map((s) => {
+  sections.map((s, si) => {
     if (s.type === 'prose') {
       return (
         <section class="sx sx--prose">
@@ -116,6 +116,49 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
       );
     }
 
+    if (s.type === 'formats') {
+      // форматы — вкладки, справа пример выбранного; на телефоне — карточки с примером, листаются вбок
+      const first = Math.max(0, s.items.findIndex((it) => it.shot));
+      return (
+        <section class="sx" id={s.id}>
+          <div class="wrap">
+            {head}
+            <ol class="fm" role="tablist" aria-label={s.title} style={`--n:${s.items.length}`} data-fm>
+              {s.items.map((it, i) => (
+                <li role="presentation" data-active={i === first ? '' : undefined}>
+                  <button
+                    class="fm__tab"
+                    type="button"
+                    role="tab"
+                    id={`fm${si}-t${i}`}
+                    aria-controls={`fm${si}-p${i}`}
+                    aria-selected={i === first ? 'true' : 'false'}
+                    tabindex={i === first ? 0 : -1}
+                  >
+                    <span class="fm__title">{typo(it.title)}</span>
+                    <span class="fm__text">{typo(it.text)}</span>
+                  </button>
+                  <figure
+                    class:list={['fm__shot', { 'fm__shot--none': !it.shot }]}
+                    role="tabpanel"
+                    id={`fm${si}-p${i}`}
+                    aria-labelledby={`fm${si}-t${i}`}
+                    style={it.shot && `--bg:${it.shot.bg}`}
+                  >
+                    {it.shot ? (
+                      <img src={it.shot.src} width={it.shot.w} height={it.shot.h} alt={`Пример формата «${it.title}»`} loading="lazy" decoding="async" />
+                    ) : (
+                      <figcaption>Пример этого формата пришлём вместе с&nbsp;медиакитом</figcaption>
+                    )}
+                  </figure>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      );
+    }
+
     if (s.type === 'steps') {
       return (
         <section class="sx" id={s.id}>
@@ -211,6 +254,31 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
   })
 }
 
+<script>
+  // вкладки форматов: клик или стрелки переключают пример
+  document.querySelectorAll<HTMLElement>('[data-fm]').forEach((fm) => {
+    const items = [...fm.children] as HTMLElement[];
+    const tabs = items.map((li) => li.querySelector<HTMLButtonElement>('[role="tab"]')!);
+    const select = (i: number) =>
+      items.forEach((li, k) => {
+        li.toggleAttribute('data-active', k === i);
+        tabs[k].setAttribute('aria-selected', String(k === i));
+        tabs[k].tabIndex = k === i ? 0 : -1;
+      });
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (e) => {
+        const d = ['ArrowDown', 'ArrowRight'].includes(e.key) ? 1 : ['ArrowUp', 'ArrowLeft'].includes(e.key) ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const n = (i + d + tabs.length) % tabs.length;
+        tabs[n].focus();
+        select(n);
+      });
+    });
+  });
+</script>
+
 <style>
   .sx { border-top: 1px solid var(--line); padding-block: var(--sec-y); }
 
@@ -287,6 +355,64 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
   .grid[data-cols='2'] li:nth-child(2n), .grid[data-cols='3'] li:not(:nth-child(3n + 1)), .grid[data-cols='4'] li:not(:nth-child(4n + 1)) { border-left: 1px solid var(--line); }
   .grid h3 { font: 600 clamp(19px, 1.6vw, 23px)/1.25 var(--f-display); letter-spacing: -0.015em; }
   .grid p { margin-top: 10px; color: var(--text-2); font-size: 16px; }
+
+  /* форматы: слева вкладки, справа пример выбранного (все примеры — в одной ячейке сетки) */
+  .fm {
+    --fm-h: clamp(320px, calc(100svh - var(--header-h) - 2 * var(--sec-y) - var(--head-gap) - 12vh), 600px);
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: repeat(var(--n), auto) 1fr;
+    column-gap: clamp(32px, 5vw, 80px);
+  }
+  .fm > li { display: contents; }
+  .fm__tab {
+    grid-column: 1;
+    position: relative;
+    display: grid;
+    padding: clamp(8px, 1.3vh, 14px) 0 clamp(8px, 1.3vh, 14px) 20px;
+    text-align: left;
+    opacity: 0.5;
+    transition: opacity 0.3s var(--ease);
+  }
+  .fm__tab::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 12px; bottom: 12px;
+    width: 2px;
+    background: var(--line-strong);
+    transition: background-color 0.3s var(--ease);
+  }
+  .fm__tab:hover, .fm > li[data-active] .fm__tab { opacity: 1; }
+  .fm > li[data-active] .fm__tab::before { background: var(--accent); }
+  .fm__title { font: 600 clamp(17px, 1.4vw, 20px)/1.3 var(--f-display); letter-spacing: -0.015em; }
+  .fm__text {
+    max-height: 0;
+    overflow: hidden;
+    color: var(--text-2);
+    font-size: 15.5px;
+    line-height: 1.5;
+    transition: max-height 0.4s var(--ease), margin 0.4s var(--ease);
+  }
+  .fm > li[data-active] .fm__text { max-height: 9em; margin-top: 6px; }
+  .fm__shot {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: start;
+    height: var(--fm-h);
+    margin: 0;
+    overflow: hidden;
+    border-radius: 18px;
+    background: var(--bg, var(--bg-raised));
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s var(--ease), visibility 0s linear 0.35s;
+  }
+  .fm > li[data-active] .fm__shot { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .fm__shot img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .fm__shot--none { display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); }
+  .fm__shot figcaption { max-width: 26ch; padding: 24px; color: var(--text-2); text-align: center; }
 
   /* шаги */
   .steps {
@@ -407,6 +533,24 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
     .grid[data-cols] li, .grid[data-cols] li:nth-child(n) { padding: 18px 0; border-left: 0; }
   }
   @media (max-width: 640px) {
+    /* форматы: карточка = пример + название + описание, листаются вбок */
+    .fm {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin-inline: calc(var(--pad) * -1);
+      padding-inline: var(--pad);
+      scroll-padding-inline: var(--pad);
+      scrollbar-width: none;
+    }
+    .fm::-webkit-scrollbar { display: none; }
+    .fm > li { display: flex; flex-direction: column; flex: 0 0 80%; scroll-snap-align: start; }
+    .fm__tab { order: 1; padding: 14px 0 0; opacity: 1; pointer-events: none; }
+    .fm__tab::before { display: none; }
+    .fm__text, .fm > li[data-active] .fm__text { max-height: none; margin-top: 6px; }
+    .fm__shot, .fm > li[data-active] .fm__shot { height: clamp(220px, 44svh, 340px); opacity: 1; visibility: visible; border-radius: 14px; }
+    .fm__shot figcaption { font-size: 15px; }
     /* карточки сетки листаются вбок */
     .grid[data-swipe] {
       grid-template-columns: none;

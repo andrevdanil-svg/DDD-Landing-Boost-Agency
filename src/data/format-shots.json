@@ -1,0 +1,634 @@
+[
+ {
+  "slug": "admixer",
+  "fmt": 4,
+  "src": "/formats/admixer/video-sayt.webp",
+  "w": 1100,
+  "h": 637,
+  "bg": "#ededed"
+ },
+ {
+  "slug": "admixer",
+  "fmt": 5,
+  "src": "/formats/admixer/video-app.webp",
+  "w": 790,
+  "h": 340,
+  "bg": "#5e7081"
+ },
+ {
+  "slug": "adrun",
+  "fmt": 2,
+  "src": "/formats/adrun/video.webp",
+  "w": 1100,
+  "h": 1858,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "adrun",
+  "fmt": 3,
+  "src": "/formats/adrun/rewarded.webp",
+  "w": 1100,
+  "h": 1940,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "adviad",
+  "fmt": 0,
+  "src": "/formats/adviad/display.webp",
+  "w": 1100,
+  "h": 1090,
+  "bg": "#f5f5f5"
+ },
+ {
+  "slug": "adviad",
+  "fmt": 1,
+  "src": "/formats/adviad/video.webp",
+  "w": 1100,
+  "h": 1021,
+  "bg": "#f5f5f5"
+ },
+ {
+  "slug": "adviad",
+  "fmt": 2,
+  "src": "/formats/adviad/audio.webp",
+  "w": 1100,
+  "h": 732,
+  "bg": "#f5f5f5"
+ },
+ {
+  "slug": "adviad",
+  "fmt": 3,
+  "src": "/formats/adviad/social.webp",
+  "w": 1100,
+  "h": 713,
+  "bg": "#f5f5f5"
+ },
+ {
+  "slug": "adviad",
+  "fmt": 4,
+  "src": "/formats/adviad/ctv.webp",
+  "w": 1100,
+  "h": 825,
+  "bg": "#f5f5f5"
+ },
+ {
+  "slug": "adviad",
+  "fmt": 5,
+  "src": "/formats/adviad/search.webp",
+  "w": 1100,
+  "h": 770,
+  "bg": "#f6f6f6"
+ },
+ {
+  "slug": "bidease",
+  "fmt": 5,
+  "src": "/formats/bidease/blended.webp",
+  "w": 1100,
+  "h": 378,
+  "bg": "#362148"
+ },
+ {
+  "slug": "bidease",
+  "fmt": 6,
+  "src": "/formats/bidease/custom.webp",
+  "w": 1100,
+  "h": 894,
+  "bg": "#362148"
+ },
+ {
+  "slug": "byyd",
+  "fmt": 1,
+  "src": "/formats/byyd/native.webp",
+  "w": 1100,
+  "h": 1273,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "byyd",
+  "fmt": 5,
+  "src": "/formats/byyd/in-game.webp",
+  "w": 1100,
+  "h": 1086,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "byyd",
+  "fmt": 6,
+  "src": "/formats/byyd/web.webp",
+  "w": 1100,
+  "h": 1056,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "emaktab",
+  "fmt": 0,
+  "src": "/formats/emaktab/brending.webp",
+  "w": 1100,
+  "h": 881,
+  "bg": "#393791"
+ },
+ {
+  "slug": "emaktab",
+  "fmt": 1,
+  "src": "/formats/emaktab/bannery.webp",
+  "w": 1100,
+  "h": 945,
+  "bg": "#2c2b75"
+ },
+ {
+  "slug": "emaktab",
+  "fmt": 4,
+  "src": "/formats/emaktab/personazh.webp",
+  "w": 1100,
+  "h": 848,
+  "bg": "#31307e"
+ },
+ {
+  "slug": "eskimi",
+  "fmt": 1,
+  "src": "/formats/eskimi/native.webp",
+  "w": 1100,
+  "h": 781,
+  "bg": "#000000"
+ },
+ {
+  "slug": "eskimi",
+  "fmt": 2,
+  "src": "/formats/eskimi/rich-media.webp",
+  "w": 600,
+  "h": 1200,
+  "bg": "#f8db95"
+ },
+ {
+  "slug": "eskimi",
+  "fmt": 4,
+  "src": "/formats/eskimi/mehanika.webp",
+  "w": 862,
+  "h": 1298,
+  "bg": "#a5796d"
+ },
+ {
+  "slug": "eskimi",
+  "fmt": 5,
+  "src": "/formats/eskimi/video.webp",
+  "w": 640,
+  "h": 562,
+  "bg": "#8b60d7"
+ },
+ {
+  "slug": "eskimi",
+  "fmt": 6,
+  "src": "/formats/eskimi/in-game.webp",
+  "w": 1100,
+  "h": 744,
+  "bg": "#261c1d"
+ },
+ {
+  "slug": "gotech",
+  "fmt": 0,
+  "src": "/formats/gotech/video.webp",
+  "w": 1100,
+  "h": 563,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "gotech",
+  "fmt": 1,
+  "src": "/formats/gotech/video.webp",
+  "w": 1100,
+  "h": 563,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "gotech",
+  "fmt": 5,
+  "src": "/formats/gotech/video.webp",
+  "w": 1100,
+  "h": 563,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "korzinka-go",
+  "fmt": 0,
+  "src": "/formats/korzinka-go/storis.webp",
+  "w": 1100,
+  "h": 1304,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "korzinka-go",
+  "fmt": 1,
+  "src": "/formats/korzinka-go/informery.webp",
+  "w": 844,
+  "h": 1803,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "korzinka-go",
+  "fmt": 2,
+  "src": "/formats/korzinka-go/brending.webp",
+  "w": 1100,
+  "h": 1230,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "korzinka-go",
+  "fmt": 3,
+  "src": "/formats/korzinka-go/banner-kategoriya.webp",
+  "w": 1100,
+  "h": 1231,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "korzinka-go",
+  "fmt": 4,
+  "src": "/formats/korzinka-go/tovar-geroy.webp",
+  "w": 1100,
+  "h": 1170,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "korzinka-go",
+  "fmt": 5,
+  "src": "/formats/korzinka-go/brendovaya-polka.webp",
+  "w": 1100,
+  "h": 1310,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "korzinka-go",
+  "fmt": 6,
+  "src": "/formats/korzinka-go/rekomendacii.webp",
+  "w": 824,
+  "h": 1635,
+  "bg": "#fdfdfd"
+ },
+ {
+  "slug": "megogo",
+  "fmt": 0,
+  "src": "/formats/megogo/all-roll.webp",
+  "w": 1100,
+  "h": 716,
+  "bg": "#4affff"
+ },
+ {
+  "slug": "megogo",
+  "fmt": 1,
+  "src": "/formats/megogo/brending.webp",
+  "w": 1100,
+  "h": 687,
+  "bg": "#50ffff"
+ },
+ {
+  "slug": "megogo",
+  "fmt": 2,
+  "src": "/formats/megogo/overlay.webp",
+  "w": 1100,
+  "h": 687,
+  "bg": "#50ffff"
+ },
+ {
+  "slug": "megogo",
+  "fmt": 3,
+  "src": "/formats/megogo/pause.webp",
+  "w": 1100,
+  "h": 687,
+  "bg": "#50ffff"
+ },
+ {
+  "slug": "novadsail",
+  "fmt": 0,
+  "src": "/formats/novadsail/in-stream.webp",
+  "w": 1100,
+  "h": 840,
+  "bg": "#222a35"
+ },
+ {
+  "slug": "novadsail",
+  "fmt": 1,
+  "src": "/formats/novadsail/out-stream.webp",
+  "w": 1100,
+  "h": 784,
+  "bg": "#222a35"
+ },
+ {
+  "slug": "novadsail",
+  "fmt": 2,
+  "src": "/formats/novadsail/stiki.webp",
+  "w": 1100,
+  "h": 781,
+  "bg": "#222a35"
+ },
+ {
+  "slug": "novadsail",
+  "fmt": 3,
+  "src": "/formats/novadsail/mobile.webp",
+  "w": 843,
+  "h": 1555,
+  "bg": "#222a35"
+ },
+ {
+  "slug": "novadsail",
+  "fmt": 4,
+  "src": "/formats/novadsail/spotify-audio.webp",
+  "w": 1100,
+  "h": 1691,
+  "bg": "#ffcdd2"
+ },
+ {
+  "slug": "novadsail",
+  "fmt": 5,
+  "src": "/formats/novadsail/spotify-video.webp",
+  "w": 1100,
+  "h": 484,
+  "bg": "#222a35"
+ },
+ {
+  "slug": "oxymed",
+  "fmt": 0,
+  "src": "/formats/oxymed/banner-glavnaya.webp",
+  "w": 1100,
+  "h": 916,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "oxymed",
+  "fmt": 1,
+  "src": "/formats/oxymed/banner-konkurent.webp",
+  "w": 1100,
+  "h": 851,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "oxymed",
+  "fmt": 2,
+  "src": "/formats/oxymed/tovar-dnya.webp",
+  "w": 1100,
+  "h": 916,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "oxymed",
+  "fmt": 3,
+  "src": "/formats/oxymed/rekomendacii.webp",
+  "w": 1100,
+  "h": 1191,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "oxymed",
+  "fmt": 4,
+  "src": "/formats/oxymed/statya.webp",
+  "w": 1100,
+  "h": 851,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "oxymed",
+  "fmt": 5,
+  "src": "/formats/oxymed/brendy.webp",
+  "w": 1100,
+  "h": 851,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "oxymed",
+  "fmt": 6,
+  "src": "/formats/oxymed/telegram-bot.webp",
+  "w": 1100,
+  "h": 1083,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "oxymed",
+  "fmt": 7,
+  "src": "/formats/oxymed/promokody.webp",
+  "w": 1100,
+  "h": 900,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "sms-promo",
+  "fmt": 0,
+  "src": "/formats/sms-promo/rassylka.webp",
+  "w": 1100,
+  "h": 630,
+  "bg": "#c7c2be"
+ },
+ {
+  "slug": "sms-promo",
+  "fmt": 1,
+  "src": "/formats/sms-promo/target.webp",
+  "w": 1100,
+  "h": 1172,
+  "bg": "#d2d8db"
+ },
+ {
+  "slug": "spotify",
+  "fmt": 0,
+  "src": "/formats/spotify/audio.webp",
+  "w": 1100,
+  "h": 600,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "spotify",
+  "fmt": 1,
+  "src": "/formats/spotify/video.webp",
+  "w": 1100,
+  "h": 546,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "spotify",
+  "fmt": 2,
+  "src": "/formats/spotify/display.webp",
+  "w": 1100,
+  "h": 684,
+  "bg": "#958eff"
+ },
+ {
+  "slug": "uzum",
+  "fmt": 0,
+  "src": "/formats/uzum/banner-karusel.webp",
+  "w": 1100,
+  "h": 862,
+  "bg": "#700eef"
+ },
+ {
+  "slug": "uzum",
+  "fmt": 1,
+  "src": "/formats/uzum/storis.webp",
+  "w": 1100,
+  "h": 848,
+  "bg": "#6f0eef"
+ },
+ {
+  "slug": "uzum",
+  "fmt": 2,
+  "src": "/formats/uzum/pop-up.webp",
+  "w": 1100,
+  "h": 862,
+  "bg": "#6d06f6"
+ },
+ {
+  "slug": "uzum",
+  "fmt": 3,
+  "src": "/formats/uzum/push.webp",
+  "w": 1100,
+  "h": 848,
+  "bg": "#a045eb"
+ },
+ {
+  "slug": "uzum",
+  "fmt": 4,
+  "src": "/formats/uzum/bust-kartochki.webp",
+  "w": 1100,
+  "h": 835,
+  "bg": "#6e0eee"
+ },
+ {
+  "slug": "uzum",
+  "fmt": 5,
+  "src": "/formats/uzum/brend-polka.webp",
+  "w": 1100,
+  "h": 877,
+  "bg": "#be75f3"
+ },
+ {
+  "slug": "uzum",
+  "fmt": 7,
+  "src": "/formats/uzum/socseti.webp",
+  "w": 1100,
+  "h": 877,
+  "bg": "#a551f4"
+ },
+ {
+  "slug": "uzum-bank",
+  "fmt": 0,
+  "src": "/formats/uzum-bank/benefity.webp",
+  "w": 1100,
+  "h": 1107,
+  "bg": "#410195"
+ },
+ {
+  "slug": "uzum-bank",
+  "fmt": 1,
+  "src": "/formats/uzum-bank/top-kategoriya.webp",
+  "w": 1100,
+  "h": 1117,
+  "bg": "#440196"
+ },
+ {
+  "slug": "uzum-bank",
+  "fmt": 2,
+  "src": "/formats/uzum-bank/crm.webp",
+  "w": 1100,
+  "h": 594,
+  "bg": "#2e016a"
+ },
+ {
+  "slug": "yandex-go",
+  "fmt": 0,
+  "src": "/formats/yandex-go/banner-glavnaya.webp",
+  "w": 1100,
+  "h": 1238,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "yandex-go",
+  "fmt": 1,
+  "src": "/formats/yandex-go/bottom-shit.webp",
+  "w": 1100,
+  "h": 1701,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "yandex-go",
+  "fmt": 2,
+  "src": "/formats/yandex-go/storis.webp",
+  "w": 1100,
+  "h": 1701,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "yandex-go",
+  "fmt": 3,
+  "src": "/formats/yandex-go/banner-razdel.webp",
+  "w": 1100,
+  "h": 2206,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "yandex-go",
+  "fmt": 4,
+  "src": "/formats/yandex-go/treking.webp",
+  "w": 1100,
+  "h": 1701,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "yandex-go",
+  "fmt": 5,
+  "src": "/formats/yandex-go/magazin-banner.webp",
+  "w": 1100,
+  "h": 1467,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "yandex-lavka",
+  "fmt": 0,
+  "src": "/formats/yandex-lavka/banner.webp",
+  "w": 1100,
+  "h": 1726,
+  "bg": "#fefefe"
+ },
+ {
+  "slug": "yandex-lavka",
+  "fmt": 2,
+  "src": "/formats/yandex-lavka/oblozhka.webp",
+  "w": 1100,
+  "h": 1674,
+  "bg": "#fefefe"
+ },
+ {
+  "slug": "yandex-lavka",
+  "fmt": 3,
+  "src": "/formats/yandex-lavka/hero-sku.webp",
+  "w": 1100,
+  "h": 1726,
+  "bg": "#fefefe"
+ },
+ {
+  "slug": "yandex-lavka",
+  "fmt": 4,
+  "src": "/formats/yandex-lavka/apseyl.webp",
+  "w": 1100,
+  "h": 1674,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "yandex-lavka",
+  "fmt": 5,
+  "src": "/formats/yandex-lavka/brend-polka.webp",
+  "w": 1100,
+  "h": 1726,
+  "bg": "#fefefe"
+ },
+ {
+  "slug": "yandex-lavka",
+  "fmt": 6,
+  "src": "/formats/yandex-lavka/poisk.webp",
+  "w": 1100,
+  "h": 1674,
+  "bg": "#ffffff"
+ },
+ {
+  "slug": "yandex-lavka",
+  "fmt": 7,
+  "src": "/formats/yandex-lavka/prioritizaciya.webp",
+  "w": 1100,
+  "h": 1726,
+  "bg": "#fefefe"
+ }
+]

@@ -5,6 +5,8 @@ import { servicePages } from './services';
 
 export type Item = { title: string; text: string; href?: string };
 export type ProseBlock = { h2: string } | { p: string } | { ul: readonly string[] };
+// кадр формата из медиакита: bg — цвет краёв кадра, им заливается рамка
+export type Shot = { src: string; w: number; h: number; bg: string };
 
 type Anchor = { id?: string };
 export type Section = Anchor &
@@ -18,6 +20,7 @@ export type Section = Anchor &
   | { type: 'faq'; title: string; items: { q: string; a: string }[] }
   | { type: 'prose'; blocks: readonly ProseBlock[] }
   | { type: 'duo'; columns: { title: string; text?: string[]; items?: string[] }[] }
+  | { type: 'formats'; title: string; intro?: string; items: (Item & { shot?: Shot })[] }
   );
 
 export type PageData = {

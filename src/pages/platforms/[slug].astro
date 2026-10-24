@@ -5,6 +5,8 @@ import Sections from '../../components/Sections.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { platforms, categories, nameIn, tagline } from '../../data/platforms';
 import type { Section } from '../../data/pages';
+// кадры форматов из медиакитов: { slug, fmt — индекс формата, src, w, h, bg }
+import shots from '../../data/format-shots.json';
 
 export function getStaticPaths() {
   return platforms.map((p) => ({ params: { slug: p.slug }, props: { p } }));
@@ -23,7 +25,19 @@ sections.push({
     ...(p.audience.length ? [{ title: 'Кто аудитория', items: p.audience }] : []),
   ],
 });
-if (p.formats.length) sections.push({ type: 'grid', title: 'Рекламные форматы', items: p.formats });
+const own = new Map(shots.filter((s) => s.slug === p.slug).map((s) => [s.fmt, s]));
+if (p.formats.length) {
+  sections.push(
+    own.size
+      ? {
+          type: 'formats',
+          title: 'Рекламные форматы',
+          intro: 'Как форматы выглядят у площадки — примеры из её медиакита.',
+          items: p.formats.map((f, i) => ({ ...f, shot: own.get(i) })),
+        }
+      : { type: 'grid', title: 'Рекламные форматы', items: p.formats },
+  );
+}
 if (p.targeting.length || p.useCases.length) {
   sections.push({
     type: 'duo',
