@@ -1,0 +1,66 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/PageHero.astro';
+import Sections from '../../components/Sections.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { platforms, categories, nameIn } from '../../data/platforms';
+import type { Section } from '../../data/pages';
+
+export function getStaticPaths() {
+  return platforms.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+
+const { p } = Astro.props;
+const cat = categories[p.category];
+const siblings = platforms.filter((x) => x.category === p.category && x.slug !== p.slug);
+
+const sections: Section[] = [];
+if (p.stats.length) sections.push({ type: 'stats', title: 'Аудитория в цифрах', items: p.stats });
+sections.push({
+  type: 'duo',
+  columns: [
+    { title: 'О площадке', text: p.about },
+    ...(p.audience.length ? [{ title: 'Кто аудитория', items: p.audience }] : []),
+  ],
+});
+if (p.formats.length) sections.push({ type: 'grid', title: 'Рекламные форматы', items: p.formats });
+if (p.targeting.length || p.useCases.length) {
+  sections.push({
+    type: 'duo',
+    columns: [
+      ...(p.targeting.length ? [{ title: 'Таргетинги', items: p.targeting }] : []),
+      ...(p.useCases.length ? [{ title: 'Для каких задач', items: p.useCases }] : []),
+    ],
+  });
+}
+if (siblings.length) {
+  sections.push({
+    type: 'list',
+    title: `Ещё: ${cat.title.toLowerCase()}`,
+    items: siblings.map((s) => ({ title: s.name, text: s.lead, href: `/platforms/${s.slug}/` })),
+  });
+}
+---
+
+<Page
+  title={`Реклама в ${nameIn(p)} — форматы и аудитория | Boost! Agency`}
+  description={`${p.lead} Размещение через Boost! Agency: медиаплан, запуск и отчёты.`}
+>
+  <PageHero
+    hero={{
+      back: { href: '/platforms/', label: 'Все площадки' },
+      title: p.name,
+      lead: p.lead,
+      meta: `${cat.title} · ${p.geo}`,
+      cta: true,
+      ctaLabel: 'Запросить медиакит',
+    }}
+  />
+  <Sections sections={sections} />
+  <CtaBand
+    title={`Запустим рекламу в ${nameIn(p)}?`}
+    text="Стоимость, минимальный бюджет и доступность форматов зависят от задачи и сезона. Пришлём медиакит и расчёт под ваш бриф."
+    primary="Запросить медиакит и условия"
+    secondary={{ href: '/contact/', label: 'Оставить заявку' }}
+  />
+</Page>

@@ -16,11 +16,12 @@ const { hero } = Astro.props;
     {hero.back && <a class="ph__back" href={hero.back.href}><Arrow /> {hero.back.label}</a>}
     <h1 class="ph__title">{typo(hero.title)}</h1>
     <p class="ph__lead" set:html={linkify(typo(hero.lead))} />
+    {hero.meta && <p class="ph__meta">{hero.meta}</p>}
     {
       hero.cta && (
         <div class="ph__cta">
           <a class="btn btn--primary" href={TELEGRAM}>
-            Обсудить задачу в Telegram <Arrow />
+            {hero.ctaLabel ?? 'Обсудить задачу в Telegram'} <Arrow />
           </a>
           <a class="btn btn--ghost" href="/contact/">Оставить заявку</a>
         </div>
@@ -49,6 +50,7 @@ const { hero } = Astro.props;
   }
   .ph__lead { max-width: 46ch; margin-top: 28px; color: var(--text-2); font-size: clamp(17px, 1.4vw, 20px); }
   .ph__lead :global(a) { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  .ph__meta { margin-top: 16px; color: var(--text-3); }
   .ph__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 
   .ph--compact { padding-bottom: clamp(32px, 6vh, 64px); }

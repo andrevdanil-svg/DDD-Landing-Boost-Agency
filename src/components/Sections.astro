@@ -42,7 +42,7 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
         <section class="sx sx--stats" id={s.id}>
           <div class="wrap">
             <h2 class="sx__title">{typo(s.title)}</h2>
-            <ul class="stats">
+            <ul class="stats" style={`--n:${Math.min(s.items.length, 4)};--len:${Math.max(...s.items.map((it) => it.value.length))}`}>
               {s.items.map((it) => (
                 <li>
                   <b>{it.value}</b>
@@ -55,7 +55,8 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
       );
     }
 
-    const head = (
+    // у блока из двух колонок общего заголовка нет — заголовки у колонок
+    const head = 'title' in s && (
       <div class="sx__head">
         <h2 class="sx__title">{typo(s.title)}</h2>
         {'intro' in s && s.intro && <p class="sx__intro">{typo(s.intro)}</p>}
@@ -150,6 +151,35 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
                 </li>
               ))}
             </ul>
+          </div>
+        </section>
+      );
+    }
+
+    if (s.type === 'duo') {
+      return (
+        <section class="sx" id={s.id}>
+          <div class:list={['wrap', 'duo', { 'duo--single': s.columns.length === 1 }]}>
+            {s.columns.map((col) => (
+              <div>
+                <h2 class="duo__title">{typo(col.title)}</h2>
+                {col.text?.map((t) => (
+                  <p class="duo__p">{typo(t)}</p>
+                ))}
+                {col.items && (
+                  <ul class="checks">
+                    {col.items.map((it) => (
+                      <li>
+                        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <path d="m3.5 8.5 3 3 6-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span>{typo(it)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
           </div>
         </section>
       );
@@ -268,6 +298,13 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
   }
   .checks svg { width: 22px; height: 22px; margin-top: 2px; color: var(--accent); }
 
+  /* две колонки: текст и/или список */
+  .duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(40px, 6vw, 96px); }
+  .duo--single { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+  .duo__title { margin-bottom: 24px; font: 700 clamp(26px, 2.8vw, 40px)/1.05 var(--f-display); letter-spacing: -0.03em; }
+  .duo__p { color: var(--text-2); font-size: 18px; line-height: 1.6; }
+  .duo__p + .duo__p { margin-top: 14px; }
+
   /* вопросы-ответы на нативных <details> — работают без JS */
   .faq { border-bottom: 1px solid var(--line); }
   .faq details { border-top: 1px solid var(--line); }
@@ -305,12 +342,18 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
   /* цифры на фиолетовом */
   .sx--stats { background: var(--accent); color: #fff; border-top: 0; }
   .sx--stats .sx__title { margin-bottom: clamp(28px, 5vh, 56px); }
-  .stats { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid rgb(255 255 255 / 0.3); }
+  .stats { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); border-top: 1px solid rgb(255 255 255 / 0.3); }
   .stats li { display: grid; gap: 8px; align-content: start; padding: 28px clamp(16px, 2vw, 28px) 0; }
   .stats li:first-child { padding-left: 0; }
   .stats li + li { border-left: 1px solid rgb(255 255 255 / 0.3); }
-  .stats b { font: 800 clamp(44px, 5.6vw, 88px)/1 var(--f-display); letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
-  .stats span { color: rgb(255 255 255 / 0.85); }
+  /* размер цифры — от ширины колонки и длины самого длинного значения (с запасом на широкие буквы «млн»: 0,8 em) */
+  .stats b {
+    font: 800 clamp(30px, calc((min(100vw, var(--max)) - 96px) / var(--n, 4) / (var(--len, 6) * 0.8)), 88px)/1 var(--f-display);
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .stats span { color: rgb(255 255 255 / 0.85); overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; }
 
   /* юридический текст */
   .sx--prose { border-top: 0; padding-top: 0; }
@@ -326,7 +369,7 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
   @media (max-width: 1000px) {
     .sx__title, .sx__intro { grid-column: 1 / -1; }
     .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
-    .split, .text { grid-template-columns: minmax(0, 1fr); }
+    .split, .text, .duo { grid-template-columns: minmax(0, 1fr); }
     .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .stats li:nth-child(3) { padding-left: 0; border-left: 0; }
     .stats li:nth-child(n + 3) { border-top: 1px solid rgb(255 255 255 / 0.3); margin-top: 28px; }
@@ -340,6 +383,8 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
   }
   @media (max-width: 560px) {
     .steps { grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+    /* «12,3 млн+» должно помещаться в половину ширины телефона */
+    .stats b { font-size: clamp(22px, calc((100vw - 72px) / 2 / (var(--len, 6) * 0.62)), 44px); }
     .checks li { font-size: 17px; }
   }
 </style>

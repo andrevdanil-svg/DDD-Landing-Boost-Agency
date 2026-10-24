@@ -21,6 +21,7 @@ export const servicePages: Record<string, PageData> = {
           { title: 'Контекстная реклама', text: 'Поиск и контекстно-медийные сети Google и Яндекса.', href: '/search/' },
           { title: 'Реклама в соцсетях', text: 'Таргетированная реклама в Instagram и Facebook на заявки и продажи.', href: '/social/' },
           { title: 'Telegram, сайты .uz и PR', text: 'Telegram-каналы, баннеры на узбекских сайтах, PR-статьи и спецпроекты.', href: '/media/' },
+          { title: 'Рекламные площадки', text: 'Маркетплейсы, приложения, стриминг, рекламные сети, отраслевые аудитории и SMS.', href: '/platforms/' },
         ],
       },
       {

@@ -17,12 +17,21 @@ export type Section = Anchor &
   | { type: 'text'; title: string; text: string }
   | { type: 'faq'; title: string; items: { q: string; a: string }[] }
   | { type: 'prose'; blocks: readonly ProseBlock[] }
+  | { type: 'duo'; columns: { title: string; text?: string[]; items?: string[] }[] }
   );
 
 export type PageData = {
   seoTitle: string;
   seoDescription: string;
-  hero: { title: string; lead: string; back?: { href: string; label: string }; cta?: boolean; compact?: boolean };
+  hero: {
+    title: string;
+    lead: string;
+    back?: { href: string; label: string };
+    meta?: string;
+    cta?: boolean;
+    ctaLabel?: string;
+    compact?: boolean;
+  };
   sections: Section[];
   cta?: { title: string; text?: string; button?: string };
 };
