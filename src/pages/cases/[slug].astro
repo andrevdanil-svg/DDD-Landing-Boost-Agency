@@ -171,20 +171,11 @@ const { c, next } = Astro.props;
     .cs__grid { grid-template-columns: minmax(0, 1fr); }
     .cs__grid li, .cs__grid li:first-child { padding: 24px 0; }
     .cs__grid li + li { border-left: 0; border-top: 1px solid rgb(255 255 255 / 0.3); }
-    /* шаги листаются вбок */
-    .cb__steps ol {
-      grid-template-columns: none;
-      grid-auto-flow: column;
-      grid-auto-columns: 80%;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      margin-inline: calc(var(--pad) * -1);
-      padding-inline: var(--pad);
-      scroll-padding-inline: var(--pad);
-      scrollbar-width: none;
-    }
-    .cb__steps ol::-webkit-scrollbar { display: none; }
-    .cb__steps li { scroll-snap-align: start; }
+    /* шаги — компактным столбиком: ничего не уходит за край экрана */
+    .cb__steps ol { grid-template-columns: minmax(0, 1fr); border-bottom: 1px solid var(--line); }
+    .cb__steps li { padding-block: 12px; }
+    .cb__n, .cb__steps h3 { font-size: 18px; }
+    .cb__steps p { margin-top: 4px; font-size: 15px; line-height: 1.45; }
     .next__go { width: 44px; height: 44px; }
   }
 </style>

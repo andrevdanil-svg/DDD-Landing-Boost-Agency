@@ -418,6 +418,10 @@ const nav = ['Кампании', 'Отчёты', 'Креативы', 'A/B сра
     .pl__sub { display: none; }
     .pl__nav { margin-bottom: 12px; }
     .pl__mtext { margin-top: 10px; font-size: 15px; line-height: 1.45; min-height: 2.9em; }
+    /* все четыре вкладки — в ширину экрана, без прокрутки вбок */
+    .pl__steps { gap: 6px; overflow: visible; margin-inline: 0; padding-inline: 0; }
+    .pl__step { flex: 1 1 auto; padding: 9px 6px; text-align: center; }
+    .pl__title { font-size: clamp(12px, 3.5vw, 15px); white-space: nowrap; }
     .app {
       grid-template-columns: minmax(0, 1fr);
       height: clamp(270px, calc(100svh - var(--header-h) - 2 * var(--sec-y) - 222px), 520px);

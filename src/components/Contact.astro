@@ -116,7 +116,7 @@ const { heading: Heading = 'h2' } = Astro.props;
   .ct__ok { color: var(--green); }
   .ct__err { color: var(--coral); }
   .ct__err a { text-decoration: underline; text-underline-offset: 3px; }
-  .ct__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .ct__hp { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); opacity: 0; }
 
   @media (max-width: 860px) {
     .ct__ways { grid-template-columns: minmax(0, 1fr); }

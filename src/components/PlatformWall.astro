@@ -99,24 +99,14 @@ const groups = categoryOrder
     .pw__names { grid-column: 5 / -1; }
   }
 
-  /* телефон: короткая подпись слева, названия листаются вбок */
+  /* телефон: короткая подпись слева, названия переносятся на следующую строку */
   @media (max-width: 640px) {
     .pw__aside p { display: none; }
     .pw__rows > li { grid-template-columns: 84px minmax(0, 1fr); column-gap: 12px; padding-block: 8px; }
     .pw__cat { grid-column: 1; font-size: 13px; }
     .pw__full { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .pw__short { display: inline; }
-    .pw__names {
-      grid-column: 2;
-      flex-wrap: nowrap;
-      gap: 22px;
-      overflow-x: auto;
-      margin-inline: calc(var(--pad) * -1);
-      padding-inline: var(--pad);
-      scrollbar-width: none;
-    }
-    .pw__names::-webkit-scrollbar { display: none; }
-    .pw__names li { flex: none; }
-    .pw__names a { font-size: 18px; padding-block: 4px; }
+    .pw__names { grid-column: 2; flex-wrap: wrap; gap: 2px 16px; }
+    .pw__names a { font-size: 16px; padding-block: 3px; }
   }
 </style>

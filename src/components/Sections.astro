@@ -103,7 +103,7 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
         <section class="sx" id={s.id}>
           <div class="wrap">
             {head}
-            <ul class="grid" data-cols={cols(s.items.length)} data-swipe={s.items.length > 3 ? '' : undefined}>
+            <ul class="grid" data-cols={cols(s.items.length)} data-many={s.items.length > 3 ? '' : undefined}>
               {s.items.map((it) => (
                 <li>
                   <h3>{typo(it.title)}</h3>
@@ -154,6 +154,9 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
                 </li>
               ))}
             </ol>
+            <div class="fm__dots" aria-hidden="true" data-fm-dots>
+              {s.items.map((_, i) => <span data-on={i === 0 ? '' : undefined} />)}
+            </div>
           </div>
         </section>
       );
@@ -276,6 +279,18 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
         select(n);
       });
     });
+
+    // телефон: точки под каруселью показывают, какая карточка на экране
+    const dots = [...(fm.parentElement?.querySelectorAll<HTMLElement>('[data-fm-dots] span') ?? [])];
+    fm.addEventListener(
+      'scroll',
+      () => {
+        const step = items.length > 1 ? items[1].offsetLeft - items[0].offsetLeft : fm.clientWidth;
+        const on = Math.round(fm.scrollLeft / step);
+        dots.forEach((d, k) => d.toggleAttribute('data-on', k === on));
+      },
+      { passive: true },
+    );
   });
 </script>
 
@@ -413,6 +428,7 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
   .fm__shot img { display: block; width: 100%; height: 100%; object-fit: contain; }
   .fm__shot--none { display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); }
   .fm__shot figcaption { max-width: 26ch; padding: 24px; color: var(--text-2); text-align: center; }
+  .fm__dots { display: none; }
 
   /* шаги */
   .steps {
@@ -533,40 +549,29 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
     .grid[data-cols] li, .grid[data-cols] li:nth-child(n) { padding: 18px 0; border-left: 0; }
   }
   @media (max-width: 640px) {
-    /* форматы: карточка = пример + название + описание, листаются вбок */
+    /* форматы: карточка во всю ширину = пример + название + описание, листаются вбок, под ними точки */
     .fm {
       display: flex;
       gap: 16px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
-      margin-inline: calc(var(--pad) * -1);
-      padding-inline: var(--pad);
-      scroll-padding-inline: var(--pad);
       scrollbar-width: none;
     }
     .fm::-webkit-scrollbar { display: none; }
-    .fm > li { display: flex; flex-direction: column; flex: 0 0 80%; scroll-snap-align: start; }
+    .fm > li { display: flex; flex-direction: column; flex: 0 0 100%; scroll-snap-align: start; }
     .fm__tab { order: 1; padding: 14px 0 0; opacity: 1; pointer-events: none; }
     .fm__tab::before { display: none; }
     .fm__text, .fm > li[data-active] .fm__text { max-height: none; margin-top: 6px; }
     .fm__shot, .fm > li[data-active] .fm__shot { height: clamp(220px, 44svh, 340px); opacity: 1; visibility: visible; border-radius: 14px; }
     .fm__shot figcaption { font-size: 15px; }
-    /* карточки сетки листаются вбок */
-    .grid[data-swipe] {
-      grid-template-columns: none;
-      grid-auto-flow: column;
-      grid-auto-columns: 80%;
-      gap: 16px;
-      border-top: 0;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      margin-inline: calc(var(--pad) * -1);
-      padding-inline: var(--pad);
-      scroll-padding-inline: var(--pad);
-      scrollbar-width: none;
-    }
-    .grid[data-swipe]::-webkit-scrollbar { display: none; }
-    .grid[data-swipe] li, .grid[data-swipe] li:nth-child(n) { padding: 16px 0 0; border: 0; border-top: 1px solid var(--line-strong); scroll-snap-align: start; }
+    .fm__dots { display: flex; justify-content: center; gap: 6px; margin-top: 18px; }
+    .fm__dots span { width: 6px; height: 6px; border-radius: 3px; background: var(--line-strong); transition: width 0.25s var(--ease), background-color 0.25s var(--ease); }
+    .fm__dots span[data-on] { width: 18px; background: var(--accent); }
+    /* много карточек — компактным столбиком: ничего не уходит за край экрана */
+    .grid[data-many] { border-top: 1px solid var(--line); }
+    .grid[data-many] li, .grid[data-many] li:nth-child(n) { padding: 14px 0; border: 0; border-bottom: 1px solid var(--line); }
+    .grid[data-many] h3 { font-size: 18px; }
+    .grid[data-many] p { margin-top: 4px; font-size: 15px; line-height: 1.45; }
     .duo .checks[data-many] { grid-template-columns: minmax(0, 1fr); border-bottom: 1px solid var(--line); }
     .rows[data-cols] { --c: 1; border-bottom: 1px solid var(--line); }
     .rows a { padding-block: 14px 16px; }
@@ -576,21 +581,12 @@ const cols = (n: number) => (n <= 4 ? n : [5, 6, 9].includes(n) ? 3 : 4);
     .rows__name { font-size: 19px; }
   }
   @media (max-width: 560px) {
-    /* шаги на телефоне листаются вбок */
-    .steps {
-      grid-template-columns: none;
-      grid-auto-flow: column;
-      grid-auto-columns: 80%;
-      gap: 16px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      margin-inline: calc(var(--pad) * -1);
-      padding-inline: var(--pad);
-      scroll-padding-inline: var(--pad);
-      scrollbar-width: none;
-    }
-    .steps::-webkit-scrollbar { display: none; }
-    .steps li { scroll-snap-align: start; }
+    /* шаги на телефоне — компактным столбиком, номер слева от названия */
+    .steps { grid-template-columns: minmax(0, 1fr); gap: 0; border-bottom: 1px solid var(--line); }
+    .steps li { display: grid; grid-template-columns: 28px minmax(0, 1fr); padding: 14px 0; border-top-color: var(--line); }
+    .steps__n { grid-row: span 2; font-size: 18px; line-height: 1.25; }
+    .steps h3 { margin-top: 0; font-size: 18px; }
+    .steps p { margin-top: 4px; font-size: 15px; line-height: 1.45; }
     /* «12,3 млн+» должно помещаться в половину ширины телефона */
     .stats b { font-size: clamp(22px, calc((100vw - 72px) / 2 / (var(--len, 6) * 0.62)), 44px); }
     .checks li { font-size: 17px; }
