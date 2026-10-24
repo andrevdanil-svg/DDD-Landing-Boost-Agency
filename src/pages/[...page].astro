@@ -1,0 +1,27 @@
+---
+import Page from '../layouts/Page.astro';
+import PageHero from '../components/PageHero.astro';
+import Sections from '../components/Sections.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { pages } from '../data/pages';
+
+export function getStaticPaths() {
+  return Object.entries(pages).map(([page, data]) => ({ params: { page }, props: { data } }));
+}
+
+const { data } = Astro.props;
+---
+
+<Page title={data.seoTitle} description={data.seoDescription}>
+  <PageHero hero={data.hero} />
+  <Sections sections={data.sections} />
+  {
+    data.cta && (
+      <CtaBand
+        title={data.cta.title}
+        text={data.cta.text}
+        secondary={{ href: '/contact/', label: 'Медиаплан за 48 часов' }}
+      />
+    )
+  }
+</Page>

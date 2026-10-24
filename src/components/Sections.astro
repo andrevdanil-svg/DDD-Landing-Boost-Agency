@@ -1,0 +1,345 @@
+---
+import Arrow from './Arrow.astro';
+import { typo } from '../lib/typo';
+import { linkify } from '../lib/linkify';
+import type { Section } from '../data/pages';
+
+interface Props {
+  sections: Section[];
+}
+const { sections } = Astro.props;
+const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
+---
+
+{
+  sections.map((s) => {
+    if (s.type === 'prose') {
+      return (
+        <section class="sx sx--prose">
+          <div class="wrap">
+            <div class="prose">
+              {s.blocks.map((b) =>
+                'h2' in b ? (
+                  <h2>{b.h2}</h2>
+                ) : 'p' in b ? (
+                  <p set:html={linkify(b.p)} />
+                ) : (
+                  <ul>
+                    {b.ul.map((li) => (
+                      <li set:html={linkify(li)} />
+                    ))}
+                  </ul>
+                ),
+              )}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    if (s.type === 'stats') {
+      return (
+        <section class="sx sx--stats">
+          <div class="wrap">
+            <h2 class="sx__title">{typo(s.title)}</h2>
+            <ul class="stats">
+              {s.items.map((it) => (
+                <li>
+                  <b>{it.value}</b>
+                  <span>{typo(it.label)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    }
+
+    const head = (
+      <div class="sx__head">
+        <h2 class="sx__title">{typo(s.title)}</h2>
+        {'intro' in s && s.intro && <p class="sx__intro">{typo(s.intro)}</p>}
+      </div>
+    );
+
+    if (s.type === 'text') {
+      return (
+        <section class="sx">
+          <div class="wrap text">
+            <h2 class="sx__title">{typo(s.title)}</h2>
+            <p>{typo(s.text)}</p>
+          </div>
+        </section>
+      );
+    }
+
+    if (s.type === 'list') {
+      return (
+        <section class="sx">
+          <div class="wrap">
+            {head}
+            <ul class="rows">
+              {s.items.map((it) => (
+                <li>
+                  <a href={it.href}>
+                    <span class="rows__name">{typo(it.title)}</span>
+                    <span class="rows__text">{typo(it.text)}</span>
+                    <span class="rows__go" aria-hidden="true">
+                      <Arrow />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    }
+
+    if (s.type === 'grid') {
+      return (
+        <section class="sx">
+          <div class="wrap">
+            {head}
+            <ul class="grid" data-cols={cols(s.items.length)}>
+              {s.items.map((it) => (
+                <li>
+                  <h3>{typo(it.title)}</h3>
+                  <p>{typo(it.text)}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    }
+
+    if (s.type === 'steps') {
+      return (
+        <section class="sx">
+          <div class="wrap">
+            {head}
+            <ol class="steps">
+              {s.items.map((it, i) => (
+                <li>
+                  <span class="steps__n" aria-hidden="true">
+                    {i + 1}
+                  </span>
+                  <h3>{typo(it.title)}</h3>
+                  <p>{typo(it.text)}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      );
+    }
+
+    if (s.type === 'checks') {
+      return (
+        <section class="sx">
+          <div class="wrap split">
+            {head}
+            <ul class="checks">
+              {s.items.map((it) => (
+                <li>
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="m3.5 8.5 3 3 6-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span>{typo(it)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    }
+
+    if (s.type === 'faq') {
+      return (
+        <section class="sx">
+          <div class="wrap split">
+            <div class="sx__head">
+              <h2 class="sx__title">{typo(s.title)}</h2>
+            </div>
+            <div class="faq">
+              {s.items.map((it) => (
+                <details>
+                  <summary>
+                    <span>{typo(it.q)}</span>
+                    <i aria-hidden="true" />
+                  </summary>
+                  <p>{typo(it.a)}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+  })
+}
+
+<style>
+  .sx { border-top: 1px solid var(--line); padding-block: clamp(72px, 12vh, 140px); }
+
+  .sx__head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: 20px;
+    margin-bottom: clamp(32px, 6vh, 64px);
+  }
+  .sx__title {
+    grid-column: 1 / span 7;
+    font: 700 clamp(30px, 4vw, 56px)/1.02 var(--f-display);
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  .sx__intro { grid-column: 8 / -1; align-self: end; color: var(--text-2); max-width: 46ch; }
+
+  /* строки со ссылками */
+  .rows { list-style: none; padding: 0; border-bottom: 1px solid var(--line); }
+  .rows a {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr) auto;
+    column-gap: var(--gap);
+    align-items: center;
+    padding-block: clamp(20px, 3vh, 32px);
+    border-top: 1px solid var(--line);
+  }
+  .rows__name { font: 600 clamp(24px, 2.8vw, 40px)/1.1 var(--f-display); letter-spacing: -0.025em; transition: transform 0.5s var(--ease); }
+  .rows__text { color: var(--text-2); max-width: 44ch; }
+  .rows__go {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .rows__go :global(svg) { width: 18px; height: 18px; }
+  .rows a:hover .rows__name { transform: translateX(10px); }
+  .rows a:hover .rows__go { background: var(--accent); border-color: var(--accent); }
+
+  /* сетка через тонкие линии */
+  .grid {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+  .grid[data-cols='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid[data-cols='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid li { padding: clamp(24px, 4vh, 40px) clamp(20px, 2.4vw, 36px); border-bottom: 1px solid var(--line); }
+  /* первая колонка без отступа слева, между колонками — тонкая линия */
+  .grid[data-cols='2'] li:nth-child(2n + 1), .grid[data-cols='3'] li:nth-child(3n + 1) { padding-left: 0; }
+  .grid[data-cols='2'] li:nth-child(2n), .grid[data-cols='3'] li:not(:nth-child(3n + 1)) { border-left: 1px solid var(--line); }
+  .grid h3 { font: 600 clamp(20px, 1.7vw, 24px)/1.25 var(--f-display); letter-spacing: -0.015em; }
+  .grid p { margin-top: 12px; color: var(--text-2); }
+
+  /* шаги */
+  .steps {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+  .steps li { padding-top: 24px; border-top: 1px solid var(--line-strong); }
+  .steps__n { display: block; font: 700 clamp(32px, 3vw, 44px)/1 var(--f-display); color: var(--accent); letter-spacing: -0.03em; }
+  .steps h3 { margin-top: 20px; font: 600 21px/1.25 var(--f-display); letter-spacing: -0.015em; }
+  .steps p { margin-top: 10px; color: var(--text-2); }
+
+  /* заголовок слева, список справа */
+  .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); }
+  .split .sx__head { display: block; margin-bottom: 0; }
+  .split .sx__intro { margin-top: 20px; }
+  .checks { list-style: none; padding: 0; border-bottom: 1px solid var(--line); }
+  .checks li {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    padding-block: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 18px;
+  }
+  .checks svg { width: 22px; height: 22px; margin-top: 2px; color: var(--accent); }
+
+  /* вопросы-ответы на нативных <details> — работают без JS */
+  .faq { border-bottom: 1px solid var(--line); }
+  .faq details { border-top: 1px solid var(--line); }
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 22px;
+    cursor: pointer;
+    list-style: none;
+    font: 600 clamp(18px, 1.5vw, 21px)/1.3 var(--f-display);
+    letter-spacing: -0.01em;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary i { position: relative; flex: none; width: 16px; height: 16px; }
+  .faq summary i::before, .faq summary i::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 7px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--text-2);
+    transition: transform 0.3s var(--ease);
+  }
+  .faq summary i::after { transform: rotate(90deg); }
+  .faq details[open] summary i::after { transform: rotate(0deg); }
+  .faq details p { padding-bottom: 24px; color: var(--text-2); max-width: 60ch; }
+
+  /* большой текстовый блок */
+  .text { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); }
+  .text .sx__title { grid-column: auto; }
+  .text p { font: 500 clamp(20px, 2vw, 28px)/1.4 var(--f-display); letter-spacing: -0.015em; color: var(--text-2); }
+
+  /* цифры на фиолетовом */
+  .sx--stats { background: var(--accent); color: #fff; border-top: 0; }
+  .sx--stats .sx__title { margin-bottom: clamp(28px, 5vh, 56px); }
+  .stats { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid rgb(255 255 255 / 0.3); }
+  .stats li { display: grid; gap: 8px; align-content: start; padding: 28px clamp(16px, 2vw, 28px) 0; }
+  .stats li:first-child { padding-left: 0; }
+  .stats li + li { border-left: 1px solid rgb(255 255 255 / 0.3); }
+  .stats b { font: 800 clamp(44px, 5.6vw, 88px)/1 var(--f-display); letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+  .stats span { color: rgb(255 255 255 / 0.85); }
+
+  /* юридический текст */
+  .sx--prose { border-top: 0; padding-top: 0; }
+  .prose { max-width: 760px; }
+  .prose h2 { margin-top: 48px; font: 600 clamp(21px, 1.8vw, 26px)/1.3 var(--f-display); letter-spacing: -0.015em; }
+  .prose h2:first-child { margin-top: 0; }
+  .prose p, .prose li { color: var(--text-2); font-size: 17px; line-height: 1.7; }
+  .prose p { margin-top: 14px; }
+  .prose ul { margin-top: 14px; padding-left: 22px; display: grid; gap: 8px; }
+  .prose li::marker { color: var(--accent); }
+  .prose :global(a) { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+
+  @media (max-width: 1000px) {
+    .sx__title, .sx__intro { grid-column: 1 / -1; }
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
+    .split, .text { grid-template-columns: minmax(0, 1fr); }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stats li:nth-child(3) { padding-left: 0; border-left: 0; }
+    .stats li:nth-child(n + 3) { border-top: 1px solid rgb(255 255 255 / 0.3); margin-top: 28px; }
+  }
+  @media (max-width: 860px) {
+    .grid[data-cols] { grid-template-columns: minmax(0, 1fr); }
+    .grid[data-cols] li { padding: 24px 0; border-left: 0; }
+    .rows a { grid-template-columns: minmax(0, 1fr) auto; row-gap: 10px; }
+    .rows__name, .rows__text { grid-column: 1; }
+    .rows__go { grid-column: 2; grid-row: 1 / span 2; width: 44px; height: 44px; }
+  }
+  @media (max-width: 560px) {
+    .steps { grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+    .checks li { font-size: 17px; }
+  }
+</style>
