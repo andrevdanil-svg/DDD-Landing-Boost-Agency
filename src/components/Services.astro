@@ -1,28 +1,16 @@
 ---
 import Arrow from './Arrow.astro';
 
-// Услуги — по текущим страницам boostagency.uz
+import { typo } from '../lib/typo';
+
+// Группы услуг; полный список — на /services/
 const services = [
-  {
-    title: 'Реклама',
-    text: 'Медийная, видео, нативная, в мобильных приложениях и на Smart TV. Ретаргетинг на тех, кто уже был на сайте.',
-    href: '/channels/',
-  },
-  {
-    title: 'Сайты и лендинги',
-    text: 'Под рекламный трафик: дизайн, разработка, формы заявок и связка с CRM и аналитикой.',
-    href: '/sites/',
-  },
-  {
-    title: 'Пополнение кабинетов',
-    text: 'Meta, Google, Яндекс Директ и DV360. Безналичный перевод, закрывающие документы, зачисление в течение рабочего дня.',
-    href: '/topup/',
-  },
-  {
-    title: 'Самостоятельный запуск',
-    text: 'Свой кабинет: готовые пресеты или пошаговый мастер — кампания запускается за пять минут.',
-    href: '/self-launch/',
-  },
+  { title: 'Реклама в интернете', text: 'Медийная и контекстная реклама, соцсети, Telegram-каналы и сайты .uz.', href: '/services/#online' },
+  { title: 'ТВ, радио и наружная реклама', text: '50+ телеканалов, все радиостанции и наружная реклама по Узбекистану и СНГ.', href: '/services/#offline' },
+  { title: 'Медиастратегия и аудит', text: 'Медиамикс под цель бизнеса: онлайн и офлайн в одном плане.', href: '/media-strategy/' },
+  { title: 'Сайты и лендинги', text: 'Под рекламный трафик: дизайн, разработка, формы заявок и связка с CRM и аналитикой.', href: '/sites/' },
+  { title: 'Пополнение кабинетов', text: 'Meta, Google, Яндекс Директ и DV360 по одному договору, зачисление в течение рабочего дня.', href: '/topup/' },
+  { title: 'Самостоятельный запуск', text: 'Свой рекламный кабинет: кампания запускается за пять минут.', href: '/self-launch/' },
 ];
 ---
 
@@ -35,7 +23,7 @@ const services = [
           <li>
             <a href={s.href}>
               <span class="sv__name">{s.title}</span>
-              <span class="sv__text">{s.text}</span>
+              <span class="sv__text">{typo(s.text)}</span>
               <span class="sv__go" aria-hidden="true">
                 <Arrow />
               </span>
@@ -44,6 +32,7 @@ const services = [
         ))
       }
     </ul>
+    <a class="sv__all" href="/services/">Все услуги <Arrow /></a>
   </div>
 </section>
 
@@ -78,6 +67,17 @@ const services = [
   .sv__go :global(svg) { width: 18px; height: 18px; }
 
   .sv__list a:hover .sv__name { transform: translateX(10px); }
+  .sv__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 32px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--accent);
+    font: 600 17px/1 var(--f-display);
+  }
+  .sv__all :global(svg) { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
+  .sv__all:hover :global(svg) { transform: translateX(3px); }
   .sv__list a:hover .sv__go { background: var(--accent); border-color: var(--accent); color: #fff; }
 
   @media (max-width: 860px) {

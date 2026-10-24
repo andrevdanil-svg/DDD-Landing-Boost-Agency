@@ -1,11 +1,14 @@
 // Тексты внутренних страниц. Факты (сроки, суммы, форматы, интеграции) — со старого boostagency.uz,
 // формулировки переписаны под digital-агентство.
 import { legal } from './legal';
+import { servicePages } from './services';
 
 export type Item = { title: string; text: string; href?: string };
 export type ProseBlock = { h2: string } | { p: string } | { ul: readonly string[] };
 
-export type Section =
+type Anchor = { id?: string };
+export type Section = Anchor &
+  (
   | { type: 'list'; title: string; intro?: string; items: Item[] }
   | { type: 'grid'; title: string; intro?: string; items: Item[] }
   | { type: 'checks'; title: string; intro?: string; items: string[] }
@@ -13,7 +16,8 @@ export type Section =
   | { type: 'stats'; title: string; items: { value: string; label: string }[] }
   | { type: 'text'; title: string; text: string }
   | { type: 'faq'; title: string; items: { q: string; a: string }[] }
-  | { type: 'prose'; blocks: readonly ProseBlock[] };
+  | { type: 'prose'; blocks: readonly ProseBlock[] }
+  );
 
 export type PageData = {
   seoTitle: string;
@@ -23,7 +27,7 @@ export type PageData = {
   cta?: { title: string; text?: string; button?: string };
 };
 
-const backToAds = { href: '/channels/', label: 'Реклама' };
+const backToAds = { href: '/channels/', label: 'Медийная реклама' };
 
 export const pages: Record<string, PageData> = {
   about: {
@@ -352,11 +356,12 @@ export const pages: Record<string, PageData> = {
   },
 
   channels: {
-    seoTitle: 'Реклама: баннеры, видео, нативная, в приложениях, Smart TV, ретаргетинг — Boost! Agency',
+    seoTitle: 'Медийная реклама: баннеры, видео, нативная, в приложениях, Smart TV — Boost! Agency',
     seoDescription:
-      'Шесть рекламных форматов в одном медиаплане: баннеры, видео, нативная реклама, мобильные приложения, Smart TV и ретаргетинг. Бюджет перераспределяется по результату.',
+      'Медийная реклама: баннеры, видео, нативная реклама, мобильные приложения, Smart TV и ретаргетинг в одном медиаплане. Бюджет перераспределяется по результату.',
     hero: {
-      title: 'Реклама везде, где ваша аудитория',
+      back: { href: '/services/', label: 'Все услуги' },
+      title: 'Медийная реклама везде, где ваша аудитория',
       lead: 'Шесть форматов в одном медиаплане. Бюджет перераспределяется между ними по результату — без новых договоров и менеджеров.',
     },
     sections: [
@@ -586,6 +591,8 @@ export const pages: Record<string, PageData> = {
     cta: { title: 'Не нашли ответ?' },
   },
 };
+
+Object.assign(pages, servicePages);
 
 // Юридические страницы — текст без изменений
 for (const [slug, doc] of Object.entries(legal)) {

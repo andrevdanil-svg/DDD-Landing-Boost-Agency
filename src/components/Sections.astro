@@ -39,7 +39,7 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
 
     if (s.type === 'stats') {
       return (
-        <section class="sx sx--stats">
+        <section class="sx sx--stats" id={s.id}>
           <div class="wrap">
             <h2 class="sx__title">{typo(s.title)}</h2>
             <ul class="stats">
@@ -64,7 +64,7 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
 
     if (s.type === 'text') {
       return (
-        <section class="sx">
+        <section class="sx" id={s.id}>
           <div class="wrap text">
             <h2 class="sx__title">{typo(s.title)}</h2>
             <p>{typo(s.text)}</p>
@@ -75,7 +75,7 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
 
     if (s.type === 'list') {
       return (
-        <section class="sx">
+        <section class="sx" id={s.id}>
           <div class="wrap">
             {head}
             <ul class="rows">
@@ -98,7 +98,7 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
 
     if (s.type === 'grid') {
       return (
-        <section class="sx">
+        <section class="sx" id={s.id}>
           <div class="wrap">
             {head}
             <ul class="grid" data-cols={cols(s.items.length)}>
@@ -116,7 +116,7 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
 
     if (s.type === 'steps') {
       return (
-        <section class="sx">
+        <section class="sx" id={s.id}>
           <div class="wrap">
             {head}
             <ol class="steps">
@@ -137,7 +137,7 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
 
     if (s.type === 'checks') {
       return (
-        <section class="sx">
+        <section class="sx" id={s.id}>
           <div class="wrap split">
             {head}
             <ul class="checks">
@@ -157,7 +157,7 @@ const cols = (n: number) => (n % 3 === 0 ? 3 : n === 4 ? 2 : Math.min(n, 3));
 
     if (s.type === 'faq') {
       return (
-        <section class="sx">
+        <section class="sx" id={s.id}>
           <div class="wrap split">
             <div class="sx__head">
               <h2 class="sx__title">{typo(s.title)}</h2>

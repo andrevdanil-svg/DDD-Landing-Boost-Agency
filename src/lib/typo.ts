@@ -8,7 +8,7 @@ export function typo(text: string): string {
   return text
     .replace(/ (—|–) /g, `${NBSP}$1 `)
     .replace(SHORT_RU, (_, pre: string, word: string) => `${pre}${word}${NBSP}`)
-    .replace(/(\d) (?=[%$₽€]|[а-яёa-z])/gi, `$1${NBSP}`)
+    .replace(/(\d[+%]?) (?=[%$₽€]|[а-яёa-z])/gi, `$1${NBSP}`)
     // диапазоны «3–5», «10–14»: без переноса после тире
     .replace(/(\d)–(\d)/g, '$1–⁠$2');
 }
