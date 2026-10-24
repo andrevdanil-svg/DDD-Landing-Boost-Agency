@@ -1,18 +1,17 @@
 ---
 const text =
-  'Мы\u00a0— programmatic-агентство из Ташкента. Покупаем рекламу на десятках бирж, торгуемся за каждый показ и ничего не прячем: всё, что видим мы, клиент видит в своём кабинете.';
+  'Мы — digital-агентство из Ташкента. Ведём рекламу, делаем сайты и считаем каждый вложенный доллар: всё, что видим мы, клиент видит в своём кабинете.';
 const words = text.split(' ');
 
 const facts = [
   { n: '200+', l: 'кампаний с 2019 года' },
-  { n: '6', l: 'форматов в одной закупке\u00a0— от баннеров до Smart TV' },
   { n: '48 ч', l: 'от заявки до готового медиаплана' },
+  { n: '5 мин', l: 'чтобы запустить кампанию в кабинете самостоятельно' },
 ];
 ---
 
 <section class="mf" id="about" aria-labelledby="mf-title">
   <div class="wrap">
-    <span class="path">/about</span>
     <h2 id="mf-title" class="sr-only">О компании</h2>
     <p class="mf__text">
       {words.map((w) => <><span class="w">{w}</span>{' '}</>)}
@@ -36,7 +35,6 @@ const facts = [
     padding-block: clamp(96px, 18vh, 200px) clamp(72px, 12vh, 140px);
   }
   .mf__text {
-    margin-top: clamp(28px, 5vh, 56px);
     max-width: 21em;
     font: 600 clamp(28px, 4.3vw, 64px)/1.08 var(--f-display);
     letter-spacing: -0.028em;

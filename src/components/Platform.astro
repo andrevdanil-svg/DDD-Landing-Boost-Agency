@@ -46,7 +46,6 @@ const rows = [
 
 <section class="pl" id="platform" aria-labelledby="pl-title">
   <div class="wrap pl__head">
-    <span class="path">/platform</span>
     <h2 id="pl-title" class="h2">Кабинет, в&nbsp;котором видно каждый показ</h2>
     <p class="pl__sub">
       Каждая метрика, которую видим мы, доступна вам&nbsp;— в&nbsp;том&nbsp;же кабинете и&nbsp;в&nbsp;том&nbsp;же разрезе.
@@ -68,7 +67,6 @@ const rows = [
                 aria-selected={i === 0 ? 'true' : 'false'}
                 data-step
               >
-                <span class="pl__num">{String(i + 1).padStart(2, '0')}</span>
                 <span class="pl__title">{st.title}</span>
                 <span class="pl__text">{st.text}</span>
                 <span class="pl__bar" aria-hidden="true"><i /></span>
@@ -230,7 +228,6 @@ const rows = [
     row-gap: 24px;
     margin-bottom: clamp(40px, 8vh, 80px);
   }
-  .pl__head .path { grid-column: 1 / -1; }
   .pl__head .h2 { grid-column: 1 / span 8; }
   .pl__sub { grid-column: 9 / -1; align-self: end; color: var(--text-2); max-width: 36ch; }
 
@@ -239,17 +236,15 @@ const rows = [
   .pl__step {
     position: relative;
     display: grid;
-    grid-template-columns: 40px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     padding: 18px 0 18px 22px;
     text-align: left;
     opacity: 0.42;
     transition: opacity 0.35s var(--ease);
   }
   .pl__step:hover, .pl__step[aria-selected='true'] { opacity: 1; }
-  .pl__num { font: 500 12px/1.9 var(--f-mono); color: var(--text-3); }
   .pl__title { font: 600 22px/1.25 var(--f-display); letter-spacing: -0.015em; }
   .pl__text {
-    grid-column: 2;
     max-height: 0;
     overflow: hidden;
     color: var(--text-2);
@@ -296,7 +291,7 @@ const rows = [
     gap: 8px;
     padding: 0 14px;
     border-bottom: 1px solid var(--line);
-    font: 400 12px/1 var(--f-mono);
+    font: 400 12px/1 var(--f-text);
     color: var(--text-3);
   }
   .app__url { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -361,7 +356,7 @@ const rows = [
   .kpi { display: grid; gap: 6px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; }
   .kpi span { color: var(--text-3); font-size: 12px; }
   .kpi b { font: 700 22px/1 var(--f-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-  .kpi em { font: 500 11.5px/1 var(--f-mono); font-style: normal; }
+  .kpi em { font: 500 12px/1 var(--f-text); font-style: normal; font-variant-numeric: tabular-nums; }
   .up { color: var(--green); }
   .down { color: var(--coral); }
 
@@ -387,14 +382,14 @@ const rows = [
   .panel h3 { font: 600 13px/1.2 var(--f-text); color: var(--text-2); }
   .hbar { display: grid; grid-template-columns: 76px minmax(0, 1fr) 36px; align-items: center; gap: 10px; }
   .hbar span { color: var(--text-2); }
-  .hbar b { text-align: right; font: 500 12px/1 var(--f-mono); }
+  .hbar b { text-align: right; font: 500 12px/1 var(--f-text); font-variant-numeric: tabular-nums; }
   .hbar__track { height: 8px; border-radius: 4px; background: rgb(255 255 255 / 0.05); }
   .hbar__track i { display: block; height: 100%; width: var(--v); border-radius: 4px; background: var(--accent); }
   .vbars { flex: 1; min-height: 90px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
   .vbar { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
   .vbar__cols { flex: 1; display: flex; align-items: flex-end; justify-content: center; gap: 3px; }
   .vbar__cols i { width: 10px; height: var(--v); border-radius: 3px 3px 0 0; }
-  .vbar span { text-align: center; color: var(--text-3); font: 400 11px/1 var(--f-mono); }
+  .vbar span { text-align: center; color: var(--text-3); font: 400 11px/1 var(--f-text); }
   .m { background: var(--accent); }
   .f { background: var(--coral); }
   .legend { display: flex; gap: 14px; color: var(--text-3); font-size: 12px; }
@@ -415,13 +410,13 @@ const rows = [
   .cr__thumb--video i:last-child { left: 8%; right: 8%; bottom: 10%; height: 3px; background: linear-gradient(90deg, #fff 30%, rgb(255 255 255 / 0.2) 30%); }
   .cr__meta { display: grid; gap: 2px; }
   .cr__meta b { font-weight: 500; }
-  .cr__meta span { color: var(--text-3); font: 400 12px/1.3 var(--f-mono); }
-  .tag { justify-self: start; padding: 4px 8px; border-radius: 6px; font: 500 11px/1 var(--f-mono); }
+  .cr__meta span { color: var(--text-3); font: 400 12px/1.3 var(--f-text); font-variant-numeric: tabular-nums; }
+  .tag { justify-self: start; padding: 5px 8px; border-radius: 6px; font: 500 11.5px/1 var(--f-text); }
   .tag--good { color: var(--green); background: rgb(62 207 142 / 0.12); }
   .tag--neutral { color: var(--text-2); background: rgb(255 255 255 / 0.06); }
   .tag--bad { color: var(--coral); background: rgb(255 138 91 / 0.12); }
 
-  .tbl { width: 100%; border-collapse: collapse; font: 400 12.5px/1 var(--f-mono); font-variant-numeric: tabular-nums; }
+  .tbl { width: 100%; border-collapse: collapse; font: 400 13px/1 var(--f-text); font-variant-numeric: tabular-nums; }
   .tbl th { padding: 0 8px 10px; text-align: right; color: var(--text-3); font-weight: 400; border-bottom: 1px solid var(--line); }
   .tbl td { padding: 11px 8px; text-align: right; border-bottom: 1px solid var(--line); }
   .tbl th:first-child, .tbl td:first-child { text-align: left; padding-left: 0; }
@@ -476,7 +471,7 @@ const rows = [
       opacity: 1;
     }
     .pl__step[aria-selected='true'] { background: var(--text); color: var(--bg); border-color: var(--text); }
-    .pl__num, .pl__text, .pl__bar { display: none; }
+    .pl__text, .pl__bar { display: none; }
     .pl__title { font-size: 15px; }
     /* высота под самую длинную подпись (3 строки), чтобы кабинет не прыгал при смене вкладки */
     .pl__mtext { display: block; margin-top: 14px; color: var(--text-2); font-size: 16px; line-height: 1.55; min-height: 4.65em; }

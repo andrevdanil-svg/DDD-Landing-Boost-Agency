@@ -1,0 +1,89 @@
+---
+import Arrow from './Arrow.astro';
+
+// Услуги — по текущим страницам boostagency.uz
+const services = [
+  {
+    title: 'Реклама',
+    text: 'Медийная, видео, нативная, в мобильных приложениях и на Smart TV. Ретаргетинг на тех, кто уже был на сайте.',
+    href: '/channels/',
+  },
+  {
+    title: 'Сайты и лендинги',
+    text: 'Под рекламный трафик: дизайн, разработка, формы заявок и связка с CRM и аналитикой.',
+    href: '/sites/',
+  },
+  {
+    title: 'Пополнение кабинетов',
+    text: 'Meta, Google, Яндекс Директ и DV360. Безналичный перевод, закрывающие документы, зачисление в течение рабочего дня.',
+    href: '/topup/',
+  },
+  {
+    title: 'Самостоятельный запуск',
+    text: 'Свой кабинет: готовые пресеты или пошаговый мастер — кампания запускается за пять минут.',
+    href: '/self-launch/',
+  },
+];
+---
+
+<section class="sv" id="services" aria-labelledby="sv-title">
+  <div class="wrap">
+    <h2 id="sv-title" class="h2 sv__title">Что делаем</h2>
+    <ul class="sv__list">
+      {
+        services.map((s) => (
+          <li>
+            <a href={s.href}>
+              <span class="sv__name">{s.title}</span>
+              <span class="sv__text">{s.text}</span>
+              <span class="sv__go" aria-hidden="true">
+                <Arrow />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .sv { border-top: 1px solid var(--line); padding-block: clamp(96px, 16vh, 180px); }
+  .sv__title { margin-bottom: clamp(40px, 7vh, 72px); }
+
+  .sv__list { list-style: none; padding: 0; border-bottom: 1px solid var(--line); }
+  .sv__list a {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr) auto;
+    column-gap: var(--gap);
+    align-items: center;
+    padding-block: clamp(22px, 3.4vh, 36px);
+    border-top: 1px solid var(--line);
+  }
+  .sv__name {
+    font: 600 clamp(28px, 3.6vw, 52px)/1.05 var(--f-display);
+    letter-spacing: -0.03em;
+    transition: transform 0.5s var(--ease), color 0.3s;
+  }
+  .sv__text { color: var(--text-2); max-width: 44ch; }
+  .sv__go {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s;
+  }
+  .sv__go :global(svg) { width: 18px; height: 18px; }
+
+  .sv__list a:hover .sv__name { transform: translateX(10px); }
+  .sv__list a:hover .sv__go { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  @media (max-width: 860px) {
+    .sv__list a { grid-template-columns: minmax(0, 1fr) auto; row-gap: 10px; }
+    .sv__name { grid-column: 1; }
+    .sv__text { grid-column: 1; }
+    .sv__go { grid-column: 2; grid-row: 1 / span 2; width: 44px; height: 44px; }
+  }
+</style>

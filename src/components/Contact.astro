@@ -1,25 +1,26 @@
 ---
 import Arrow from './Arrow.astro';
+import { TELEGRAM } from '../data/contacts';
 
-const TELEGRAM = 'https://t.me/andrevdanil';
 const budgets = ['до $5 000', '$5 000 – $20 000', '$20 000 – $50 000', 'от $50 000'];
 ---
 
 <section class="ct" id="contact" aria-labelledby="ct-title" data-contact>
   <div class="wrap">
-    <span class="path">/contact</span>
     <h2 id="ct-title" class="h2 ct__title">Пришлите задачу&nbsp;— вернём медиаплан за&nbsp;48&nbsp;часов</h2>
 
     <div class="ct__ways">
       <div class="ct__tg">
-        <p class="ct__k">Быстрее всего</p>
-        <p class="ct__big">Telegram</p>
-        <p class="ct__muted">Ответим в&nbsp;течение рабочего дня. Можно сразу с&nbsp;брифом или ссылкой на&nbsp;сайт.</p>
+        <h3 class="ct__big">Telegram</h3>
+        <p class="ct__muted">
+          Самый быстрый способ. Ответим в&nbsp;течение рабочего дня&nbsp;— можно сразу с&nbsp;брифом или ссылкой
+          на&nbsp;сайт.
+        </p>
         <a class="btn btn--primary" href={TELEGRAM}>Написать в&nbsp;Telegram <Arrow /></a>
       </div>
 
-      <form class="ct__form" novalidate data-form>
-        <p class="ct__k">Или оставьте контакт</p>
+      <form class="ct__form" novalidate data-form aria-labelledby="ct-form-title">
+        <h3 class="ct__sub" id="ct-form-title">Или оставьте контакт</h3>
         <label class="field">
           <span>Имя</span>
           <input name="name" autocomplete="name" required />
@@ -70,8 +71,8 @@ const budgets = ['до $5 000', '$5 000 – $20 000', '$20 000 – $50 000', 'о
   .ct__tg { padding-right: clamp(24px, 4vw, 64px); }
   .ct__form { padding-left: clamp(24px, 4vw, 64px); border-left: 1px solid var(--line); align-items: stretch; }
 
-  .ct__k { font: 500 12px/1 var(--f-mono); color: var(--text-3); }
   .ct__big { font: 700 clamp(40px, 5vw, 72px)/1 var(--f-display); letter-spacing: -0.035em; }
+  .ct__sub { font: 600 clamp(22px, 2vw, 28px)/1.2 var(--f-display); letter-spacing: -0.02em; margin-bottom: 8px; }
   .ct__muted { color: var(--text-2); max-width: 36ch; margin-bottom: 8px; }
 
   .field { display: grid; gap: 8px; }

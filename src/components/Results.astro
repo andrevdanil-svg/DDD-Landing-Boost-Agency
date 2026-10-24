@@ -19,7 +19,6 @@ const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 <section class="rs" id="results" aria-labelledby="rs-title">
   <div class="wrap">
     <div class="rs__head">
-      <span class="path">/cases</span>
       <h2 id="rs-title" class="h2">Что получили клиенты</h2>
     </div>
 
@@ -70,8 +69,7 @@ const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     color: #fff;
     padding-block: clamp(96px, 16vh, 180px);
   }
-  .rs .path { color: rgb(255 255 255 / 0.75); }
-  .rs__head { display: grid; gap: 24px; margin-bottom: clamp(40px, 7vh, 72px); }
+  .rs__head { margin-bottom: clamp(40px, 7vh, 72px); }
 
   .rs__list { list-style: none; padding: 0; border-bottom: 1px solid rgb(255 255 255 / 0.3); }
   .rs__row a {
@@ -105,7 +103,7 @@ const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   .rs__what { display: grid; gap: 4px; }
   .rs__what b { font: 600 clamp(17px, 1.5vw, 21px)/1.25 var(--f-display); letter-spacing: -0.01em; }
   .rs__what span { color: rgb(255 255 255 / 0.85); font-size: 15px; }
-  .rs__note { color: rgb(255 255 255 / 0.85); font: 400 13.5px/1.5 var(--f-mono); }
+  .rs__note { color: rgb(255 255 255 / 0.85); font: 400 15px/1.5 var(--f-text); }
   .rs__go {
     display: inline-flex;
     align-items: center;
