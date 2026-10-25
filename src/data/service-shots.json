@@ -1,0 +1,134 @@
+[
+ {
+  "src": "/formats/services/search.webp",
+  "w": 1100,
+  "h": 772,
+  "bg": "#e6e6ed"
+ },
+ {
+  "src": "/formats/services/site.webp",
+  "w": 1100,
+  "h": 802,
+  "bg": "#e6e6ed"
+ },
+ {
+  "src": "/formats/services/site-m.webp",
+  "w": 773,
+  "h": 1400,
+  "bg": "#e9e9ef"
+ },
+ {
+  "src": "/formats/services/retarget.webp",
+  "w": 1100,
+  "h": 616,
+  "bg": "#e5e5ec"
+ },
+ {
+  "src": "/formats/services/pr.webp",
+  "w": 1100,
+  "h": 682,
+  "bg": "#e6e6ed"
+ },
+ {
+  "src": "/formats/services/quiz.webp",
+  "w": 1100,
+  "h": 947,
+  "bg": "#e9e9ef"
+ },
+ {
+  "src": "/formats/services/feed.webp",
+  "w": 741,
+  "h": 1400,
+  "bg": "#e9e9ef"
+ },
+ {
+  "src": "/formats/services/story.webp",
+  "w": 741,
+  "h": 1400,
+  "bg": "#e9e9ef"
+ },
+ {
+  "src": "/formats/services/reels.webp",
+  "w": 741,
+  "h": 1400,
+  "bg": "#e9e9ef"
+ },
+ {
+  "src": "/formats/services/tg.webp",
+  "w": 741,
+  "h": 1400,
+  "bg": "#e9e9ef"
+ },
+ {
+  "src": "/formats/services/tg-blog.webp",
+  "w": 741,
+  "h": 1400,
+  "bg": "#e9e9ef"
+ },
+ {
+  "src": "/formats/services/led.webp",
+  "w": 1100,
+  "h": 733,
+  "bg": "#91bbe0"
+ },
+ {
+  "src": "/formats/services/shchit.webp",
+  "w": 1100,
+  "h": 825,
+  "bg": "#878784"
+ },
+ {
+  "src": "/formats/services/citylight.webp",
+  "w": 1100,
+  "h": 938,
+  "bg": "#272017"
+ },
+ {
+  "src": "/formats/services/indoor.webp",
+  "w": 1100,
+  "h": 733,
+  "bg": "#9d885f"
+ },
+ {
+  "src": "/formats/services/bus.webp",
+  "w": 1100,
+  "h": 440,
+  "bg": "#495159"
+ },
+ {
+  "src": "/formats/services/tv.webp",
+  "w": 1100,
+  "h": 825,
+  "bg": "#cbccc9"
+ },
+ {
+  "src": "/formats/services/tv-spons.webp",
+  "w": 1100,
+  "h": 825,
+  "bg": "#cbccc9"
+ },
+ {
+  "src": "/formats/services/car.webp",
+  "w": 1100,
+  "h": 786,
+  "bg": "#91a46e"
+ },
+ {
+  "src": "/formats/services/blog-phone.webp",
+  "w": 1100,
+  "h": 1375,
+  "bg": "#ada7a7"
+ },
+ {
+  "src": "/formats/services/radio-onair.webp",
+  "w": 1100,
+  "h": 733,
+  "bg": "#220700"
+ },
+ {
+  "src": "/formats/services/blog-camera.webp",
+  "w": 1100,
+  "h": 1375,
+  "bg": "#8d8072"
+ }
+]

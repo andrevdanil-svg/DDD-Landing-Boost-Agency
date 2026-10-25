@@ -2,6 +2,7 @@
 // формулировки — под рекламное агентство.
 import { legal } from './legal';
 import { servicePages } from './services';
+import { shot } from './shots';
 
 export type Item = { title: string; text: string; href?: string };
 export type ProseBlock = { h2: string } | { p: string } | { ul: readonly string[] };
@@ -407,6 +408,15 @@ export const pages: Record<string, PageData> = {
     },
     sections: [
       {
+        type: 'formats',
+        title: 'Примеры размещения',
+        items: [
+          { title: 'Баннеры на сайтах', text: 'Перетяжка и баннер 300×250 на новостных и тематических сайтах.', shot: shot('/formats/services/site.webp') },
+          { title: 'Rich media', text: 'Анимация, видео и интерактив внутри баннера — заметнее статичной картинки.', shot: shot('/formats/eskimi/rich-media.webp') },
+          { title: 'Мобильные баннеры', text: 'Баннеры на мобильных сайтах — под размер экрана телефона.', shot: shot('/formats/byyd/web.webp') },
+        ],
+      },
+      {
         type: 'checks',
         title: 'Все размеры — из одного кабинета',
         intro: 'Конструктор креативов покрывает все основные размеры баннеров. Под каждую площадку — свой вариант с учётом безопасной зоны и видимости.',
@@ -440,6 +450,15 @@ export const pages: Record<string, PageData> = {
       lead: 'До, во время и после видео, в ленте и за награду. Оптимизируем досмотры и конверсии после просмотра. Один ролик адаптируем под десятки форматов экрана.',
     },
     sections: [
+      {
+        type: 'formats',
+        title: 'Примеры размещения',
+        items: [
+          { title: 'In-stream', text: 'Ролик в видеоплеере до, во время или после контента.', shot: shot('/formats/admixer/video-sayt.webp') },
+          { title: 'Outstream', text: 'Видео между абзацами статьи: запускается, когда блок виден на экране.', shot: shot('/formats/adrun/video.webp') },
+          { title: 'Видео за награду', text: 'Человек сам включает ролик, чтобы получить бонус в игре или приложении.', shot: shot('/formats/adrun/rewarded.webp') },
+        ],
+      },
       {
         type: 'grid',
         title: 'Три роли видео в воронке',
@@ -475,6 +494,14 @@ export const pages: Record<string, PageData> = {
     },
     sections: [
       {
+        type: 'formats',
+        title: 'Примеры размещения',
+        items: [
+          { title: 'Нативный блок', text: 'Объявление в стиле площадки: картинка, заголовок и кнопка.', shot: shot('/formats/byyd/native.webp') },
+          { title: 'Карточки в ленте', text: 'Рекламные карточки среди материалов сайта — выглядят как рекомендации.', shot: shot('/formats/eskimi/native.webp') },
+        ],
+      },
+      {
         type: 'grid',
         title: 'Чем нативная реклама лучше баннера',
         items: [
@@ -497,6 +524,16 @@ export const pages: Record<string, PageData> = {
       lead: 'Реклама в мобильных приложениях: видео за награду, полноэкранные форматы и мини-игры — с точной атрибуцией через MMP.',
     },
     sections: [
+      {
+        type: 'formats',
+        title: 'Примеры размещения',
+        items: [
+          { title: 'Видео за награду', text: 'Ролик за бонус в мобильной игре — его досматривают почти до конца.', shot: shot('/formats/novadsail/mobile.webp') },
+          { title: 'Полноэкранное видео', text: 'Ролик на весь экран между экранами приложения.', shot: shot('/formats/admixer/video-app.webp') },
+          { title: 'Интерактивная механика', text: 'С рекламой можно взаимодействовать: свайпнуть, подуть в микрофон, сыграть.', shot: shot('/formats/eskimi/mehanika.webp') },
+          { title: 'Реклама внутри игр', text: 'Баннеры на игровых объектах: щиты и вывески прямо в игре.', shot: shot('/formats/byyd/in-game.webp') },
+        ],
+      },
       {
         type: 'grid',
         title: 'Три формата — три задачи',
@@ -532,6 +569,15 @@ export const pages: Record<string, PageData> = {
     },
     sections: [
       {
+        type: 'formats',
+        title: 'Примеры размещения',
+        items: [
+          { title: 'Ролик на Smart TV', text: 'Непропускаемый ролик перед фильмом или передачей на большом экране.', shot: shot('/formats/services/tv.webp') },
+          { title: 'Пауза', text: 'Баннер появляется, когда зритель ставит видео на паузу в онлайн-кинотеатре.', shot: shot('/formats/megogo/pause.webp') },
+          { title: 'Оверлей', text: 'Плашка поверх видео — показ без остановки просмотра.', shot: shot('/formats/megogo/overlay.webp') },
+        ],
+      },
+      {
         type: 'grid',
         title: 'Smart TV — отдельный канал',
         intro: 'Точная аудитория, безопасное окружение и измерение, которого нет у обычного ТВ.',
@@ -555,6 +601,13 @@ export const pages: Record<string, PageData> = {
       lead: 'Динамический ретаргетинг с карточкой конкретного товара. Отдельные стратегии для брошенной корзины, просмотра категории и визита без действия.',
     },
     sections: [
+      {
+        type: 'formats',
+        title: 'Пример размещения',
+        items: [
+          { title: 'Динамический баннер', text: 'Баннер собирается из того, что человек смотрел на сайте, и возвращает его к выбору.', shot: shot('/formats/services/retarget.webp') },
+        ],
+      },
       {
         type: 'grid',
         title: 'Кто, что смотрел и как давно',
