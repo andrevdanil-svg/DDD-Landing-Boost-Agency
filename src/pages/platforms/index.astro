@@ -22,9 +22,9 @@ const sections: Section[] = categoryOrder
     items: g.items.map((p) => ({ title: p.name, text: tagline(p), href: `/platforms/${p.slug}/` })),
   }));
 
-const title = 'Рекламные площадки — Boost! Agency';
+const title = 'Рекламные площадки Узбекистана — 21 площадка через Boost! Agency';
 const description =
-  'Реклама в крупных сервисах и медиа: маркетплейсы и доставка, приложения, онлайн-кинотеатры и стриминг, рекламные сети, отраслевые аудитории и SMS. Медиапланы и запуск через Boost! Agency.';
+  'Рекламные площадки Узбекистана: Uzum, Korzinka Go, Yandex Lavka, Yandex Go, Uzum Bank, iTV, Megogo, Spotify, Eskimi, Emaktab, Oxymed, SMS Promo и другие. Маркетплейсы, приложения, стриминг, DSP и отраслевые аудитории — медиапланы и запуск через Boost! Agency.';
 const schema = [
   webPage({ title, description, url: '/platforms/' }),
   breadcrumbs([
@@ -52,8 +52,8 @@ const schema = [
 >
   <PageHero
     hero={{
-      title: 'Рекламные площадки',
-      lead: `${platforms.length} ${plural(platforms.length, ['площадка', 'площадки', 'площадок'])}:маркетплейсы и доставка, приложения, онлайн-кинотеатры и музыка, рекламные сети, отраслевые аудитории и SMS. Соберём медиаплан из нескольких площадок и запустим кампанию по одному договору.`,
+      title: 'Рекламные площадки Узбекистана',
+      lead: `${platforms.length} ${plural(platforms.length, ['площадка', 'площадки', 'площадок'])} в Узбекистане: маркетплейсы (Uzum, Korzinka Go, Yandex Lavka), приложения и сервисы, онлайн-кинотеатры и музыка, рекламные сети и DSP, отраслевые аудитории и SMS. Соберём медиаплан из нескольких площадок и запустим кампанию по одному договору.`,
     }}
   />
   <Sections sections={sections} />
