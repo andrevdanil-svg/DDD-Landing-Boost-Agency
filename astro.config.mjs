@@ -19,13 +19,21 @@ export default defineConfig({
         // Главная — максимальный приоритет
         if (path === '/') return { ...item, priority: 1.0, changefreq: 'weekly' };
 
-        // Услуги и площадки — высокий приоритет
+        // Блог — высокий приоритет, обновляется чаще
+        if (path === '/blog') return { ...item, priority: 0.9, changefreq: 'weekly' };
+        if (path.startsWith('/blog/')) return { ...item, priority: 0.8, changefreq: 'monthly' };
+
+        // Услуги, площадки, кейсы, отрасли, города — высокий приоритет
         if (
           /^\/(services|channels|search|social|media|bloggers|tv|radio|outdoor|creative|sites|topup)$/.test(path) ||
           path === '/platforms' ||
           path.startsWith('/platforms/') ||
           path === '/cases' ||
-          path.startsWith('/cases/')
+          path.startsWith('/cases/') ||
+          path === '/industries' ||
+          path.startsWith('/industries/') ||
+          path === '/geo' ||
+          path.startsWith('/geo/')
         ) {
           return { ...item, priority: 0.9, changefreq: 'monthly' };
         }

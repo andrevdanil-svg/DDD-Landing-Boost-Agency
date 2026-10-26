@@ -1,0 +1,115 @@
+import {
+  copiedPhrases,
+  missingNumbers,
+  parseWriterVerdict,
+  postText,
+  writeSchema,
+  writeSystemPrompt,
+  writeUserPrompt,
+  type WriterVerdict,
+  type WrittenNewsPost,
+} from "./writing";
+
+// One material → one post. The model answers in the schema; when the post repeats phrases of the source,
+// it is asked once more with those phrases named; the post comes back with its warnings — figures the
+// source does not have, phrases still copied — for a person to look at before publishing. Nothing is
+// published from here.
+
+const minimumSourceText = 200;
+
+export type NewsWriterErrorCode = "ai_auth" | "ai_failed" | "ai_invalid" | "ai_limit" | "ai_timeout" | "ai_unavailable";
+
+export class NewsWriterError extends Error {
+  readonly code: NewsWriterErrorCode;
+
+  constructor(code: NewsWriterErrorCode) {
+    super(`News writer call failed: ${code}`);
+    this.code = code;
+    this.name = "NewsWriterError";
+  }
+}
+
+// What a failure means for a queue: the account, its limit or the service — wait (half an hour) without
+// using up the material's attempts; anything else — try again a few times, then give up.
+export function isTransientWriterError(error: NewsWriterError): boolean {
+  return error.code === "ai_auth" || error.code === "ai_limit" || error.code === "ai_unavailable";
+}
+
+// The model the writer calls (claude.ts: Claude through `claude -p`).
+export type NewsWriterModel = Readonly<{
+  complete(input: Readonly<{
+    kind: "write";
+    prompt: string;
+    schema: object;
+    signal?: AbortSignal;
+    system: string;
+  }>): Promise<unknown>;
+}>;
+
+export type NewsPostWarning =
+  | Readonly<{ kind: "copied"; phrases: readonly string[] }>
+  | Readonly<{ kind: "numbers"; values: readonly string[] }>;
+
+export type RewriteResult =
+  | Readonly<{ kind: "post"; post: WrittenNewsPost; warnings: readonly NewsPostWarning[] }>
+  | Readonly<{ kind: "skip"; reason: string }>;
+
+export async function rewriteNews(
+  material: Readonly<{
+    // An editor's wish for this post («короче», «акцент на банках»).
+    instruction?: string;
+    text: string;
+    title: string;
+  }>,
+  model: NewsWriterModel,
+  signal?: AbortSignal,
+): Promise<RewriteResult> {
+  if (material.text.trim().length < minimumSourceText) return Object.freeze({ kind: "skip", reason: "В источнике слишком мало текста для поста." });
+  const source = `${material.title}\n${material.text}`;
+  const ask = async (copied?: readonly string[]): Promise<WriterVerdict> => {
+    let answer: unknown;
+    try {
+      answer = await model.complete({
+        kind: "write",
+        prompt: writeUserPrompt({ ...(copied ? { copied } : {}), ...(material.instruction ? { instruction: material.instruction } : {}), text: material.text, title: material.title }),
+        schema: writeSchema,
+        ...(signal ? { signal } : {}),
+        system: writeSystemPrompt(),
+      });
+    } catch (error) {
+      throw error instanceof NewsWriterError ? error : new NewsWriterError("ai_failed");
+    }
+    const verdict = parseWriterVerdict(answer);
+    if (!verdict) throw new NewsWriterError("ai_invalid");
+    return verdict;
+  };
+
+  let verdict = await ask();
+  if (verdict.kind === "post") {
+    const copied = copiedPhrases(postText(verdict.post), source);
+    if (copied.length > 0) verdict = await ask(copied);
+  }
+  if (verdict.kind === "skip") return verdict;
+  const written = postText(verdict.post);
+  const copied = copiedPhrases(written, source);
+  const numbers = missingNumbers(written, source);
+  return Object.freeze({
+    kind: "post",
+    post: verdict.post,
+    warnings: Object.freeze([
+      ...(copied.length > 0 ? [{ kind: "copied" as const, phrases: copied }] : []),
+      ...(numbers.length > 0 ? [{ kind: "numbers" as const, values: numbers }] : []),
+    ]),
+  });
+}
+
+// The post as plain text for a Telegram message or a page: title, lead, «Главное», paragraphs (a «## »
+// paragraph is a subheading), the business note. Visuals other than «Главное» are for a page or a
+// picture.
+export function postAsText(post: WrittenNewsPost): string {
+  const parts = [post.title, post.lead];
+  if (post.visuals.highlights?.length) parts.push(["Главное:", ...post.visuals.highlights.map((point) => `• ${point}`)].join("\n"));
+  for (const paragraph of post.paragraphs) parts.push(paragraph.startsWith("## ") ? paragraph.slice(3).toUpperCase() : paragraph);
+  parts.push(`Что это значит для бизнеса: ${post.businessNote}`);
+  return parts.join("\n\n");
+}

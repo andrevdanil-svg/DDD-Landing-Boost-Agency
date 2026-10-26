@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
 import { pages, type Section, type PageData } from '../data/pages';
 import { servicePages } from '../data/services';
 import { platforms, nameIn, categories } from '../data/platforms';
@@ -120,7 +121,10 @@ function caseToText(c: (typeof cases)[number]): string {
   ].join('\n');
 }
 
-export const GET: APIRoute = () => {
+export const GET: APIRoute = async () => {
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+  );
   const out = [
     '# Boost! Agency — полный текст сайта',
     '',
@@ -154,6 +158,25 @@ export const GET: APIRoute = () => {
     '# КЕЙСЫ',
     '',
     ...cases.map(caseToText),
+    '',
+    '---',
+    '',
+    '# БЛОГ',
+    '',
+    ...posts.map((p) => [
+      `# ${p.data.title}`,
+      `${business.url}/blog/${p.id.replace(/\.md$/, '')}/`,
+      '',
+      `Опубликовано: ${p.data.publishedAt.toISOString().slice(0, 10)}. Рубрика: ${p.data.rubric ?? '—'}.`,
+      '',
+      p.data.description,
+      '',
+      ...(p.data.highlights && p.data.highlights.length > 0
+        ? ['## Главное', ...p.data.highlights.map((h) => `- ${h}`), '']
+        : []),
+      p.body ?? '',
+      ...(p.data.businessNote ? ['', `## Что это значит для рекламодателя`, p.data.businessNote] : []),
+    ].join('\n')),
   ].join('\n\n');
 
   return new Response(out, {
