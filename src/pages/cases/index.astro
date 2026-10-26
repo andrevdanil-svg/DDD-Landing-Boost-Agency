@@ -2,12 +2,34 @@
 import Page from '../../layouts/Page.astro';
 import Results from '../../components/Results.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import { cases } from '../../data/cases';
+import { breadcrumbs, webPage } from '../../lib/schema';
+
+const title = 'Кейсы — Boost! Agency';
+const description =
+  'Кейсы рекламного агентства Boost: ритейл, авто, банки, девелоперы, онлайн-школы и FMCG. Задача, что сделали и результат в цифрах.';
+
+const schema = [
+  webPage({ title, description, url: '/cases/' }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Кейсы', url: '/cases/' },
+  ]),
+  {
+    '@type': 'ItemList',
+    name: 'Кейсы Boost! Agency',
+    numberOfItems: cases.length,
+    itemListElement: cases.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(`/cases/${c.slug}/`, 'https://boostagency.uz').href,
+      name: c.title,
+    })),
+  },
+];
 ---
 
-<Page
-  title="Кейсы — Boost! Agency"
-  description="Кейсы рекламного агентства Boost: ритейл, авто, банки, девелоперы, онлайн-школы и FMCG. Задача, что сделали и результат в цифрах."
->
+<Page title={title} description={description} schema={schema}>
   <Results heading="h1" title="Кейсы" showAll={false} />
   <CtaBand
     title="Хотите такой же результат? Расскажите о задаче"

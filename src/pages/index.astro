@@ -7,11 +7,23 @@ import PlatformWall from '../components/PlatformWall.astro';
 import Platform from '../components/Platform.astro';
 import Results from '../components/Results.astro';
 import Contact from '../components/Contact.astro';
+import { localBusiness, webPage } from '../lib/schema';
+
+const schema = [
+  localBusiness(),
+  webPage({
+    title: 'Boost! Agency — рекламное агентство в Ташкенте',
+    description:
+      'Рекламное агентство в Ташкенте: реклама в интернете, на ТВ, радио и наружная реклама, сайты под трафик и пополнение рекламных кабинетов. Результаты — в личном кабинете клиента.',
+    url: '/',
+  }),
+];
 ---
 
 <Page
   title="Boost! Agency — рекламное агентство в Ташкенте"
   description="Рекламное агентство в Ташкенте: реклама в интернете, на ТВ, радио и наружная реклама, сайты под трафик и пополнение рекламных кабинетов. Результаты — в личном кабинете клиента."
+  schema={schema}
 >
   <Hero />
   <Manifesto />

@@ -3,16 +3,50 @@ import Page from '../layouts/Page.astro';
 import PageHero from '../components/PageHero.astro';
 import Sections from '../components/Sections.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { pages } from '../data/pages';
+import { pages, type Section } from '../data/pages';
+import { breadcrumbsFromUrl, faqPage, service, serviceTypeFor, webPage } from '../lib/schema';
 
 export function getStaticPaths() {
-  return Object.entries(pages).map(([page, data]) => ({ params: { page }, props: { data } }));
+  return Object.entries(pages).map(([page, data]) => ({ params: { page }, props: { data, slug: page } }));
 }
 
-const { data } = Astro.props;
+const { data, slug } = Astro.props;
+const url = `/${slug}/`;
+
+// Собираем FAQ из всех секций страницы (их может быть несколько).
+const faqItems = data.sections
+  .filter((s): s is Extract<Section, { type: 'faq' }> => s.type === 'faq')
+  .flatMap((s) => s.items);
+
+const schema: Record<string, unknown>[] = [
+  webPage({
+    title: data.seoTitle,
+    description: data.seoDescription,
+    url,
+    breadcrumbs: breadcrumbsFromUrl(url, data.hero.title),
+  }),
+];
+
+// Для сервисных страниц — Service schema
+const serviceType = serviceTypeFor(slug);
+if (serviceType) {
+  schema.push(
+    service({
+      name: data.hero.title,
+      description: data.seoDescription,
+      url,
+      serviceType,
+    }),
+  );
+}
+
+// Если есть FAQ-секция — FAQPage schema
+if (faqItems.length > 0) {
+  schema.push(faqPage(faqItems));
+}
 ---
 
-<Page title={data.seoTitle} description={data.seoDescription}>
+<Page title={data.seoTitle} description={data.seoDescription} schema={schema}>
   <PageHero hero={data.hero} />
   <Sections sections={data.sections} />
   {

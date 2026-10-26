@@ -5,6 +5,7 @@ import Sections from '../../components/Sections.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { platforms, categories, nameIn, tagline } from '../../data/platforms';
 import type { Section } from '../../data/pages';
+import { breadcrumbs, service, webPage } from '../../lib/schema';
 // кадры форматов из медиакитов: { slug, fmt — индекс формата, src, w, h, bg }
 import shots from '../../data/format-shots.json';
 
@@ -55,11 +56,30 @@ if (siblings.length) {
     items: siblings.map((s) => ({ title: s.name, text: tagline(s), href: `/platforms/${s.slug}/` })),
   });
 }
+
+const url = `/platforms/${p.slug}/`;
+const title = `Реклама в ${nameIn(p)} — форматы и аудитория | Boost! Agency`;
+const description = `${p.lead} Размещение через Boost! Agency: медиаплан, запуск и отчёты.`;
+const schema = [
+  webPage({ title, description, url }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Рекламные площадки', url: '/platforms/' },
+    { name: p.name, url },
+  ]),
+  service({
+    name: `Реклама в ${nameIn(p)}`,
+    description: p.lead,
+    url,
+    serviceType: `Advertising on ${p.name}`,
+  }),
+];
 ---
 
 <Page
-  title={`Реклама в ${nameIn(p)} — форматы и аудитория | Boost! Agency`}
-  description={`${p.lead} Размещение через Boost! Agency: медиаплан, запуск и отчёты.`}
+  title={title}
+  description={description}
+  schema={schema}
 >
   <PageHero
     hero={{

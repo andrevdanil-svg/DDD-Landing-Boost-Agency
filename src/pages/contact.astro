@@ -1,11 +1,23 @@
 ---
 import Page from '../layouts/Page.astro';
 import Contact from '../components/Contact.astro';
+import { breadcrumbs, localBusiness, webPage } from '../lib/schema';
+
+const title = 'Контакты — Boost! Agency';
+const description =
+  'Расскажите о задаче — вернём медиаплан за 48 часов. Telegram или короткая заявка: имя, телефон или Telegram, бюджет.';
+
+// На странице контактов — LocalBusiness во всех деталях.
+const schema = [
+  webPage({ title, description, url: '/contact/' }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Контакты', url: '/contact/' },
+  ]),
+  localBusiness(),
+];
 ---
 
-<Page
-  title="Контакты — Boost! Agency"
-  description="Расскажите о задаче — вернём медиаплан за 48 часов. Telegram или короткая заявка: имя, телефон или Telegram, бюджет."
->
+<Page title={title} description={description} schema={schema}>
   <Contact heading="h1" />
 </Page>

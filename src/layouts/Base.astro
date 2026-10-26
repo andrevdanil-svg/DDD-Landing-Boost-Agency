@@ -4,15 +4,28 @@ import '@fontsource/golos-text/400.css';
 import '@fontsource/golos-text/500.css';
 import '@fontsource/golos-text/600.css';
 import '../styles/global.css';
+import { business } from '../data/business';
+import { graph, organization, website } from '../lib/schema';
 
 interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  // JSON-LD узлы, специфичные для страницы (Service, FAQPage, Article, BreadcrumbList, WebPage).
+  // Organization и WebSite добавляются автоматически.
+  schema?: Record<string, unknown>[];
+  // Переопределить OG-картинку (по умолчанию общий /brand/og-image.png).
+  ogImage?: string;
+  // Тип OG: по умолчанию 'website', для блога — 'article'.
+  ogType?: 'website' | 'article';
 }
-const { title, description, noindex = false } = Astro.props;
+
+const { title, description, noindex = false, schema = [], ogImage, ogType = 'website' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const og = new URL('/brand/og-image.png', Astro.site).href;
+const og = new URL(ogImage ?? business.ogImageUrl, Astro.site).href;
+
+// Собираем @graph: Organization и WebSite везде + page-specific узлы.
+const jsonLd = graph([organization(), website(), ...schema]);
 ---
 
 <!doctype html>
@@ -22,10 +35,24 @@ const og = new URL('/brand/og-image.png', Astro.site).href;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={business.name} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+
+    {/* Гео-таргетинг (устаревшие, но Яндекс и ряд ИИ-ботов читают) */}
+    <meta name="geo.region" content="UZ-TK" />
+    <meta name="geo.placename" content="Tashkent" />
+    <meta name="geo.position" content={`${business.geo.latitude};${business.geo.longitude}`} />
+    <meta name="ICBM" content={`${business.geo.latitude}, ${business.geo.longitude}`} />
+
+    {/* hreflang: пока только RU; UZ-версия добавится, когда появится */}
+    {!noindex && <link rel="alternate" hreflang="ru-UZ" href={canonical} />}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={canonical} />}
+
     <meta name="theme-color" content="#0a0a10" />
     <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
-    <meta property="og:type" content="website" />
+
+    {/* Open Graph */}
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="Boost! Agency" />
     <meta property="og:locale" content="ru_RU" />
     <meta property="og:url" content={canonical} />
@@ -37,6 +64,10 @@ const og = new URL('/brand/og-image.png', Astro.site).href;
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={og} />
+
+    {/* JSON-LD */}
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body>

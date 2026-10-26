@@ -4,6 +4,7 @@ import CtaBand from '../../components/CtaBand.astro';
 import Arrow from '../../components/Arrow.astro';
 import { cases } from '../../data/cases';
 import { typo } from '../../lib/typo';
+import { article, breadcrumbs, webPage } from '../../lib/schema';
 
 export function getStaticPaths() {
   return cases.map((c, i) => ({
@@ -13,9 +14,25 @@ export function getStaticPaths() {
 }
 
 const { c, next } = Astro.props;
+const url = `/cases/${c.slug}/`;
+const schema = [
+  webPage({ title: c.seoTitle, description: c.seoDescription, url }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Кейсы', url: '/cases/' },
+    { name: c.industry, url },
+  ]),
+  article({
+    headline: c.title,
+    description: c.seoDescription,
+    url,
+    image: '/brand/og-image.png',
+    datePublished: '2026-01-01', // TODO: добавить реальную дату кейса
+  }),
+];
 ---
 
-<Page title={c.seoTitle} description={c.seoDescription}>
+<Page title={c.seoTitle} description={c.seoDescription} schema={schema}>
   <section class="ch">
     <div class="wrap">
       <a class="back" href="/cases/"><Arrow /> Все кейсы</a>

@@ -8,11 +8,21 @@ interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  schema?: Record<string, unknown>[];
+  ogImage?: string;
+  ogType?: 'website' | 'article';
 }
-const { title, description, noindex } = Astro.props;
+const { title, description, noindex, schema, ogImage, ogType } = Astro.props;
 ---
 
-<Base title={title} description={description} noindex={noindex}>
+<Base
+  title={title}
+  description={description}
+  noindex={noindex}
+  schema={schema}
+  ogImage={ogImage}
+  ogType={ogType}
+>
   <Header />
   <main>
     <slot />
