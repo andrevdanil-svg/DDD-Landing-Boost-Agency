@@ -22,9 +22,8 @@ export function organization(): JsonLd {
     url: SITE,
     logo: {
       '@type': 'ImageObject',
-      url: new URL(business.logoPngUrl, SITE).href,
-      width: 512,
-      height: 512,
+      url: new URL(business.logoSvgUrl, SITE).href,
+      contentUrl: new URL(business.logoSvgUrl, SITE).href,
     },
     description: business.description,
     foundingDate: String(business.foundingYear),

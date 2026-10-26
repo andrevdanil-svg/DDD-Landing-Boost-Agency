@@ -12,6 +12,9 @@ SITE=${SITE:-$SRC/../boost-landing}
 
 cd $SRC
 npx astro build
+# SEO-валидация собранного dist: title/description/canonical/JSON-LD, дубли.
+# При ошибках (не предупреждениях) выход != 0 → деплой остановится.
+npx tsx scripts/seo-check.ts
 # старый адрес карты сайта, который мог быть добавлен в Search Console / Вебмастер
 cp dist/sitemap-0.xml dist/sitemap.xml
 

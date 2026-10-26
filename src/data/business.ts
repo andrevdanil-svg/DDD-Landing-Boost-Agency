@@ -44,10 +44,18 @@ export const business = {
   // Что продаём (areaServed, serviceType — для Service schema)
   areaServed: ['Узбекистан', 'Ташкент', 'Самарканд', 'Бухара', 'Андижан', 'Фергана', 'Наманган', 'Нукус'],
 
-  // OG
+  // OG. Google принимает SVG в Organization.logo; PNG держим в запасе на случай
+  // клиентов, которые требуют растр (Facebook OG — отдельно, через ogImageUrl).
   logoUrl: '/brand/logo_boost_light.svg',
-  logoPngUrl: '/brand/logo-512.png', // TODO: сгенерировать 512×512 PNG для schema
+  logoSvgUrl: '/brand/logo_boost_mark.svg',
   ogImageUrl: '/brand/og-image.png',
+
+  // Верификации поисковиков — пришлёт пользователь после подключения в GSC/Яндекс.Вебмастере.
+  // Заполняется строкой из `content="..."` их мета-тега.
+  verification: {
+    google: '', // https://search.google.com/search-console
+    yandex: '', // https://webmaster.yandex.com
+  },
 } as const;
 
 export type Business = typeof business;

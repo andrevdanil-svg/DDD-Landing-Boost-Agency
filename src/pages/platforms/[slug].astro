@@ -59,7 +59,9 @@ if (siblings.length) {
 
 const url = `/platforms/${p.slug}/`;
 const title = `Реклама в ${nameIn(p)} в Узбекистане — форматы, аудитория, запуск | Boost!`;
-const description = `Запуск рекламы в ${nameIn(p)} в Узбекистане через Boost! Agency. ${p.lead} Медиаплан за 48 часов, прямой договор, отчёты в кабинете.`;
+// Коротим lead, чтобы description остался в разумных ~200 знаках
+const leadShort = p.lead.length > 140 ? p.lead.slice(0, 137).replace(/[\s,.;:—–-]+$/u, '') + '…' : p.lead;
+const description = `Реклама в ${nameIn(p)} в Узбекистане через Boost! Agency. ${leadShort} Медиаплан за 48 часов.`;
 const schema = [
   webPage({ title, description, url }),
   breadcrumbs([

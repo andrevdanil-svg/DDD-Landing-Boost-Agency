@@ -48,6 +48,9 @@ const jsonLd = graph([organization(), website(), ...schema]);
     {!noindex && <link rel="alternate" hreflang="ru-UZ" href={canonical} />}
     {!noindex && <link rel="alternate" hreflang="x-default" href={canonical} />}
 
+    {business.verification.google && <meta name="google-site-verification" content={business.verification.google} />}
+    {business.verification.yandex && <meta name="yandex-verification" content={business.verification.yandex} />}
+
     <meta name="theme-color" content="#0a0a10" />
     <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
 
