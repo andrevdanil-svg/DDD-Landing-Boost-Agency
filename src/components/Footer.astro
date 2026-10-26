@@ -16,6 +16,31 @@ const columns = [
     ],
   },
   {
+    title: 'По отраслям',
+    links: [
+      { href: '/industries/restaurants/', label: 'Рестораны и общепит' },
+      { href: '/industries/clinics/', label: 'Медклиники' },
+      { href: '/industries/dental/', label: 'Стоматологии' },
+      { href: '/industries/beauty/', label: 'Салоны красоты' },
+      { href: '/industries/ecommerce/', label: 'E-commerce' },
+      { href: '/industries/b2b/', label: 'B2B' },
+      { href: '/industries/startups/', label: 'Стартапы' },
+      { href: '/industries/', label: 'Все отрасли' },
+    ],
+  },
+  {
+    title: 'По городам',
+    links: [
+      { href: '/geo/samarkand/', label: 'Самарканд' },
+      { href: '/geo/bukhara/', label: 'Бухара' },
+      { href: '/geo/andijan/', label: 'Андижан' },
+      { href: '/geo/fergana/', label: 'Фергана' },
+      { href: '/geo/namangan/', label: 'Наманган' },
+      { href: '/geo/nukus/', label: 'Нукус' },
+      { href: '/geo/', label: 'Все города' },
+    ],
+  },
+  {
     title: 'Компания',
     links: [
       { href: '/platform/', label: 'Кабинет' },
@@ -70,7 +95,7 @@ const columns = [
   .ft { border-top: 1px solid var(--line); padding-block: clamp(48px, 8vh, 80px) 32px; }
   .ft__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.4fr) repeat(5, minmax(0, 1fr));
     gap: 40px var(--gap);
   }
   .ft__brand { display: grid; align-content: start; justify-items: start; gap: 14px; }
@@ -85,6 +110,9 @@ const columns = [
 
   .ft__copy { margin-top: clamp(40px, 6vh, 64px); padding-top: 24px; border-top: 1px solid var(--line); color: var(--text-3); font-size: 14px; }
 
+  @media (max-width: 1200px) {
+    .ft__grid { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); }
+  }
   @media (max-width: 960px) {
     .ft__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .ft__brand { grid-column: 1 / -1; }
