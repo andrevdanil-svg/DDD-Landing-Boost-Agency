@@ -18,15 +18,23 @@ type Spawn = (command: string, args: readonly string[], options: SpawnOptionsWit
 
 const maxStdout = 2 * 1024 * 1024;
 
-// The CLI: the `@anthropic-ai/claude-code` package when it is installed next to the project (run by this
-// Node — the original server's old virtual CPU could not start the native builds), else `claude` on PATH.
+// The CLI: starting with 2.1.300+, the `@anthropic-ai/claude-code` package ships a native
+// `bin/claude.exe` placed by its postinstall script, with `cli.js` dropped. We try the binary
+// first, then the legacy `cli.js` (older installs), then `claude` on PATH.
 export function claudeCommand(): Readonly<{ args: readonly string[]; command: string }> {
-  try {
-    const require = createRequire(import.meta.url);
-    return { args: [require.resolve("@anthropic-ai/claude-code/cli.js")], command: process.execPath };
-  } catch {
-    return { args: [], command: "claude" };
+  const require = createRequire(import.meta.url);
+  for (const candidate of ["@anthropic-ai/claude-code/bin/claude.exe", "@anthropic-ai/claude-code/cli.js"]) {
+    try {
+      const resolved = require.resolve(candidate);
+      // The native binary runs itself; the JS cli needs this Node.
+      return candidate.endsWith(".exe")
+        ? { args: [], command: resolved }
+        : { args: [resolved], command: process.execPath };
+    } catch {
+      // ignored
+    }
   }
+  return { args: [], command: "claude" };
 }
 
 let home: string | undefined;
