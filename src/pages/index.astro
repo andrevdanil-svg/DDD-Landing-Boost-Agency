@@ -9,22 +9,17 @@ import Results from '../components/Results.astro';
 import Contact from '../components/Contact.astro';
 import { localBusiness, webPage } from '../lib/schema';
 
+const title = 'Рекламное агентство в Ташкенте — Boost! Agency, реклама в Узбекистане';
+const description =
+  'Boost! Agency — рекламное агентство в Ташкенте с 2019 года. Запускаем рекламу в интернете, на ТВ, радио и наружно по Узбекистану, разрабатываем сайты и пополняем рекламные кабинеты. Медиаплан за 48 часов.';
+
 const schema = [
   localBusiness(),
-  webPage({
-    title: 'Boost! Agency — рекламное агентство в Ташкенте',
-    description:
-      'Рекламное агентство в Ташкенте: реклама в интернете, на ТВ, радио и наружная реклама, сайты под трафик и пополнение рекламных кабинетов. Результаты — в личном кабинете клиента.',
-    url: '/',
-  }),
+  webPage({ title, description, url: '/' }),
 ];
 ---
 
-<Page
-  title="Boost! Agency — рекламное агентство в Ташкенте"
-  description="Рекламное агентство в Ташкенте: реклама в интернете, на ТВ, радио и наружная реклама, сайты под трафик и пополнение рекламных кабинетов. Результаты — в личном кабинете клиента."
-  schema={schema}
->
+<Page title={title} description={description} schema={schema}>
   <Hero />
   <Manifesto />
   <Services />
