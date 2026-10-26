@@ -1,0 +1,59 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/PageHero.astro';
+import Sections from '../../components/Sections.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { geoCities } from '../../data/geo';
+import type { Section } from '../../data/pages';
+import { breadcrumbs, webPage } from '../../lib/schema';
+
+const title = 'Реклама в городах Узбекистана — Ташкент, Самарканд, Бухара и регионы | Boost!';
+const description =
+  'Рекламные медиапланы под регионы Узбекистана: Ташкент, Самарканд, Бухара, Андижан, Фергана, Наманган, Нукус. Локальные каналы, региональное ТВ и радио, наружка, таргет и Telegram-каналы в каждом городе.';
+
+const sections: Section[] = [
+  {
+    type: 'list',
+    title: 'Города и регионы',
+    intro: 'Главная контора — в Ташкенте, но запускаем рекламу по всему Узбекистану. На страницах городов — какие каналы работают локально.',
+    items: geoCities.map((c) => ({
+      title: c.name,
+      text: c.heroLead.split('.').slice(0, 1).join('.') + '.',
+      href: `/geo/${c.slug}/`,
+    })),
+  },
+];
+
+const schema = [
+  webPage({ title, description, url: '/geo/' }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'География', url: '/geo/' },
+  ]),
+  {
+    '@type': 'ItemList',
+    name: 'Города Узбекистана, в которых запускаем рекламу',
+    numberOfItems: geoCities.length,
+    itemListElement: geoCities.map((c, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      url: new URL(`/geo/${c.slug}/`, 'https://boostagency.uz').href,
+      name: c.name,
+    })),
+  },
+];
+---
+
+<Page title={title} description={description} schema={schema}>
+  <PageHero
+    hero={{
+      title: 'Реклама по городам Узбекистана',
+      lead: 'Запускаем рекламу не только в Ташкенте: Самарканд, Бухара, Андижан, Фергана, Наманган, Нукус — у каждого города своё информационное поле, свои каналы и своя стоимость размещения.',
+    }}
+  />
+  <Sections sections={sections} />
+  <CtaBand
+    title="Город не из списка? Соберём медиаплан под любой регион Узбекистана"
+    secondary={{ href: '/contact/', label: 'Оставить заявку' }}
+  />
+</Page>

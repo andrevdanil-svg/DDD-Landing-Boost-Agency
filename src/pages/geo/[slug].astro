@@ -1,0 +1,85 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/PageHero.astro';
+import Sections from '../../components/Sections.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { geoCities } from '../../data/geo';
+import type { Section } from '../../data/pages';
+import { breadcrumbs, faqPage, service, webPage } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return geoCities.map((city) => ({
+    params: { slug: city.slug },
+    props: { city },
+  }));
+}
+
+const { city } = Astro.props;
+const url = `/geo/${city.slug}/`;
+
+const sections: Section[] = [
+  {
+    type: 'text',
+    id: 'tldr',
+    title: 'Коротко',
+    text: city.tldr,
+  },
+  {
+    type: 'checks',
+    title: 'Особенности рекламного рынка',
+    items: [...city.specifics],
+  },
+  {
+    type: 'list',
+    title: `Какие каналы доступны ${city.namePrepositional}`,
+    items: city.localChannels.map((c) => ({ title: c.title, text: c.text })),
+  },
+  {
+    type: 'faq',
+    title: 'Частые вопросы',
+    items: [...city.faq],
+  },
+];
+
+const schema = [
+  webPage({
+    title: city.seoTitle,
+    description: city.seoDescription,
+    url,
+    breadcrumbs: [
+      { name: 'Главная', url: '/' },
+      { name: 'География', url: '/geo/' },
+      { name: city.name, url },
+    ],
+  }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'География', url: '/geo/' },
+    { name: city.name, url },
+  ]),
+  service({
+    name: `Реклама ${city.namePrepositional}`,
+    description: city.seoDescription,
+    url,
+    serviceType: `Advertising in ${city.name}, Uzbekistan`,
+  }),
+  faqPage([...city.faq]),
+];
+---
+
+<Page title={city.seoTitle} description={city.seoDescription} schema={schema}>
+  <PageHero
+    hero={{
+      back: { href: '/geo/', label: 'Все города' },
+      title: city.heroTitle,
+      lead: city.heroLead,
+      cta: true,
+    }}
+  />
+  <Sections sections={sections} />
+  <CtaBand
+    title={`Соберём медиаплан под ${city.name}?`}
+    text="Расскажите про задачу, бюджет и сроки — пришлём план за 48 часов."
+    secondary={{ href: '/contact/', label: 'Оставить заявку' }}
+  />
+</Page>
