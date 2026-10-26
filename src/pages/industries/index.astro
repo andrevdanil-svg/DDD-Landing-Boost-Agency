@@ -1,0 +1,59 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/PageHero.astro';
+import Sections from '../../components/Sections.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { industries } from '../../data/industries';
+import type { Section } from '../../data/pages';
+import { breadcrumbs, webPage } from '../../lib/schema';
+
+const title = 'Реклама по отраслям в Ташкенте и Узбекистане — Boost! Agency';
+const description =
+  'Рекламные медиапланы под отрасль: рестораны и общепит, медицинские клиники, стоматологии, салоны красоты, интернет-магазины и e-commerce, B2B, стартапы. Каналы, которые работают для вашего рынка, цифры по CPL и бюджетам.';
+
+const sections: Section[] = [
+  {
+    type: 'list',
+    title: 'Отрасли',
+    intro: 'Выберите отрасль — покажем, какие каналы работают именно для неё, с реальными цифрами по бюджетам и стоимости заявки в Узбекистане.',
+    items: Object.entries(industries).map(([slug, i]) => ({
+      title: i.shortName,
+      text: i.hero.lead.split('.').slice(0, 1).join('.') + '.',
+      href: `/industries/${slug}/`,
+    })),
+  },
+];
+
+const schema = [
+  webPage({ title, description, url: '/industries/' }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Отрасли', url: '/industries/' },
+  ]),
+  {
+    '@type': 'ItemList',
+    name: 'Отрасли, под которые собираем рекламу',
+    numberOfItems: Object.keys(industries).length,
+    itemListElement: Object.entries(industries).map(([slug, i], idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      url: new URL(`/industries/${slug}/`, 'https://boostagency.uz').href,
+      name: i.shortName,
+    })),
+  },
+];
+---
+
+<Page title={title} description={description} schema={schema}>
+  <PageHero
+    hero={{
+      title: 'Реклама по отраслям в Узбекистане',
+      lead: 'Собираем медиапланы под специфику отрасли: что работает для ресторанов, медицины, стоматологии, бьюти, e-commerce, B2B и стартапов в Ташкенте и регионах. Каналы, бюджеты и реальные цифры по стоимости заявки.',
+    }}
+  />
+  <Sections sections={sections} />
+  <CtaBand
+    title="Вашей отрасли нет в списке? Расскажите о задаче"
+    secondary={{ href: '/contact/', label: 'Оставить заявку' }}
+  />
+</Page>

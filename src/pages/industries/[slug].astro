@@ -1,0 +1,73 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/PageHero.astro';
+import Sections from '../../components/Sections.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { industries } from '../../data/industries';
+import type { Section } from '../../data/pages';
+import { breadcrumbs, faqPage, service, webPage } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return Object.entries(industries).map(([slug, data]) => ({
+    params: { slug },
+    props: { data, slug },
+  }));
+}
+
+const { data, slug } = Astro.props;
+const url = `/industries/${slug}/`;
+
+const faqItems = data.sections
+  .filter((s): s is Extract<Section, { type: 'faq' }> => s.type === 'faq')
+  .flatMap((s) => s.items);
+
+const schema: Record<string, unknown>[] = [
+  webPage({
+    title: data.seoTitle,
+    description: data.seoDescription,
+    url,
+    breadcrumbs: [
+      { name: 'Главная', url: '/' },
+      { name: 'Отрасли', url: '/industries/' },
+      { name: data.shortName, url },
+    ],
+  }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Отрасли', url: '/industries/' },
+    { name: data.shortName, url },
+  ]),
+  service({
+    name: data.hero.title,
+    description: data.seoDescription,
+    url,
+    serviceType: `Advertising for ${data.shortName}`,
+  }),
+];
+
+if (faqItems.length > 0) {
+  schema.push(faqPage(faqItems));
+}
+---
+
+<Page title={data.seoTitle} description={data.seoDescription} schema={schema}>
+  <PageHero
+    hero={{
+      back: { href: '/industries/', label: 'Все отрасли' },
+      title: data.hero.title,
+      lead: data.hero.lead,
+      cta: data.hero.cta,
+      ctaLabel: data.hero.ctaLabel,
+    }}
+  />
+  <Sections sections={data.sections} />
+  {
+    data.cta && (
+      <CtaBand
+        title={data.cta.title}
+        text={data.cta.text}
+        secondary={{ href: '/contact/', label: 'Медиаплан за 48 часов' }}
+      />
+    )
+  }
+</Page>
