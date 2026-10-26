@@ -50,11 +50,10 @@ export const business = {
   logoSvgUrl: '/brand/logo_boost_mark.svg',
   ogImageUrl: '/brand/og-image.png',
 
-  // Верификации поисковиков — пришлёт пользователь после подключения в GSC/Яндекс.Вебмастере.
-  // Заполняется строкой из `content="..."` их мета-тега.
+  // Верификации поисковиков — строка из `content="..."` их мета-тега.
   verification: {
-    google: '', // https://search.google.com/search-console
-    yandex: '', // https://webmaster.yandex.com
+    google: 'Ur-JVqzRdqG2EACSu3Cly0KxlbrXcMT-XfgVSTlYFs0', // https://search.google.com/search-console
+    yandex: 'a9b104d9bf984e15', // https://webmaster.yandex.com
   },
 } as const;
 
