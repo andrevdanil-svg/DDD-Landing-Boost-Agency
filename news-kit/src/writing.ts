@@ -15,7 +15,7 @@ export const newsPostLimits = Object.freeze({
   figureValue: 14,
   lead: 360,
   paragraph: 500,
-  paragraphs: 6,
+  paragraphs: 10,
   rubric: 24,
   title: 100,
 });
