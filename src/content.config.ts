@@ -24,6 +24,16 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     // Исключить из списка (черновик)
     draft: z.boolean().default(false),
+    // SEO (отдельно от title/description, чтобы в поиске был другой заголовок)
+    seoTitle: z.string().max(140).optional(),
+    seoDescription: z.string().max(300).optional(),
+    // Обложка — og:image + hero поста
+    cover: z
+      .object({
+        url: z.string().url(),
+        alt: z.string().max(200).default(''),
+      })
+      .optional(),
   }),
 });
 

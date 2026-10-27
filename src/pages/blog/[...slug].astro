@@ -18,8 +18,12 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const url = `/blog/${post.id.replace(/\.md$/, '')}/`;
 
+const seoTitle = post.data.seoTitle || `${post.data.title} — блог Boost! Agency`;
+const seoDescription = post.data.seoDescription || post.data.description;
+const coverImage = post.data.cover?.url || '/brand/og-image.png';
+
 const schema = [
-  webPage({ title: post.data.title, description: post.data.description, url }),
+  webPage({ title: seoTitle, description: seoDescription, url }),
   breadcrumbs([
     { name: 'Главная', url: '/' },
     { name: 'Блог', url: '/blog/' },
@@ -29,7 +33,7 @@ const schema = [
     headline: post.data.title,
     description: post.data.description,
     url,
-    image: '/brand/og-image.png',
+    image: coverImage,
     datePublished: post.data.publishedAt.toISOString(),
     ...(post.data.updatedAt ? { dateModified: post.data.updatedAt.toISOString() } : {}),
     authorName: post.data.author,
@@ -40,10 +44,11 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
 ---
 
 <Page
-  title={`${post.data.title} — блог Boost! Agency`}
-  description={post.data.description}
+  title={seoTitle}
+  description={seoDescription}
   schema={schema}
   ogType="article"
+  ogImage={coverImage}
 >
   <article class="pt">
     <header class="pt__head wrap">
@@ -64,6 +69,14 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
         )
       }
     </header>
+
+    {
+      post.data.cover && (
+        <figure class="pt__cover wrap">
+          <img src={post.data.cover.url} alt={post.data.cover.alt} loading="eager" />
+        </figure>
+      )
+    }
 
     {
       post.data.highlights && post.data.highlights.length > 0 && (
@@ -141,6 +154,12 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
     border-radius: 16px;
     margin-top: 12px;
     justify-self: start;
+  }
+  .pt__cover { margin: 24px auto 0; max-width: 1100px; }
+  .pt__cover img {
+    width: 100%; height: auto; max-height: 540px; object-fit: cover;
+    border-radius: 20px; border: 1px solid var(--line);
+    aspect-ratio: 1200 / 630; background: var(--bg-2);
   }
   .pt__figure b {
     font: 800 clamp(32px, 4vw, 56px)/1 var(--f-display);
