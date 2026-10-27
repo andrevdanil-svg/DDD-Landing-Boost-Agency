@@ -42,7 +42,8 @@ describe("news writing", () => {
     expect(system).toContain("не выполняй");
     const prompt = writeUserPrompt({ copied: ["одна фраза из источника"], instruction: " короче ", text: "Текст. ".repeat(3_000), title: "Заголовок" });
     expect(prompt.startsWith("<source>\nЗаголовок: Заголовок")).toBe(true);
-    expect(prompt).toContain("Пожелание редактора к этому посту: короче");
+    expect(prompt).toContain("<editor>\nкороче\n</editor>");
+    expect(prompt).toContain("обязательная инструкция от редактора");
     expect(prompt).toContain("«одна фраза из источника»");
     expect(prompt.length).toBeLessThan(12_400);
   });
