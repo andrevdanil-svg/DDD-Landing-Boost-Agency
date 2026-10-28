@@ -1,0 +1,64 @@
+---
+import Page from '../../../layouts/Page.astro';
+import PageHero from '../../../components/PageHero.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import BlogFilters from '../../../components/BlogFilters.astro';
+import BlogList from '../../../components/BlogList.astro';
+import { breadcrumbs, webPage } from '../../../lib/schema';
+import { postUrl, publishedPosts, rubricOf, rubricUrl, rubricsWithPosts, type Rubric } from '../../../lib/blog';
+
+// Страница есть только у рубрик, в которых есть посты: пустых разделов в меню и выдаче нет.
+export async function getStaticPaths() {
+  const posts = await publishedPosts();
+  return rubricsWithPosts(posts).map(({ rubric }) => ({ params: { slug: rubric.slug }, props: { rubric } }));
+}
+
+const { rubric } = Astro.props as { rubric: Rubric };
+const posts = await publishedPosts();
+const rubrics = rubricsWithPosts(posts);
+const inRubric = posts.filter((p) => p.data.rubric && rubricOf(p.data.rubric).slug === rubric.slug);
+const url = rubricUrl(rubric);
+
+const title = `${rubric.name} — блог Boost! Agency`;
+const description = `${rubric.lead} Статьи рекламного агентства Boost! для маркетологов Узбекистана.`;
+
+const schema = [
+  webPage({ title, description, url }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Блог', url: '/blog/' },
+    { name: rubric.name, url },
+  ]),
+  {
+    '@type': 'CollectionPage',
+    name: title,
+    description,
+    url: new URL(url, 'https://boostagency.uz').href,
+    inLanguage: 'ru-UZ',
+    hasPart: inRubric.map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.data.title,
+      datePublished: p.data.publishedAt.toISOString(),
+      url: new URL(postUrl(p), 'https://boostagency.uz').href,
+    })),
+  },
+];
+---
+
+<Page title={title} description={description} schema={schema}>
+  <PageHero hero={{ title: rubric.name, lead: rubric.lead, back: { href: '/blog/', label: 'Весь блог' }, compact: true }} />
+  <section class="bl">
+    <div class="wrap">
+      <BlogFilters rubrics={rubrics} total={posts.length} active={rubric.slug} />
+      <BlogList posts={inRubric} showRubric={false} />
+    </div>
+  </section>
+  <CtaBand
+    title="Нужна помощь с рекламой в Узбекистане? Обсудим задачу"
+    secondary={{ href: '/contact/', label: 'Медиаплан за 48 часов' }}
+  />
+</Page>
+
+<style>
+  .bl { padding-block: clamp(24px, 4vh, 48px) var(--sec-y); }
+</style>

@@ -1,0 +1,107 @@
+---
+import { postUrl, rubricOf, rubricUrl, type BlogPost } from '../lib/blog';
+import { typo } from '../lib/typo';
+
+interface Props {
+  posts: readonly BlogPost[];
+  // На странице рубрики плашка рубрики у каждого поста не нужна — она в заголовке.
+  showRubric?: boolean;
+}
+const { posts, showRubric = true } = Astro.props;
+const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+{posts.length === 0 && <p class="bl__empty">Пока здесь пусто. Скоро появятся первые посты.</p>}
+<ul class="bl__list">
+  {
+    posts.map((p) => {
+      const rubric = p.data.rubric ? rubricOf(p.data.rubric) : null;
+      return (
+        <li class="bl__item">
+          <div class="bl__meta">
+            {showRubric && rubric && <a class="bl__rubric" href={rubricUrl(rubric)}>{rubric.name}</a>}
+            <time class="bl__date" datetime={p.data.publishedAt.toISOString()}>{fmt.format(p.data.publishedAt)}</time>
+          </div>
+          <a class="bl__link" href={postUrl(p)}>
+            <h2 class="bl__title">{typo(p.data.title)}</h2>
+            <p class="bl__lead">{typo(p.data.description)}</p>
+          </a>
+          {
+            p.data.cover && (
+              <a class="bl__thumb" href={postUrl(p)} tabindex="-1" aria-hidden="true">
+                <img src={p.data.cover.url} alt="" loading="lazy" width="1200" height="630" />
+              </a>
+            )
+          }
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  .bl__empty { color: var(--text-2); font-size: 17px; }
+  .bl__list { list-style: none; padding: 0; margin: 0; display: grid; }
+
+  /* Одна сетка на все карточки: фиксированные колонки, чтобы заголовки начинались
+     с одной линии независимо от длины рубрики. */
+  .bl__item {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr) 240px;
+    column-gap: clamp(24px, 3.5vw, 48px);
+    align-items: start;
+    padding-block: clamp(28px, 4.5vh, 44px);
+    border-top: 1px solid var(--line);
+  }
+  .bl__item:last-child { border-bottom: 1px solid var(--line); }
+
+  .bl__meta { display: grid; gap: 12px; justify-items: start; padding-top: 6px; }
+  .bl__rubric {
+    display: inline-flex;
+    padding: 6px 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    font: 600 12px/1 var(--f-display);
+    letter-spacing: 0.02em;
+    color: var(--text-2);
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .bl__rubric:hover { color: var(--text); border-color: var(--accent); }
+  .bl__date { color: var(--text-3); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .bl__link { display: grid; gap: 12px; }
+  .bl__title {
+    font: 700 clamp(20px, min(2.1vw, 3.6vh), 30px)/1.2 var(--f-display);
+    letter-spacing: -0.015em;
+    text-wrap: pretty;
+    -webkit-hyphens: manual;
+    hyphens: manual;
+    transition: color 0.2s;
+  }
+  .bl__link:hover .bl__title { color: var(--accent-hover); }
+  .bl__lead { color: var(--text-2); font-size: 16px; line-height: 1.55; max-width: 62ch; }
+
+  .bl__thumb img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+  }
+
+  @media (max-width: 1080px) {
+    .bl__item { grid-template-columns: 150px minmax(0, 1fr); }
+    .bl__thumb { display: none; }
+  }
+  @media (max-width: 760px) {
+    .bl__item { grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
+    .bl__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding-top: 0; }
+    .bl__title { font-size: 20px; }
+    .bl__lead { font-size: 15px; }
+  }
+</style>

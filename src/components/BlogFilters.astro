@@ -1,0 +1,61 @@
+---
+import { rubricUrl, type Rubric } from '../lib/blog';
+
+interface Props {
+  rubrics: readonly { rubric: Rubric; count: number }[];
+  total: number;
+  // slug текущей рубрики; не задан — открыт раздел «Все статьи»
+  active?: string;
+}
+const { rubrics, total, active } = Astro.props;
+---
+
+{
+  rubrics.length > 0 && (
+    <nav class="bf" aria-label="Рубрики блога">
+      <a class:list={['bf__chip', { 'is-active': !active }]} href="/blog/" aria-current={!active ? 'page' : undefined}>
+        Все статьи <span class="bf__count">{total}</span>
+      </a>
+      {rubrics.map(({ rubric, count }) => (
+        <a
+          class:list={['bf__chip', { 'is-active': active === rubric.slug }]}
+          href={rubricUrl(rubric)}
+          aria-current={active === rubric.slug ? 'page' : undefined}
+        >
+          {rubric.name} <span class="bf__count">{count}</span>
+        </a>
+      ))}
+    </nav>
+  )
+}
+
+<style>
+  .bf { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: clamp(24px, 4vh, 40px); }
+  .bf__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    font: 500 15px/1 var(--f-text);
+    color: var(--text-2);
+    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+  }
+  .bf__chip:hover { color: var(--text); border-color: var(--text-3); }
+  .bf__chip.is-active { color: #fff; background: var(--accent); border-color: var(--accent); }
+  .bf__count { font-size: 13px; color: inherit; opacity: 0.6; font-variant-numeric: tabular-nums; }
+
+  /* На телефоне — одна прокручиваемая строка, а не стена плашек над списком. */
+  @media (max-width: 760px) {
+    .bf {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-inline: calc(var(--pad) * -1);
+      padding-inline: var(--pad);
+      scrollbar-width: none;
+    }
+    .bf::-webkit-scrollbar { display: none; }
+    .bf__chip { flex: none; padding: 9px 14px; font-size: 14px; }
+  }
+</style>

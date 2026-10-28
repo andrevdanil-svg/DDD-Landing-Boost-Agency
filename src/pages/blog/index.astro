@@ -1,14 +1,14 @@
 ---
-import { getCollection } from 'astro:content';
 import Page from '../../layouts/Page.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import BlogFilters from '../../components/BlogFilters.astro';
+import BlogList from '../../components/BlogList.astro';
 import { breadcrumbs, webPage } from '../../lib/schema';
-import { typo } from '../../lib/typo';
+import { postUrl, publishedPosts, rubricsWithPosts } from '../../lib/blog';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
-);
+const posts = await publishedPosts();
+const rubrics = rubricsWithPosts(posts);
 
 const title = 'Блог Boost! Agency — реклама в Узбекистане, разборы и кейсы';
 const description =
@@ -31,12 +31,10 @@ const schema = [
       headline: p.data.title,
       description: p.data.description,
       datePublished: p.data.publishedAt.toISOString(),
-      url: new URL(`/blog/${p.id.replace(/\.md$/, '')}/`, 'https://boostagency.uz').href,
+      url: new URL(postUrl(p), 'https://boostagency.uz').href,
     })),
   },
 ];
-
-const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <Page title={title} description={description} schema={schema}>
@@ -48,23 +46,8 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
   />
   <section class="bl">
     <div class="wrap">
-      {posts.length === 0 && <p class="bl__empty">Пока здесь пусто. Скоро появятся первые посты.</p>}
-      <ul class="bl__list">
-        {
-          posts.map((p) => (
-            <li>
-              <a class="bl__item" href={`/blog/${p.id.replace(/\.md$/, '')}/`}>
-                {p.data.rubric && <span class="bl__rubric">{p.data.rubric}</span>}
-                <h2 class="bl__title">{typo(p.data.title)}</h2>
-                <p class="bl__lead">{typo(p.data.description)}</p>
-                <time class="bl__date" datetime={p.data.publishedAt.toISOString()}>
-                  {fmt.format(p.data.publishedAt)}
-                </time>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      <BlogFilters rubrics={rubrics} total={posts.length} />
+      <BlogList posts={posts} />
     </div>
   </section>
   <CtaBand
@@ -75,67 +58,5 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
 </Page>
 
 <style>
-  .bl { padding-block: clamp(32px, 6vh, 64px) var(--sec-y); }
-  .bl__empty { color: var(--text-2); font-size: 17px; }
-  .bl__list { list-style: none; padding: 0; display: grid; gap: 0; }
-  .bl__list li { border-top: 1px solid var(--line); }
-  .bl__list li:last-child { border-bottom: 1px solid var(--line); }
-
-  .bl__item {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    column-gap: clamp(24px, 4vw, 56px);
-    row-gap: 10px;
-    align-items: start;
-    padding-block: clamp(28px, 5vh, 48px);
-    transition: background-color 0.3s var(--ease);
-  }
-  .bl__item:hover { background: rgb(255 255 255 / 0.03); }
-
-  .bl__rubric {
-    grid-row: 1;
-    align-self: center;
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 12px;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    font: 600 13px/1 var(--f-display);
-    letter-spacing: 0.01em;
-    color: var(--text-2);
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .bl__title {
-    grid-column: 2;
-    grid-row: 1;
-    font: 700 clamp(22px, min(2.4vw, 4vh), 36px)/1.15 var(--f-display);
-    letter-spacing: -0.02em;
-    text-wrap: balance;
-    max-width: 28ch;
-  }
-  .bl__lead {
-    grid-column: 2;
-    grid-row: 2;
-    color: var(--text-2);
-    font-size: 16px;
-    max-width: 60ch;
-  }
-  .bl__date {
-    grid-column: 3;
-    grid-row: 1 / span 2;
-    align-self: start;
-    color: var(--text-3);
-    font-size: 15px;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  @media (max-width: 760px) {
-    .bl__item { grid-template-columns: minmax(0, 1fr); }
-    .bl__rubric { grid-row: auto; justify-self: start; }
-    .bl__title, .bl__lead { grid-column: 1; max-width: 100%; }
-    .bl__title { font-size: 20px; }
-    .bl__date { grid-column: 1; grid-row: auto; }
-  }
+  .bl { padding-block: clamp(24px, 4vh, 48px) var(--sec-y); }
 </style>
