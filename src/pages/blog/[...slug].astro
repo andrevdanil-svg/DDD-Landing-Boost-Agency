@@ -124,7 +124,7 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
   .pt__head {
     display: grid;
     gap: 20px;
-    max-width: 720px;
+    max-width: 860px;
     margin-inline: auto;
   }
   .pt__back {
@@ -148,16 +148,19 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
     text-transform: uppercase;
   }
   .pt__title {
-    font: 700 clamp(28px, 4.2vw, 48px)/1.1 var(--f-display);
+    font: 700 clamp(30px, 3.4vw, 44px)/1.12 var(--f-display);
     letter-spacing: -0.025em;
-    text-wrap: balance;
+    text-wrap: pretty;
     hyphens: none;
-    overflow-wrap: break-word;
+    -webkit-hyphens: none;
+    overflow-wrap: normal;
+    word-break: normal;
   }
   .pt__lead {
     color: var(--text-2);
     font-size: clamp(17px, 1.3vw, 19px);
     line-height: 1.55;
+    max-width: 62ch;
   }
   .pt__meta { color: var(--text-3); font-size: 14px; }
 
@@ -194,7 +197,7 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
     padding-block: clamp(28px, 4vh, 40px);
     border-block: 1px solid var(--line);
   }
-  .pt__hl > .wrap > * { max-width: 720px; margin-inline: auto; }
+  .pt__hl > .wrap > * { max-width: 820px; margin-inline: auto; }
   .pt__hl h2 {
     font: 600 13px/1 var(--f-display);
     color: var(--text-3);
@@ -271,7 +274,7 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
     background: rgb(101 91 250 / 0.06);
     border-block: 1px solid var(--line);
   }
-  .pt__note > .wrap > * { max-width: 720px; margin-inline: auto; }
+  .pt__note > .wrap > * { max-width: 820px; margin-inline: auto; }
   .pt__note h2 {
     font: 600 13px/1 var(--f-display);
     color: var(--text-3);
