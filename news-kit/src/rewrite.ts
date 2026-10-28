@@ -36,10 +36,13 @@ export function isTransientWriterError(error: NewsWriterError): boolean {
   return error.code === "ai_auth" || error.code === "ai_limit" || error.code === "ai_unavailable";
 }
 
+// What a call is for: writing a post, drawing an illustration, checking facts, fixing the post after it.
+export type NewsModelKind = "factcheck" | "fix" | "illustrate" | "write";
+
 // The model the writer calls (claude.ts: Claude through `claude -p`).
 export type NewsWriterModel = Readonly<{
   complete(input: Readonly<{
-    kind: "illustrate" | "write";
+    kind: NewsModelKind;
     prompt: string;
     schema: object;
     signal?: AbortSignal;

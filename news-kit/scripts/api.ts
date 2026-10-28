@@ -13,7 +13,9 @@
 //     → {"ok": true, "post": {...}, "warnings": [...]}  или {"ok": true, "skip": true, "reason": "..."}
 
 import { createClaudeCliModel } from "../src/claude";
+import { factcheckPost } from "../src/factcheck";
 import { drawIllustrations, illustrationOrders } from "../src/illustrate";
+import { parseWriterVerdict, type WrittenNewsPost } from "../src/writing";
 import { renderSvg } from "../src/render";
 import { createNewsReader, type NewsMaterial } from "../src/reader";
 import { rewriteNews } from "../src/rewrite";
@@ -23,6 +25,18 @@ async function readStdin(): Promise<string> {
   const chunks: Buffer[] = [];
   for await (const chunk of process.stdin) chunks.push(chunk as Buffer);
   return Buffer.concat(chunks).toString("utf8");
+}
+
+// Пост, который вернул rewrite (и прошёл через backend), — обратно в WrittenNewsPost.
+function writtenPost(value: unknown): WrittenNewsPost | null {
+  const v = (value ?? {}) as Record<string, unknown> & { visuals?: Record<string, unknown> };
+  const verdict = parseWriterVerdict({
+    businessNote: v.businessNote, chart: v.visuals?.chart ?? null, coverSubtitle: v.coverSubtitle ?? "",
+    coverTitle: v.coverTitle, highlights: v.visuals?.highlights ?? [], keyFigure: v.keyFigure ?? null,
+    lead: v.lead, paragraphs: v.paragraphs, rubric: v.rubric, skip: false, skipReason: "",
+    table: v.visuals?.table ?? null, title: v.title,
+  });
+  return verdict?.kind === "post" ? verdict.post : null;
 }
 
 function out(value: unknown): void {
@@ -111,6 +125,27 @@ async function main(): Promise<void> {
         return;
       }
       out({ ok: true, post: result.post, warnings: result.warnings });
+      return;
+    }
+    if (action === "factcheck") {
+      // Проверка фактов поста веб-поиском + исправление неверного/неподтверждённого.
+      const post = writtenPost(req.post);
+      if (!post) throw new Error("post: нужен пост в формате rewrite");
+      const budgetMs = (typeof req.timeoutSec === "number" && req.timeoutSec > 30 ? req.timeoutSec : 240) * 1000 - 15_000;
+      const model = createClaudeCliModel({
+        models: { factcheck: "opus", fix: "opus", write: "opus" },
+        // Без «размышлений» — иначе каждый вызов в разы дольше (см. claude.ts).
+        thinkingTokens: { factcheck: 0, fix: 0 },
+        // Только поиск на стороне Anthropic: никаких загрузок страниц с этого сервера.
+        tools: { factcheck: ["WebSearch"] },
+        timeoutMs: budgetMs,
+        ...(process.env.CLAUDE_CODE_OAUTH_TOKEN ? { token: process.env.CLAUDE_CODE_OAUTH_TOKEN } : {}),
+      });
+      const result = await factcheckPost(post, {
+        ...(typeof req.sourceUrl === "string" ? { sourceUrl: req.sourceUrl } : {}),
+        ...(typeof req.trusted === "string" ? { trusted: req.trusted } : {}),
+      }, model, { deadline: Date.now() + budgetMs, signal: AbortSignal.timeout(budgetMs) });
+      out({ ok: true, claims: result.claims, fixed: result.fixed, post: result.post });
       return;
     }
     if (action === "illustrate") {

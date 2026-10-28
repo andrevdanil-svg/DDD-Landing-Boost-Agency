@@ -4,7 +4,7 @@ import { createRequire } from "node:module";
 import os from "node:os";
 import path from "node:path";
 
-import { NewsWriterError, type NewsWriterModel } from "./rewrite";
+import { NewsWriterError, type NewsModelKind, type NewsWriterModel } from "./rewrite";
 
 // Claude through a Claude subscription (Pro/Max) — `claude -p`, never an API key. The call is a pure
 // text task: no tools, no MCP servers, no settings files, no session kept, the answer held to a JSON
@@ -54,11 +54,14 @@ export function classifyClaudeFailure(message: string): NewsWriterError["code"] 
 
 export function createClaudeCliModel(options: Readonly<{
   binary?: string;
-  models?: Readonly<{ illustrate?: string; write: string }>;
+  models?: Readonly<Partial<Record<NewsModelKind, string>> & { write: string }>;
   spawn?: Spawn;
   // MAX_THINKING_TOKENS for a kind of call. 0 turns extended thinking off: an illustration took Opus
   // 15 000 output tokens and ~4 minutes with it, 1 800 tokens and 26 s without (VPS, 2026-10-28).
-  thinkingTokens?: Readonly<Partial<Record<"illustrate" | "write", number>>>;
+  thinkingTokens?: Readonly<Partial<Record<NewsModelKind, number>>>;
+  // Built-in tools a kind of call may use (only server-side ones: WebSearch runs at Anthropic, nothing
+  // is fetched from this machine). Everything else runs with no tools at all.
+  tools?: Readonly<Partial<Record<NewsModelKind, readonly string[]>>>;
   timeoutMs?: number;
   // Without a token the machine's own `claude` login is used.
   token?: string;
@@ -100,7 +103,8 @@ export function createClaudeCliModel(options: Readonly<{
             ...launcher.args,
             "-p",
             "--model", models[input.kind] ?? models.write,
-            "--tools", "",
+            "--tools", (options.tools?.[input.kind] ?? []).join(","),
+            ...((options.tools?.[input.kind] ?? []).length ? ["--allowedTools", (options.tools?.[input.kind] ?? []).join(",")] : []),
             "--strict-mcp-config",
             "--setting-sources", "",
             "--no-session-persistence",
