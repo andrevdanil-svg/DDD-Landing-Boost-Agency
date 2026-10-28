@@ -80,7 +80,16 @@ export async function rewriteNews(
       throw error instanceof NewsWriterError ? error : new NewsWriterError("ai_failed");
     }
     const verdict = parseWriterVerdict(answer);
-    if (!verdict) throw new NewsWriterError("ai_invalid");
+    if (!verdict) {
+      // Логируем сам ответ Claude в stderr — backend подхватит в журнал.
+      // Без этого ai_invalid непонятно какое поле отвалилось (title слишком
+      // длинный? paragraphs 0 элементов? highlights не массив?).
+      try {
+        const dump = JSON.stringify(answer).slice(0, 1500);
+        process.stderr.write(`[writer] parseWriterVerdict null; answer=${dump}\n`);
+      } catch { /* ignore */ }
+      throw new NewsWriterError("ai_invalid");
+    }
     return verdict;
   };
 

@@ -84,11 +84,12 @@ async function main(): Promise<void> {
       if (!material || typeof material.title !== "string" || typeof material.text !== "string") {
         throw new Error("material.title и material.text обязательны");
       }
-      const model = createClaudeCliModel(
-        process.env.CLAUDE_CODE_OAUTH_TOKEN
-          ? { token: process.env.CLAUDE_CODE_OAUTH_TOKEN }
-          : {},
-      );
+      // Опциональный выбор модели (для backend-fallback: opus → sonnet).
+      const writeModel = typeof req.model === "string" && req.model ? req.model : "opus";
+      const model = createClaudeCliModel({
+        models: { write: writeModel },
+        ...(process.env.CLAUDE_CODE_OAUTH_TOKEN ? { token: process.env.CLAUDE_CODE_OAUTH_TOKEN } : {}),
+      });
       const result = await rewriteNews(
         {
           title: material.title,
