@@ -113,6 +113,12 @@ describe("news writing", () => {
     expect(parseWriterVerdict({ ...answer, coverSubtitle: "" })).not.toHaveProperty("post.coverSubtitle");
   });
 
+  // 2026-10-28: «1,2 млрд — пользователей ChatGPT в неделю» в шапке поста об Узбекистане читалось как
+  // узбекская аудитория, хотя это весь мир.
+  it("makes the key figure say where it is from", () => {
+    expect(writeSystemPrompt()).toContain("caption обязан сказать, к чему она относится («в мире», «в Казахстане»)");
+  });
+
   it("keeps the limits of the blog's content schema", () => {
     // boost-landing src/content.config.ts: anything wider fails `astro build`.
     expect(newsPostLimits).toMatchObject({ title: 140, lead: 300, rubric: 24, businessNote: 600, figureValue: 14, figureCaption: 48 });
