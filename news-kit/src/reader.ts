@@ -1,5 +1,5 @@
 import { parseFeed, type FeedItem } from "./feed";
-import { discoverFeedUrls, extractArticle, extractNewsletter, looksLikeArticle, parseTelegramChannel } from "./html";
+import { discoverFeedUrls, extractArticle, extractNewsletter, looksLikeArticle, parseTelegramChannel, type ArticleImage } from "./html";
 import { createNewsHttp, NewsHttpError, type NewsHttpGet } from "./http";
 import { newsTitleFromText } from "./source";
 
@@ -10,6 +10,8 @@ import { newsTitleFromText } from "./source";
 export type NewsMaterial = Readonly<{
   // The material carries the whole text (a page, a post, a feed's full content), not only a summary.
   fullText: boolean;
+  // The article's pictures, marked in the text as «[[IMG:<id>]]» (html.ts ArticleImage).
+  images?: readonly ArticleImage[];
   publishedAt?: Date;
   text: string;
   title: string;
@@ -77,11 +79,12 @@ export function createNewsReader(get: NewsHttpGet = createNewsHttp()) {
     async article(url: string, signal?: AbortSignal): Promise<NewsMaterial & Readonly<{ url: string }>> {
       const page = await fetchPage(url, signal);
       if (!/html/iu.test(page.contentType)) throw new NewsReadError("not_an_article");
-      const article = extractArticle(page.body);
+      const article = extractArticle(page.body, page.url);
       if (!looksLikeArticle(page.body, page.url)) throw new NewsReadError("not_an_article");
       if (article.text.length < 20) throw new NewsReadError("no_text");
       return Object.freeze({
         fullText: true,
+        ...(article.images ? { images: article.images } : {}),
         ...(article.publishedAt ? { publishedAt: article.publishedAt } : {}),
         text: article.text,
         title: article.title,

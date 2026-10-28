@@ -65,14 +65,69 @@ export function cleanText(value: string): string {
     .slice(0, maxText);
 }
 
+// An illustration of the article (a screenshot, a chart): where it stood is marked in the text as
+// «[[IMG:<id>]]» on its own line, so the writer can keep it in place.
+export type ArticleImage = Readonly<{ alt: string; id: number; src: string }>;
+
+const maxImages = 12;
+
+// The picture's real address: lazy loaders keep it in data-*, a srcset lists sizes (the widest wins).
+function imageSource(element: Element, pageUrl: string): string | undefined {
+  const srcset = attribute(element, "data-srcset") ?? attribute(element, "srcset");
+  const widest = srcset
+    ?.split(",")
+    .map((item) => item.trim().split(/\s+/u))
+    .map(([url, size]) => ({ url, width: Number.parseInt(size ?? "", 10) || 0 }))
+    .filter((item) => item.url)
+    .sort((left, right) => right.width - left.width)[0]?.url;
+  const raw = attribute(element, "data-src") ?? attribute(element, "data-lazy-src") ?? attribute(element, "data-original") ?? widest ?? attribute(element, "src");
+  if (!raw || raw.startsWith("data:")) return undefined;
+  try {
+    const url = new URL(raw.trim(), pageUrl);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return undefined;
+    // Icons, logos and counters are not illustrations.
+    if (/\.svg(?:$|\?)/iu.test(url.pathname)) return undefined;
+    return url.href;
+  } catch {
+    return undefined;
+  }
+}
+
+function tooSmall(element: Element): boolean {
+  const size = (name: string) => Number.parseInt(attribute(element, name) ?? "", 10);
+  const width = size("width");
+  const height = size("height");
+  return (Number.isFinite(width) && width < 200) || (Number.isFinite(height) && height < 120);
+}
+
 // The readable text under a node: blocks on their own lines, list items with a bullet, page chrome
-// (navigation, header, footer, aside) left out when asked.
-export function textOf(root: ParentNode, options: Readonly<{ withoutChrome?: boolean }> = {}): string {
+// (navigation, header, footer, aside) left out when asked. With `images`, the article's pictures are
+// collected there and marked in the text.
+export function textOf(
+  root: ParentNode,
+  options: Readonly<{ images?: ArticleImage[]; pageUrl?: string; withoutChrome?: boolean }> = {},
+): string {
   const parts: string[] = [];
   const visit = (node: Node) => {
     if (!isElement(node)) {
       if ("value" in node && node.nodeName === "#text") parts.push(node.value.replace(/\s+/gu, " "));
       return;
+    }
+    if (options.images && options.pageUrl && !hidden(node)) {
+      if (node.tagName === "picture") {
+        const img = find(node, (element) => element.tagName === "img");
+        if (img) visit(img);
+        return;
+      }
+      if (node.tagName === "img") {
+        const src = imageSource(node, options.pageUrl);
+        if (src && !tooSmall(node) && options.images.length < maxImages && !options.images.some((image) => image.src === src)) {
+          const id = options.images.length + 1;
+          options.images.push(Object.freeze({ alt: cleanText(attribute(node, "alt") ?? "").slice(0, 200), id, src }));
+          parts.push(`\n[[IMG:${id}]]\n`);
+        }
+        return;
+      }
     }
     if (skipped.has(node.tagName) || hidden(node) || (options.withoutChrome && chrome.has(node.tagName))) return;
     if (node.tagName === "br") {
@@ -132,11 +187,12 @@ function jsonLdDate(document: ParentNode): Date | undefined {
   return undefined;
 }
 
-export type ExtractedArticle = Readonly<{ publishedAt?: Date; text: string; title: string }>;
+export type ExtractedArticle = Readonly<{ images?: readonly ArticleImage[]; publishedAt?: Date; text: string; title: string }>;
 
 // The article on a news page: the element holding the most paragraph text (the way reading modes find
-// it), or the page's <article>, without navigation, header, footer and asides.
-export function extractArticle(html: string): ExtractedArticle {
+// it), or the page's <article>, without navigation, header, footer and asides. With the page's address,
+// its pictures come along (ArticleImage).
+export function extractArticle(html: string, pageUrl?: string): ExtractedArticle {
   const document = parse(html);
   const body = find(document, (element) => element.tagName === "body") ?? document;
   const siteName = meta(document, "og:site_name", "application-name");
@@ -173,12 +229,21 @@ export function extractArticle(html: string): ExtractedArticle {
     .filter(([element]) => !chrome.has(element.tagName) && element.tagName !== "ul" && element.tagName !== "ol")
     .sort((left, right) => right[1] - left[1])[0]?.[0];
   const container = declared ?? best ?? find(body, (element) => element.tagName === "article") ?? body;
-  let text = textOf(container, { withoutChrome: true });
-  if (text.length < 200) {
+  const images: ArticleImage[] = [];
+  let text = textOf(container, { withoutChrome: true, ...(pageUrl ? { images, pageUrl } : {}) });
+  if (text.replace(/\[\[IMG:\d+\]\]/gu, "").trim().length < 200) {
     const description = meta(document, "og:description", "description", "twitter:description");
-    if (description && description.length > text.length) text = cleanText(description);
+    if (description && description.length > text.length) {
+      text = cleanText(description);
+      images.length = 0;
+    }
   }
-  return Object.freeze({ ...(publishedAt ? { publishedAt } : {}), text, title: cleanText(title).slice(0, 300) });
+  return Object.freeze({
+    ...(images.length > 0 ? { images: Object.freeze(images) } : {}),
+    ...(publishedAt ? { publishedAt } : {}),
+    text,
+    title: cleanText(title).slice(0, 300),
+  });
 }
 
 // A newsletter saved as HTML: its subject (the <title> or the first heading) and its visible text.

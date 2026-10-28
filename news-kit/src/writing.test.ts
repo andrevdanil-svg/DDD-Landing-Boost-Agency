@@ -98,6 +98,12 @@ describe("news writing", () => {
     expect(whyWriterInvalid({ ...answer, lead: " " })).toBe("lead: missing or empty");
   });
 
+  it("keeps picture marks and drops the captions left in place of pictures", () => {
+    expect(writeSystemPrompt()).toContain("[[IMG:3|подпись]]");
+    const verdict = parseWriterVerdict({ ...answer, paragraphs: ["Шаг 1.", "[[IMG:2|Окно заголовков]]", "📸 Скриншот: окно заголовков", "Шаг 2."] });
+    expect(verdict).toMatchObject({ kind: "post", post: { paragraphs: ["Шаг 1.", "[[IMG:2|Окно заголовков]]", "Шаг 2."] } });
+  });
+
   it("keeps the limits of the blog's content schema", () => {
     // boost-landing src/content.config.ts: anything wider fails `astro build`.
     expect(newsPostLimits).toMatchObject({ title: 140, lead: 300, rubric: 24, businessNote: 600, figureValue: 14, figureCaption: 48 });

@@ -4,6 +4,43 @@ import { extractArticle, extractNewsletter, looksLikeArticle, parseTelegramChann
 
 const paragraph = (text: string) => `<p>${text} ${"Подробности события для читателя. ".repeat(3)}</p>`;
 
+// 2026-10-28: the post showed «📸 Скриншот: …» where the source had screenshots — pictures were dropped.
+describe("an article's pictures", () => {
+  const page = `<html><head><title>Гайд по RSA</title></head><body>
+    <header><img src="/logo.png" width="300" height="200"></header>
+    <article>
+      ${paragraph("Шаг 1. Откройте кабинет и выберите кампанию.")}
+      <figure><img src="/img/step1.png" alt="Окно кампании"><figcaption>Окно кампании</figcaption></figure>
+      ${paragraph("Шаг 2. Добавьте заголовки объявления.")}
+      <img data-src="https://cdn.example.com/step2.jpg" src="data:image/gif;base64,R0lGOD" alt="Заголовки">
+      <img srcset="/s/a-480.webp 480w, /s/a-1200.webp 1200w" alt="Описания">
+      <img src="/icons/share.png" width="24" height="24">
+      <img src="/brand/logo.svg">
+      <picture><source srcset="/p/x.avif"><img src="/p/x.jpg" alt="В picture"></picture>
+      ${paragraph("Шаг 3. Проверьте показатель эффективности объявления.")}
+    </article></body></html>`;
+
+  it("marks where each picture stood and gives its full address", () => {
+    const article = extractArticle(page, "https://blog.example.com/rsa/guide");
+    expect(article.images?.map((image) => image.src)).toEqual([
+      "https://blog.example.com/img/step1.png",
+      "https://cdn.example.com/step2.jpg", // lazy: data-src, not the placeholder
+      "https://blog.example.com/s/a-1200.webp", // the widest of a srcset
+      "https://blog.example.com/p/x.jpg",
+    ]);
+    expect(article.images?.[0]).toMatchObject({ alt: "Окно кампании", id: 1 });
+    expect(article.text).toMatch(/Шаг 1[^]*\[\[IMG:1\]\][^]*Шаг 2[^]*\[\[IMG:2\]\][^]*\[\[IMG:4\]\][^]*Шаг 3/u);
+    // Header logo, an icon, an svg are not illustrations.
+    expect(article.text).not.toContain("[[IMG:5]]");
+  });
+
+  it("keeps the text alone without the page address", () => {
+    const article = extractArticle(page);
+    expect(article.images).toBeUndefined();
+    expect(article.text).not.toContain("[[IMG");
+  });
+});
+
 // Owner, 2026-10-14: a page becomes a title, its words and a date — nothing of its markup.
 describe("news pages", () => {
   it("takes the article's paragraphs, not the menu, the sidebar or the footer", () => {
