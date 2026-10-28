@@ -10,10 +10,11 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@resvg/resvg-js": "2.6.2",
     "parse5": "7.3.0"
   },
   "devDependencies": {
-    "@anthropic-ai/claude-code": "^2.1.310",
+    "@anthropic-ai/claude-code": "2.1.100",
     "@types/node": "24.13.3",
     "tsx": "4.23.1",
     "typescript": "5.9.3",

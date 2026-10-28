@@ -39,7 +39,7 @@ export function isTransientWriterError(error: NewsWriterError): boolean {
 // The model the writer calls (claude.ts: Claude through `claude -p`).
 export type NewsWriterModel = Readonly<{
   complete(input: Readonly<{
-    kind: "write";
+    kind: "illustrate" | "write";
     prompt: string;
     schema: object;
     signal?: AbortSignal;

@@ -54,8 +54,11 @@ export function classifyClaudeFailure(message: string): NewsWriterError["code"] 
 
 export function createClaudeCliModel(options: Readonly<{
   binary?: string;
-  models?: Readonly<{ write: string }>;
+  models?: Readonly<{ illustrate?: string; write: string }>;
   spawn?: Spawn;
+  // MAX_THINKING_TOKENS for a kind of call. 0 turns extended thinking off: an illustration took Opus
+  // 15 000 output tokens and ~4 minutes with it, 1 800 tokens and 26 s without (VPS, 2026-10-28).
+  thinkingTokens?: Readonly<Partial<Record<"illustrate" | "write", number>>>;
   timeoutMs?: number;
   // Without a token the machine's own `claude` login is used.
   token?: string;
@@ -96,7 +99,7 @@ export function createClaudeCliModel(options: Readonly<{
           child = run(launcher.command, [
             ...launcher.args,
             "-p",
-            "--model", models[input.kind],
+            "--model", models[input.kind] ?? models.write,
             "--tools", "",
             "--strict-mcp-config",
             "--setting-sources", "",
@@ -105,22 +108,16 @@ export function createClaudeCliModel(options: Readonly<{
             "--system-prompt", input.system,
             "--json-schema", JSON.stringify(input.schema),
           ], {
-            env: (options.token
-              ? {
-                CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
-                CLAUDE_CODE_OAUTH_TOKEN: options.token,
-                DISABLE_AUTOUPDATER: "1",
-                HOME: claudeHome(),
-                LANG: "C.UTF-8",
-                PATH: process.env.PATH ?? "/usr/local/bin:/usr/bin:/bin",
-              }
-              : {
-                CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
-                DISABLE_AUTOUPDATER: "1",
-                HOME: process.env.HOME ?? os.homedir(),
-                LANG: "C.UTF-8",
-                PATH: process.env.PATH ?? "/usr/local/bin:/usr/bin:/bin",
-              }) as unknown as NodeJS.ProcessEnv,
+            env: ({
+              ...(options.token
+                ? { CLAUDE_CODE_OAUTH_TOKEN: options.token, HOME: claudeHome() }
+                : { HOME: process.env.HOME ?? os.homedir() }),
+              CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
+              DISABLE_AUTOUPDATER: "1",
+              LANG: "C.UTF-8",
+              PATH: process.env.PATH ?? "/usr/local/bin:/usr/bin:/bin",
+              ...(options.thinkingTokens?.[input.kind] !== undefined ? { MAX_THINKING_TOKENS: String(options.thinkingTokens[input.kind]) } : {}),
+            }) as unknown as NodeJS.ProcessEnv,
             stdio: "pipe",
           });
         } catch {

@@ -13,6 +13,8 @@
 //     → {"ok": true, "post": {...}, "warnings": [...]}  или {"ok": true, "skip": true, "reason": "..."}
 
 import { createClaudeCliModel } from "../src/claude";
+import { drawIllustrations, illustrationOrders } from "../src/illustrate";
+import { renderSvg } from "../src/render";
 import { createNewsReader, type NewsMaterial } from "../src/reader";
 import { rewriteNews } from "../src/rewrite";
 import { newsLinkAddress, telegramChannelAddress, telegramPostAddress } from "../src/source";
@@ -109,6 +111,32 @@ async function main(): Promise<void> {
         return;
       }
       out({ ok: true, post: result.post, warnings: result.warnings });
+      return;
+    }
+    if (action === "illustrate") {
+      // Свои иллюстрации к посту: метки [[ILL:n|подпись]] → SVG от Claude → PNG (base64).
+      const post = req.post as { paragraphs?: unknown; title?: unknown } | undefined;
+      const paragraphs = Array.isArray(post?.paragraphs) ? post.paragraphs.filter((item): item is string => typeof item === "string") : [];
+      const title = typeof post?.title === "string" ? post.title : "";
+      const orders = illustrationOrders(paragraphs);
+      const budgetMs = (typeof req.timeoutSec === "number" && req.timeoutSec > 30 ? req.timeoutSec : 240) * 1000 - 15_000;
+      const model = createClaudeCliModel({
+        models: { illustrate: typeof req.model === "string" && req.model ? req.model : "opus", write: "opus" },
+        // Без «размышлений»: иначе одна SVG — ~4 минуты вместо ~30 секунд.
+        thinkingTokens: { illustrate: 0 },
+        timeoutMs: budgetMs,
+        ...(process.env.CLAUDE_CODE_OAUTH_TOKEN ? { token: process.env.CLAUDE_CODE_OAUTH_TOKEN } : {}),
+      });
+      const drawn = await drawIllustrations({ paragraphs, title }, orders, model, AbortSignal.timeout(budgetMs));
+      const images: { id: number; png: string }[] = [];
+      for (const item of drawn) {
+        try {
+          images.push({ id: item.id, png: renderSvg(item.svg).toString("base64") });
+        } catch (error) {
+          process.stderr.write(`[illustrator] svg ${item.id} not rendered: ${error instanceof Error ? error.message : String(error)}\n`);
+        }
+      }
+      out({ ok: true, images, ordered: orders.length });
       return;
     }
     out({ ok: false, error: `Неизвестный action: ${String(action)}` });
