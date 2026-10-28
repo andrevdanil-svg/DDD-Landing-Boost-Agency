@@ -8,16 +8,22 @@
 
 import { newsVisualLimits, newsVisualsPlainText, parseNewsVisuals, type NewsPostVisuals } from "./visuals";
 
+// Лимиты специально сделаны с запасом относительно того, что мы просим
+// у Claude в системном промпте — иначе редкий «абзац на 3 предложения»
+// или заголовок с длинным именем бренда стопорит ai_invalid (ломает весь
+// рерайт из-за одного переполнения на 20 символов). Astro schema на блоге
+// проверяет свои лимиты отдельно, так что здесь — только отсечка «ответ
+// Claude явно сломан», а не художественная норма.
 export const newsPostLimits = Object.freeze({
-  businessNote: 600,
-  coverTitle: 70,
-  figureCaption: 48,
-  figureValue: 14,
-  lead: 360,
-  paragraph: 500,
-  paragraphs: 10,
-  rubric: 24,
-  title: 100,
+  businessNote: 800,
+  coverTitle: 100,
+  figureCaption: 60,
+  figureValue: 20,
+  lead: 400,
+  paragraph: 900,
+  paragraphs: 12,
+  rubric: 32,
+  title: 140,
 });
 
 export type WrittenNewsPost = Readonly<{
@@ -154,6 +160,40 @@ function writerVisuals(record: Record<string, unknown>): NewsPostVisuals {
   const visuals = parseNewsVisuals({ chart: record.chart, highlights: record.highlights, table: record.table });
   if (!visuals.chart || visuals.chart.points.length >= 3) return visuals;
   return Object.freeze({ ...(visuals.highlights ? { highlights: visuals.highlights } : {}), ...(visuals.table ? { table: visuals.table } : {}) });
+}
+
+// Diagnostic twin of parseWriterVerdict: on the same checks returns a human-
+// readable reason why the answer was rejected (so backend logs show «paragraph
+// 2 too long» instead of silent ai_invalid). null = answer is valid.
+export function whyWriterInvalid(value: unknown): string | null {
+  if (!value || typeof value !== "object") return "answer is not an object";
+  const record = value as Record<string, unknown>;
+  if (record.skip === true) return null;
+  const checks: [string, number, unknown][] = [
+    ["title", newsPostLimits.title, record.title],
+    ["lead", newsPostLimits.lead, record.lead],
+    ["businessNote", newsPostLimits.businessNote, record.businessNote],
+    ["coverTitle", newsPostLimits.coverTitle, record.coverTitle],
+    ["rubric", newsPostLimits.rubric, record.rubric],
+  ];
+  for (const [name, max, raw] of checks) {
+    if (typeof raw !== "string") return `${name}: not a string (got ${typeof raw})`;
+    if (!raw.trim()) return `${name}: empty`;
+    if (!text(raw, max)) return `${name}: too long (${raw.length} > ${max})`;
+  }
+  if (!Array.isArray(record.paragraphs)) return "paragraphs: not an array";
+  const paragraphs = record.paragraphs;
+  if (paragraphs.length === 0) return "paragraphs: empty";
+  if (paragraphs.length > newsPostLimits.paragraphs) return `paragraphs: too many (${paragraphs.length} > ${newsPostLimits.paragraphs})`;
+  for (let i = 0; i < paragraphs.length; i++) {
+    const p = paragraphs[i];
+    if (typeof p !== "string") return `paragraphs[${i}]: not a string`;
+    if (!text(p, newsPostLimits.paragraph)) {
+      const len = typeof p === "string" ? p.length : 0;
+      return `paragraphs[${i}]: too long (${len} > ${newsPostLimits.paragraph})`;
+    }
+  }
+  return null;
 }
 
 // The writer's answer, checked against the format: null when it does not fit it.

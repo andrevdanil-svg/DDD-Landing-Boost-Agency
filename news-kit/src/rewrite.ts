@@ -3,6 +3,7 @@ import {
   missingNumbers,
   parseWriterVerdict,
   postText,
+  whyWriterInvalid,
   writeSchema,
   writeSystemPrompt,
   writeUserPrompt,
@@ -81,12 +82,12 @@ export async function rewriteNews(
     }
     const verdict = parseWriterVerdict(answer);
     if (!verdict) {
-      // Логируем сам ответ Claude в stderr — backend подхватит в журнал.
-      // Без этого ai_invalid непонятно какое поле отвалилось (title слишком
-      // длинный? paragraphs 0 элементов? highlights не массив?).
+      // Diagnostic: say WHY the answer was rejected and dump it. Backend
+      // writes stderr into journald, so the reason shows up in logs.
       try {
-        const dump = JSON.stringify(answer).slice(0, 1500);
-        process.stderr.write(`[writer] parseWriterVerdict null; answer=${dump}\n`);
+        const reason = whyWriterInvalid(answer) ?? "unknown";
+        const dump = JSON.stringify(answer).slice(0, 4000);
+        process.stderr.write(`[writer] invalid: ${reason}; answer=${dump}\n`);
       } catch { /* ignore */ }
       throw new NewsWriterError("ai_invalid");
     }
