@@ -104,6 +104,15 @@ describe("news writing", () => {
     expect(verdict).toMatchObject({ kind: "post", post: { paragraphs: ["Шаг 1.", "[[IMG:2|Окно заголовков]]", "Шаг 2."] } });
   });
 
+  // 2026-10-28: the cover's bottom line got the whole lead and ran into the footer — the writer now
+  // gives one short sentence for it.
+  it("asks for one short sentence under the cover title", () => {
+    expect(writeSystemPrompt()).toContain("coverSubtitle — подпись под заголовком на обложке: одно короткое предложение");
+    expect(parseWriterVerdict({ ...answer, coverSubtitle: "Новый канал\nдля рекламы  в чате" }))
+      .toMatchObject({ post: { coverSubtitle: "Новый канал для рекламы в чате" } });
+    expect(parseWriterVerdict({ ...answer, coverSubtitle: "" })).not.toHaveProperty("post.coverSubtitle");
+  });
+
   it("keeps the limits of the blog's content schema", () => {
     // boost-landing src/content.config.ts: anything wider fails `astro build`.
     expect(newsPostLimits).toMatchObject({ title: 140, lead: 300, rubric: 24, businessNote: 600, figureValue: 14, figureCaption: 48 });

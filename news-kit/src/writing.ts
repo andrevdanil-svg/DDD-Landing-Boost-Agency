@@ -13,6 +13,7 @@ import { clip, newsVisualLimits, newsVisualsPlainText, parseNewsVisuals, type Ne
 // а обрезается по границе слова (clip) — один лишний символ не должен ронять весь рерайт.
 export const newsPostLimits = Object.freeze({
   businessNote: 600,
+  coverSubtitle: 100,
   coverTitle: 100,
   figureCaption: 48,
   figureValue: 14,
@@ -26,6 +27,7 @@ export const newsPostLimits = Object.freeze({
 // Что просим у модели — с запасом ниже жёстких лимитов, чтобы обрезка была редкостью.
 export const newsPostTargets = Object.freeze({
   businessNote: 450,
+  coverSubtitle: 70,
   coverTitle: 70,
   figureCaption: 40,
   figureValue: 12,
@@ -37,6 +39,8 @@ export const newsPostTargets = Object.freeze({
 
 export type WrittenNewsPost = Readonly<{
   businessNote: string;
+  // One short sentence under the title on the cover picture.
+  coverSubtitle?: string;
   coverTitle: string;
   keyFigure?: Readonly<{ caption: string; value: string }>;
   lead: string;
@@ -56,6 +60,7 @@ export const writeSchema = Object.freeze({
   additionalProperties: false,
   properties: {
     businessNote: { type: "string" },
+    coverSubtitle: { type: "string" },
     coverTitle: { type: "string" },
     keyFigure: {
       anyOf: [
@@ -109,7 +114,7 @@ export const writeSchema = Object.freeze({
     skipReason: { type: "string" },
     title: { type: "string" },
   },
-  required: ["skip", "skipReason", "title", "lead", "paragraphs", "businessNote", "keyFigure", "coverTitle", "rubric", "highlights", "table", "chart"],
+  required: ["skip", "skipReason", "title", "lead", "paragraphs", "businessNote", "keyFigure", "coverTitle", "coverSubtitle", "rubric", "highlights", "table", "chart"],
   type: "object",
 });
 
@@ -136,6 +141,7 @@ export function writeSystemPrompt(): string {
     `businessNote — до ${newsPostTargets.businessNote} знаков;`,
     `keyFigure — главная цифра из источника (value до ${newsPostTargets.figureValue} знаков, например «13,5%» или «280 млрд», caption до ${newsPostTargets.figureCaption} знаков — что это за цифра) или null, если яркой цифры нет;`,
     `coverTitle — короткий заголовок для обложки, до ${newsPostTargets.coverTitle} знаков;`,
+    `coverSubtitle — подпись под заголовком на обложке: одно короткое предложение до ${newsPostTargets.coverSubtitle} знаков — главная польза или вывод для рекламодателя, без дат и цифр, которых нет в посте, не повторяя coverTitle;`,
     `rubric — тема поста в одно-два слова, до ${newsPostLimits.rubric} знаков, с заглавной буквы: «Таргет», «Контекст», «ТВ и радио», «Соцсети», «Платформы», «Инструменты», «Кейсы», «Регулирование». Если пропускаешь материал — остальные поля оставь пустыми.`,
   ].join("\n");
 }
@@ -207,6 +213,7 @@ export function parseWriterVerdict(value: unknown): WriterVerdict | null {
   const businessNote = field(record.businessNote, newsPostLimits.businessNote)!;
   const rubric = field(record.rubric, newsPostLimits.rubric)!;
   const coverTitle = field(record.coverTitle, newsPostLimits.coverTitle) ?? clip(title, newsPostLimits.coverTitle);
+  const coverSubtitle = field(record.coverSubtitle, newsPostLimits.coverSubtitle)?.replace(/\n+/gu, " ");
   const paragraphs = record.paragraphs
     .map((paragraph) => field(paragraph, newsPostLimits.paragraph))
     // A caption left where a picture stood in the source («📸 Скриншот: …») is not text of the post.
@@ -226,6 +233,7 @@ export function parseWriterVerdict(value: unknown): WriterVerdict | null {
     kind: "post",
     post: Object.freeze({
       businessNote,
+      ...(coverSubtitle ? { coverSubtitle } : {}),
       coverTitle,
       ...(keyFigure ? { keyFigure } : {}),
       lead,
