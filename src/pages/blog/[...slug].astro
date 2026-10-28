@@ -37,6 +37,7 @@ const schema = [
     datePublished: post.data.publishedAt.toISOString(),
     ...(post.data.updatedAt ? { dateModified: post.data.updatedAt.toISOString() } : {}),
     authorName: post.data.author,
+    citations: post.data.sources,
   }),
 ];
 
@@ -103,6 +104,24 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
           <div class="wrap">
             <h2>Что это значит для рекламодателя</h2>
             <p>{typo(post.data.businessNote)}</p>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      post.data.sources?.length && (
+        <section class="pt__sources">
+          <div class="wrap">
+            <h2>Источники</h2>
+            <ol>
+              {post.data.sources.map((s) => (
+                <li>
+                  <a href={s.url} target="_blank" rel="noopener">{s.title}</a>
+                  <span>{new URL(s.url).hostname.replace(/^www\./, '')}</span>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
       )
@@ -296,6 +315,23 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
     margin-bottom: 16px;
   }
   .pt__note p { font-size: 17px; line-height: 1.65; color: var(--text); }
+
+  .pt__sources { padding-block: clamp(28px, 4vh, 44px); }
+  .pt__sources > .wrap > * { max-width: 820px; margin-inline: auto; }
+  .pt__sources h2 {
+    font: 600 13px/1 var(--f-display);
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+  }
+  .pt__sources ol { padding-left: 1.4em; display: grid; gap: 10px; }
+  .pt__sources li { font-size: 15px; line-height: 1.5; color: var(--text-3); overflow-wrap: anywhere; }
+  .pt__sources li::marker { color: var(--text-3); }
+  .pt__sources a { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  .pt__sources a:hover { text-decoration-thickness: 2px; }
+  .pt__sources span { margin-left: 8px; font-size: 13px; }
+  .pt__sources span::before { content: '· '; }
 
   /* Мобильный полировка: уменьшаем вертикальные пустоты, крупный шрифт
      заголовка не вылезает за экран, обложка со скруглением по краям */
