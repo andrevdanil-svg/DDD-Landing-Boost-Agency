@@ -15,7 +15,7 @@
 import { createClaudeCliModel } from "../src/claude";
 import { factcheckPost } from "../src/factcheck";
 import { drawIllustrations, illustrationOrders } from "../src/illustrate";
-import { parseWriterVerdict, type WrittenNewsPost } from "../src/writing";
+import { numbersIn, parseWriterVerdict, postText, type WrittenNewsPost } from "../src/writing";
 import { renderSvg } from "../src/render";
 import { createNewsReader, type NewsMaterial } from "../src/reader";
 import { rewriteNews } from "../src/rewrite";
@@ -145,7 +145,10 @@ async function main(): Promise<void> {
         ...(typeof req.sourceUrl === "string" ? { sourceUrl: req.sourceUrl } : {}),
         ...(typeof req.trusted === "string" ? { trusted: req.trusted } : {}),
       }, model, { deadline: Date.now() + budgetMs, signal: AbortSignal.timeout(budgetMs) });
-      out({ ok: true, claims: result.claims, fixed: result.fixed, post: result.post });
+      // «Цифры, которых нет в источнике» (warnings rewrite): исправленные проверкой из поста ушли.
+      const left = new Set(numbersIn(postText(result.post)));
+      const numbers = Array.isArray(req.numbers) ? req.numbers.filter((value): value is string => typeof value === "string" && left.has(value)) : [];
+      out({ ok: true, claims: result.claims, fixed: result.fixed, numbers, post: result.post });
       return;
     }
     if (action === "illustrate") {
