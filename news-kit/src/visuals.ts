@@ -27,9 +27,21 @@ function clean(value: unknown, max: number): string | null {
   return text.length >= 1 && text.length <= max ? text : null;
 }
 
+// A text fitted into max characters: cut at the last word boundary, ended with «…».
+export function clip(value: string, max: number): string {
+  if (value.length <= max) return value;
+  const cut = value.slice(0, max - 1);
+  const space = cut.search(/\s\S*$/u);
+  const head = space >= max * 0.6 ? cut.slice(0, space) : cut;
+  return `${head.replace(/[\s,;:.—–-]+$/u, "")}…`;
+}
+
 function highlightsOf(value: unknown): readonly string[] | undefined {
   if (!Array.isArray(value)) return undefined;
-  const points = value.map((item) => clean(item, newsVisualLimits.highlight)).filter((item): item is string => item !== null);
+  const points = value
+    .map((item) => (typeof item === "string" ? item.replace(/\s+/gu, " ").trim() : ""))
+    .filter((item) => item.length > 0)
+    .map((item) => clip(item, newsVisualLimits.highlight));
   return points.length >= 1 ? Object.freeze(points.slice(0, newsVisualLimits.highlights)) : undefined;
 }
 

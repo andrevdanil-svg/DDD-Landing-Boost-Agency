@@ -64,6 +64,9 @@ export async function rewriteNews(
   }>,
   model: NewsWriterModel,
   signal?: AbortSignal,
+  // When the caller stops waiting (epoch ms): the second pass that rewrites copied phrases runs only
+  // if it fits before it; otherwise the post comes back with those phrases in its warnings.
+  deadline?: number,
 ): Promise<RewriteResult> {
   if (material.text.trim().length < minimumSourceText) return Object.freeze({ kind: "skip", reason: "В источнике слишком мало текста для поста." });
   const source = `${material.title}\n${material.text}`;
@@ -94,10 +97,20 @@ export async function rewriteNews(
     return verdict;
   };
 
+  const started = Date.now();
   let verdict = await ask();
   if (verdict.kind === "post") {
     const copied = copiedPhrases(postText(verdict.post), source);
-    if (copied.length > 0) verdict = await ask(copied);
+    const firstPass = Date.now() - started;
+    const fits = deadline === undefined || deadline - Date.now() > firstPass * 1.2 + 10_000;
+    if (copied.length > 0 && fits) {
+      // A failed second pass must not lose the post the first one wrote.
+      try {
+        verdict = await ask(copied);
+      } catch (error) {
+        process.stderr.write(`[writer] second pass failed (${error instanceof NewsWriterError ? error.code : "error"}), keeping the first post\n`);
+      }
+    }
   }
   if (verdict.kind === "skip") return verdict;
   const written = postText(verdict.post);

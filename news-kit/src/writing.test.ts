@@ -3,9 +3,11 @@ import { describe, expect, it } from "vitest";
 import {
   copiedPhrases,
   missingNumbers,
+  newsPostLimits,
   numbersIn,
   parseWriterVerdict,
   postText,
+  whyWriterInvalid,
   writeSystemPrompt,
   writeUserPrompt,
 } from "./writing";
@@ -60,11 +62,45 @@ describe("news writing", () => {
     expect(parseWriterVerdict({ ...answer, keyFigure: null })).toMatchObject({ kind: "post", post: { title: answer.title } });
     expect(parseWriterVerdict({ ...answer, keyFigure: null })).not.toHaveProperty("post.keyFigure");
     expect(parseWriterVerdict({ ...answer, skip: true, skipReason: "Политика без деловой ценности" })).toEqual({ kind: "skip", reason: "Политика без деловой ценности" });
+    // Only a broken answer is refused: a missing or empty field, no text at all.
     for (const broken of [
-      null, "text", { ...answer, title: "Т".repeat(101) }, { ...answer, paragraphs: [] }, { ...answer, paragraphs: ["a", "b", "c", "d", "e", "f", "g"] },
-      { ...answer, paragraphs: ["ok", 5] }, { ...answer, lead: "" }, { ...answer, coverTitle: undefined },
-      { ...answer, rubric: "" }, { ...answer, rubric: "Р".repeat(25) },
+      null, "text", { ...answer, paragraphs: [] }, { ...answer, paragraphs: ["", "  "] }, { ...answer, paragraphs: "абзац" },
+      { ...answer, lead: "" }, { ...answer, title: undefined }, { ...answer, businessNote: 5 }, { ...answer, rubric: "" },
     ]) expect(parseWriterVerdict(broken)).toBeNull();
+  });
+
+  // 2026-10-28: a long how-to came back with 13–15 paragraphs over a limit of 12, and the whole post was
+  // thrown away (ai_invalid) on every model. Lengths and counts are now fitted, never a reason to refuse.
+  it("fits an answer that runs over the blog's limits instead of refusing it", () => {
+    const fifteen = Array.from({ length: 15 }, (_, i) => (i % 2 ? `Абзац ${i}.` : `## Шаг ${i}`));
+    const fitted = parseWriterVerdict({
+      ...answer,
+      paragraphs: [...fifteen, 5, "  "],
+      title: `${"Очень длинный заголовок ".repeat(10)}конец`,
+      lead: "Лид. ".repeat(100),
+      rubric: "Р".repeat(30),
+      coverTitle: undefined,
+      keyFigure: { caption: "подпись", value: "слишком длинное значение" },
+    });
+    expect(fitted?.kind).toBe("post");
+    if (fitted?.kind !== "post") return;
+    // 15 elements kept; a non-string and a blank one dropped; the last element is not a dangling subheading.
+    expect(fitted.post.paragraphs).toHaveLength(14);
+    expect(fitted.post.paragraphs.at(-1)!.startsWith("## ")).toBe(false);
+    expect(fitted.post.title.length).toBeLessThanOrEqual(newsPostLimits.title);
+    expect(fitted.post.title.endsWith("…")).toBe(true);
+    expect(fitted.post.title).not.toMatch(/\sОчен…$/u); // cut at a word boundary
+    expect(fitted.post.lead.length).toBeLessThanOrEqual(newsPostLimits.lead);
+    expect(fitted.post.rubric.length).toBeLessThanOrEqual(newsPostLimits.rubric);
+    expect(fitted.post.coverTitle.length).toBeLessThanOrEqual(newsPostLimits.coverTitle);
+    expect(fitted.post).not.toHaveProperty("keyFigure"); // a big number that does not fit is left out
+    expect(whyWriterInvalid({ ...answer, paragraphs: fifteen })).toBeNull();
+    expect(whyWriterInvalid({ ...answer, lead: " " })).toBe("lead: missing or empty");
+  });
+
+  it("keeps the limits of the blog's content schema", () => {
+    // boost-landing src/content.config.ts: anything wider fails `astro build`.
+    expect(newsPostLimits).toMatchObject({ title: 140, lead: 300, rubric: 24, businessNote: 600, figureValue: 14, figureCaption: 48 });
   });
 
   it("finds figures the source does not have, however they are written", () => {

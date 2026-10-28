@@ -84,10 +84,14 @@ async function main(): Promise<void> {
       if (!material || typeof material.title !== "string" || typeof material.text !== "string") {
         throw new Error("material.title и material.text обязательны");
       }
-      // Опциональный выбор модели (для backend-fallback: opus → sonnet).
-      const writeModel = typeof req.model === "string" && req.model ? req.model : "opus";
+      // Модель и бюджет времени задаёт backend (fallback между моделями — там).
+      const writeModel = typeof req.model === "string" && req.model ? req.model : "sonnet";
+      // Сколько backend ждёт этот вызов; оставляем 15 с на запуск node и ответ.
+      const budgetMs = (typeof req.timeoutSec === "number" && req.timeoutSec > 30 ? req.timeoutSec : 240) * 1000 - 15_000;
+      const deadline = Date.now() + budgetMs;
       const model = createClaudeCliModel({
         models: { write: writeModel },
+        timeoutMs: budgetMs,
         ...(process.env.CLAUDE_CODE_OAUTH_TOKEN ? { token: process.env.CLAUDE_CODE_OAUTH_TOKEN } : {}),
       });
       const result = await rewriteNews(
@@ -97,6 +101,8 @@ async function main(): Promise<void> {
           ...(material.instruction ? { instruction: material.instruction } : {}),
         },
         model,
+        AbortSignal.timeout(budgetMs),
+        deadline,
       );
       if (result.kind === "skip") {
         out({ ok: true, skip: true, reason: result.reason });
