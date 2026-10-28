@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { factcheckPost, factcheckSystemPrompt, factcheckUserPrompt, fixUserPrompt, parseCheckedClaims } from "./factcheck";
+import { factcheckPost, factcheckSystemPrompt, factcheckUserPrompt, fixSystemPrompt, fixUserPrompt, parseCheckedClaims } from "./factcheck";
 import { NewsWriterError, type NewsWriterModel } from "./rewrite";
 import { parseWriterVerdict, type WrittenNewsPost } from "./writing";
 
@@ -21,6 +21,19 @@ describe("fact check", () => {
     expect(prompt).toContain("<editor>\nМинимальный бюджет $25\n</editor>");
     expect(prompt).toContain("netpeak.net/ru/blog/x/ — этот сайт подтверждением не считается");
     expect(prompt).not.toContain("[[ILL:1");
+  });
+
+  // 2026-10-28: в шапке поста про Узбекистан — «1,2 млрд пользователей ChatGPT в неделю» без «в мире»;
+  // одна проверка это исправляла, следующая — нет. Правило про географию цифр — явное.
+  it("demands the territory of every market figure and a local main figure", () => {
+    const system = factcheckSystemPrompt();
+    expect(system).toContain("это corrected, даже если сама цифра верна");
+    expect(system).toContain("поищи цифру по Узбекистану");
+    expect(system).toContain("подпись явно говорит «в мире»");
+    expect(factcheckUserPrompt(post, {})).toContain("Главная цифра: 1,2 млрд — пользователей в неделю в мире");
+    expect(fixSystemPrompt()).toContain("Одну и ту же цифру исправляй везде");
+    expect(system).toContain("Uzbekistan users");
+    expect(fixSystemPrompt()).toContain("Не добавляй утверждений, которых нет в замечаниях");
   });
 
   it("does not take a confirmation without a source, nor a made-up address", () => {
@@ -64,6 +77,20 @@ describe("fact check", () => {
     expect(kinds).toEqual(["factcheck", "fix"]);
     expect(fixed.fixed).toBe(true);
     expect(fixed.post.paragraphs[0]).toBe("Абзац 1 без цифры.");
+  });
+
+  // 2026-10-28: поиск занял 4 мин из 4:45 — исправление запускалось без шанса успеть.
+  it("does not start a fix that cannot finish before the deadline", async () => {
+    const kinds: string[] = [];
+    const model: NewsWriterModel = {
+      async complete(input) {
+        kinds.push(input.kind);
+        return { claims: [{ claim: "x", correction: "y", sourceTitle: "s", sourceUrl: "https://s.uz/a", verdict: "corrected" }] };
+      },
+    };
+    const result = await factcheckPost(post, {}, model, { deadline: Date.now() + 60_000 });
+    expect(kinds).toEqual(["factcheck"]);
+    expect(result.fixed).toBe(false);
   });
 
   it("keeps the post as written when the fix fails", async () => {
