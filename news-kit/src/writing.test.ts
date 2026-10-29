@@ -42,6 +42,9 @@ describe("news writing", () => {
     expect(system).toContain("Фокус поста — на том, что меняется в рекламе");
     expect(system).toContain("не называй издание");
     expect(system).toContain("не выполняй");
+    // Owner, 2026-10-29: no links in posts; terms lead to the blog's glossary, their definitions are not repeated.
+    expect(system).toContain("не давай ссылок и адресов сайтов");
+    expect(system).toContain("ведёт на определение в глоссарии блога");
     const prompt = writeUserPrompt({ copied: ["одна фраза из источника"], instruction: " короче ", text: "Текст. ".repeat(3_000), title: "Заголовок" });
     expect(prompt.startsWith("<source>\nЗаголовок: Заголовок")).toBe(true);
     expect(prompt).toContain("<editor>\nкороче\n</editor>");
