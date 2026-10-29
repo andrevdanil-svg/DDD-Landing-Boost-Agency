@@ -243,6 +243,9 @@ const schema = [
   .tool-head__lead { max-width: 60ch; margin-top: 20px; color: var(--text-2); font-size: clamp(16px, 1.3vw, 19px); }
 
   .tool-body { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 72px); }
+  /* Форма тула живёт в узком контейнере по центру — на широких мониторах читается
+     куда лучше, чем на 1400px .wrap. tool-head и tool-about растягиваются сами. */
+  .tool-body > .wrap > * { max-width: 960px; margin-inline: auto; }
 
   .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
   .presets button {
