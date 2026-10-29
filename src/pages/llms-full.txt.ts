@@ -5,6 +5,7 @@ import { servicePages } from '../data/services';
 import { platforms, nameIn, categories } from '../data/platforms';
 import { cases } from '../data/cases';
 import { business } from '../data/business';
+import { glossary, glossaryGroups, GLOSSARY_URL } from '../data/glossary';
 
 // Полный текст сайта для ИИ-ассистентов. Собирается на build-time из тех же
 // структур данных, что рендерят страницы, — значит, никогда не рассинхронизируется.
@@ -158,6 +159,18 @@ export const GET: APIRoute = async () => {
     '# КЕЙСЫ',
     '',
     ...cases.map(caseToText),
+    '',
+    '---',
+    '',
+    '# ГЛОССАРИЙ РЕКЛАМЫ И МАРКЕТИНГА',
+    `${business.url}${GLOSSARY_URL}`,
+    '',
+    ...Object.entries(glossaryGroups).map(([id, title]) => [
+      `## ${title}`,
+      ...glossary
+        .filter((t) => t.group === id)
+        .map((t) => `- **${t.term}**${t.full ? ` (${t.full})` : ''} — ${t.text}`),
+    ].join('\n')),
     '',
     '---',
     '',

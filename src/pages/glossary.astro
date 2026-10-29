@@ -1,0 +1,238 @@
+---
+import Page from '../layouts/Page.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { breadcrumbs, webPage } from '../lib/schema';
+import { typo } from '../lib/typo';
+import { glossary, glossaryGroups, GLOSSARY_URL, type GlossaryGroup } from '../data/glossary';
+
+// 99 терминов, 101 термин, 102 термина
+const plural = (n: number, [one, few, many]: [string, string, string]) =>
+  n % 10 === 1 && n % 100 !== 11 ? one : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? few : many;
+
+const bySlug = new Map(glossary.map((t) => [t.slug, t]));
+const groups = (Object.keys(glossaryGroups) as GlossaryGroup[])
+  .map((id) => ({
+    id,
+    title: glossaryGroups[id],
+    terms: glossary.filter((t) => t.group === id).sort((a, b) => a.term.localeCompare(b.term, 'ru')),
+  }))
+  .filter((g) => g.terms.length);
+
+const count = `${glossary.length} ${plural(glossary.length, ['термин', 'термина', 'терминов'])}`;
+const title = 'Глоссарий рекламы и маркетинга — термины простыми словами';
+const description = `${count} контекстной, таргетированной и медийной рекламы: CTR, CPC, CPA, ретаргетинг, семантическое ядро, модель атрибуции и другие — коротко и по делу.`;
+
+const pageUrl = new URL(GLOSSARY_URL, 'https://boostagency.uz').href;
+const schema = [
+  webPage({ title, description, url: GLOSSARY_URL }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Глоссарий', url: GLOSSARY_URL },
+  ]),
+  {
+    '@type': 'DefinedTermSet',
+    '@id': `${pageUrl}#terms`,
+    name: 'Глоссарий рекламы и маркетинга Boost! Agency',
+    url: pageUrl,
+    inLanguage: 'ru',
+    hasDefinedTerm: glossary.map((t) => ({
+      '@type': 'DefinedTerm',
+      '@id': `${pageUrl}#${t.slug}`,
+      name: t.term,
+      ...(t.full && { alternateName: t.full }),
+      description: t.text,
+      url: `${pageUrl}#${t.slug}`,
+      inDefinedTermSet: `${pageUrl}#terms`,
+    })),
+  },
+];
+
+const searchText = (t: (typeof glossary)[number]) => [t.term, t.full ?? '', t.text].join(' ').toLowerCase();
+---
+
+<Page title={title} description={description} schema={schema}>
+  <PageHero
+    hero={{
+      title: 'Глоссарий рекламы и маркетинга',
+      lead: `${count} контекстной, таргетированной и медийной рекламы простыми словами: метрики, ставки, таргетинги, аналитика. На эти определения ссылаются статьи нашего блога.`,
+    }}
+  />
+
+  <section class="gl">
+    <div class="wrap">
+      <div class="gl__bar">
+        <label class="gl__search">
+          <span class="sr-only">Найти термин</span>
+          <input type="search" placeholder="Найти термин: CTR, ретаргетинг, лендинг…" autocomplete="off" data-gl-search />
+        </label>
+        <nav class="gl__nav" aria-label="Разделы глоссария">
+          {groups.map((g) => <a href={`#${g.id}`}>{g.title}</a>)}
+        </nav>
+      </div>
+
+      <p class="gl__empty" hidden data-gl-empty>Такого термина пока нет. Спросите нас в Telegram — объясним и добавим в глоссарий.</p>
+
+      {
+        groups.map((g) => (
+          <section class="gl__group" id={g.id} data-gl-group>
+            <h2 class="gl__title">{g.title}</h2>
+            <dl class="gl__list">
+              {g.terms.map((t) => (
+                <div class="gl__item" id={t.slug} data-gl-item data-q={searchText(t)}>
+                  <dt>
+                    <a href={`#${t.slug}`} class="gl__term">{t.term}</a>
+                    {t.full && <span class="gl__full">{t.full}</span>}
+                  </dt>
+                  <dd>{typo(t.text)}</dd>
+                  {t.see && (
+                    <dd class="gl__see">
+                      См. также:{' '}
+                      {t.see
+                        .map((slug) => bySlug.get(slug))
+                        .filter((s) => s !== undefined)
+                        .map((s, i) => (
+                          <>
+                            {i > 0 && ', '}
+                            <a href={`#${s.slug}`}>{s.term}</a>
+                          </>
+                        ))}
+                    </dd>
+                  )}
+                </div>
+              ))}
+            </dl>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+
+  <CtaBand
+    title="Термины понятны, а настраивать рекламу некогда? Запустим за вас"
+    secondary={{ href: '/blog/', label: 'Читать блог' }}
+  />
+</Page>
+
+<style>
+  /* высота экрана: при поиске список короткий, а панель поиска должна остаться на месте */
+  .gl { min-height: 100vh; padding-bottom: var(--sec-y); }
+
+  .gl__bar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 5;
+    display: grid;
+    gap: 14px;
+    padding-block: 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .gl__search input {
+    width: 100%;
+    max-width: 560px;
+    padding: 14px 18px;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    background: var(--bg-raised);
+    color: var(--text);
+    font: inherit;
+    font-size: 16px;
+  }
+  .gl__search input::placeholder { color: var(--text-3); }
+  .gl__search input:focus { outline: none; border-color: var(--accent); }
+  .gl__nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: calc(var(--pad) * -1);
+    padding-inline: var(--pad);
+  }
+  .gl__nav::-webkit-scrollbar { display: none; }
+  .gl__nav a {
+    flex: none;
+    padding: 7px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    color: var(--text-2);
+    font-size: 14px;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .gl__nav a:hover { color: var(--text); border-color: var(--accent); }
+
+  .gl__empty { padding-top: 40px; color: var(--text-2); font-size: 18px; }
+  .gl__group[hidden] { display: none; }
+
+  .gl__group {
+    display: grid;
+    gap: 8px 48px;
+    padding-top: clamp(40px, 7vh, 80px);
+    scroll-margin-top: calc(var(--header-h) + 130px);
+  }
+  .gl__title {
+    font: 700 clamp(24px, 2.6vw, 34px)/1.1 var(--f-display);
+    letter-spacing: -0.02em;
+    -webkit-hyphens: manual;
+    hyphens: manual;
+  }
+  .gl__item {
+    padding: 20px 16px;
+    margin-inline: -16px;
+    border-bottom: 1px solid var(--line);
+    border-radius: 12px;
+    scroll-margin-top: calc(var(--header-h) + 140px);
+    transition: background-color 0.4s var(--ease);
+  }
+  .gl__item:target { background: rgb(101 91 250 / 0.12); }
+  .gl__item dt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+  }
+  .gl__term {
+    font: 700 20px/1.25 var(--f-display);
+    letter-spacing: -0.01em;
+  }
+  .gl__term:hover { color: var(--accent-hover); }
+  .gl__full { color: var(--text-3); font-size: 14px; }
+  .gl__item dd { max-width: 68ch; margin-top: 8px; color: var(--text-2); line-height: 1.6; }
+  .gl__see { font-size: 14px; color: var(--text-3) !important; }
+  .gl__see a {
+    color: var(--text-2);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 3px;
+  }
+  .gl__see a:hover { color: var(--text); }
+
+  @media (min-width: 960px) {
+    .gl__group { grid-template-columns: minmax(220px, 1fr) 2.6fr; }
+    .gl__title { position: sticky; top: calc(var(--header-h) + 150px); align-self: start; padding-top: 20px; }
+  }
+</style>
+
+<script>
+  // Поиск по глоссарию: прячем не подходящие термины и пустые разделы.
+  const input = document.querySelector<HTMLInputElement>('[data-gl-search]');
+  const items = [...document.querySelectorAll<HTMLElement>('[data-gl-item]')];
+  const groups = [...document.querySelectorAll<HTMLElement>('[data-gl-group]')];
+  const empty = document.querySelector<HTMLElement>('[data-gl-empty]');
+  const section = document.querySelector<HTMLElement>('.gl');
+
+  input?.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    // Ищут, прокрутив список вниз, — возвращаем к его началу, иначе результат окажется выше экрана.
+    if (section && section.getBoundingClientRect().top < 0) section.scrollIntoView({ block: 'start' });
+    for (const item of items) item.hidden = q !== '' && !(item.dataset.q ?? '').includes(q);
+    let any = false;
+    for (const group of groups) {
+      const visible = group.querySelector('[data-gl-item]:not([hidden])') !== null;
+      group.hidden = !visible;
+      any ||= visible;
+    }
+    if (empty) empty.hidden = any;
+  });
+</script>
