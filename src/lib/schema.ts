@@ -26,7 +26,6 @@ export function organization(): JsonLd {
       contentUrl: new URL(business.logoSvgUrl, SITE).href,
     },
     description: business.description,
-    foundingDate: String(business.foundingYear),
     areaServed: business.areaServed,
     sameAs: business.sameAs,
     ...(business.telegram && { contactPoint: [telegramContact(), ...(business.phone ? [phoneContact()] : [])] }),

@@ -133,7 +133,6 @@ export const GET: APIRoute = async () => {
     '',
     `Сайт: ${business.url}`,
     `Контакт: ${business.telegram}`,
-    `Основано: ${business.foundingYear}`,
     `Город: ${business.address.locality}, ${business.address.countryName}`,
     '',
     '---',
