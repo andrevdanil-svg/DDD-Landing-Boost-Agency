@@ -49,6 +49,13 @@ function firstTerm(text: string, used: Set<string>) {
   return best;
 }
 
+// Какие термины глоссария упоминаются в тексте — для блока «Статьи блога» на странице термина.
+export function mentionedTerms(text: string): Set<string> {
+  const out = new Set<string>();
+  for (const { slug, re } of MATCHERS) if (re.test(text)) out.add(slug);
+  return out;
+}
+
 // Текст → [текст, ссылка на термин, текст…]; null — терминов нет (или лимит ссылок исчерпан).
 export function linkTerms(value: string, used: Set<string>): MdNode[] | null {
   const out: MdNode[] = [];

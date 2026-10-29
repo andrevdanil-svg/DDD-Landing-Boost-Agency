@@ -1,10 +1,11 @@
 ---
-import Page from '../layouts/Page.astro';
-import PageHero from '../components/PageHero.astro';
-import CtaBand from '../components/CtaBand.astro';
-import { breadcrumbs, webPage } from '../lib/schema';
-import { typo } from '../lib/typo';
-import { glossary, glossaryGroups, GLOSSARY_URL, type GlossaryGroup } from '../data/glossary';
+import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { breadcrumbs, webPage } from '../../lib/schema';
+import { typo } from '../../lib/typo';
+import { glossary, glossaryGroups, glossaryHref, GLOSSARY_URL, type GlossaryGroup } from '../../data/glossary';
+import { glossaryPages } from '../../data/glossary-pages';
 
 // 99 терминов, 101 термин, 102 термина
 const plural = (n: number, [one, few, many]: [string, string, string]) =>
@@ -38,17 +39,19 @@ const schema = [
     inLanguage: 'ru',
     hasDefinedTerm: glossary.map((t) => ({
       '@type': 'DefinedTerm',
-      '@id': `${pageUrl}#${t.slug}`,
+      '@id': glossaryPages.has(t.slug) ? `${new URL(glossaryHref(t.slug), pageUrl).href}#term` : `${pageUrl}#${t.slug}`,
       name: t.term,
       ...(t.full && { alternateName: t.full }),
       description: t.text,
-      url: `${pageUrl}#${t.slug}`,
+      url: glossaryPages.has(t.slug) ? new URL(glossaryHref(t.slug), pageUrl).href : `${pageUrl}#${t.slug}`,
       inDefinedTermSet: `${pageUrl}#terms`,
     })),
   },
 ];
 
 const searchText = (t: (typeof glossary)[number]) => [t.term, t.full ?? '', t.text].join(' ').toLowerCase();
+// Термин со своей страницей ведёт на неё, без страницы — на свою строку здесь.
+const termHref = (slug: string) => (glossaryPages.has(slug) ? glossaryHref(slug) : `#${slug}`);
 ---
 
 <Page title={title} description={description} schema={schema}>
@@ -81,10 +84,13 @@ const searchText = (t: (typeof glossary)[number]) => [t.term, t.full ?? '', t.te
               {g.terms.map((t) => (
                 <div class="gl__item" id={t.slug} data-gl-item data-q={searchText(t)}>
                   <dt>
-                    <a href={`#${t.slug}`} class="gl__term">{t.term}</a>
+                    <a href={termHref(t.slug)} class="gl__term">{t.term}</a>
                     {t.full && <span class="gl__full">{t.full}</span>}
                   </dt>
-                  <dd>{typo(t.text)}</dd>
+                  <dd>
+                    {typo(t.text)}
+                    {glossaryPages.has(t.slug) && <> <a class="gl__more" href={glossaryHref(t.slug)}>Подробнее →</a></>}
+                  </dd>
                   {t.see && (
                     <dd class="gl__see">
                       См. также:{' '}
@@ -94,7 +100,7 @@ const searchText = (t: (typeof glossary)[number]) => [t.term, t.full ?? '', t.te
                         .map((s, i) => (
                           <>
                             {i > 0 && ', '}
-                            <a href={`#${s.slug}`}>{s.term}</a>
+                            <a href={termHref(s.slug)}>{s.term}</a>
                           </>
                         ))}
                     </dd>
@@ -199,6 +205,8 @@ const searchText = (t: (typeof glossary)[number]) => [t.term, t.full ?? '', t.te
   .gl__term:hover { color: var(--accent-hover); }
   .gl__full { color: var(--text-3); font-size: 14px; }
   .gl__item dd { max-width: 68ch; margin-top: 8px; color: var(--text-2); line-height: 1.6; }
+  .gl__more { color: var(--text); white-space: nowrap; }
+  .gl__more:hover { color: var(--accent-hover); }
   .gl__see { font-size: 14px; color: var(--text-3) !important; }
   .gl__see a {
     color: var(--text-2);

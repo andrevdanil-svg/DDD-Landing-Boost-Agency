@@ -1,0 +1,200 @@
+---
+// Графики и схемы страниц терминов: рисуются из данных страницы при сборке, без картинок.
+import type { GlossaryVisual } from '../data/glossary-pages';
+import { typo } from '../lib/typo';
+
+interface Props {
+  visual: GlossaryVisual;
+}
+const { visual: v } = Astro.props;
+
+const num = (n: number) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(n);
+const unitOf = (unit?: string) => (unit ? (unit === '%' ? '%' : ` ${unit}`) : '');
+const max = v.type === 'bars' ? Math.max(...v.items.map((i) => i.value)) : 0;
+// Ширина полосы: от 4%, чтобы маленькое значение было видно рядом с большим.
+const width = (value: number) => `${Math.max(4, (value / (max || 1)) * 100)}%`;
+// Воронка — ступенями одинаковой высоты: значения на шагах отличаются в сотни раз,
+// в масштабе нижние шаги превратились бы в точки. Цифры и конверсия — подписями.
+const funnelWidth = (i: number, n: number) => `${100 - (n > 1 ? (i * 56) / (n - 1) : 0)}%`;
+---
+
+<figure class:list={['gv', `gv--${v.type}`]}>
+  {
+    v.type === 'formula' && (
+      <div class="gv__formula">
+        <p class="gv__expr">{v.expression}</p>
+        <div class="gv__calc">
+          {v.inputs.map((i) => (
+            <span class="gv__in">
+              <small>{i.label}</small>
+              <b>{i.value}</b>
+            </span>
+          ))}
+          <span class="gv__arrow" aria-hidden="true">→</span>
+          <span class="gv__in gv__in--result">
+            <small>{v.result.label}</small>
+            <b>{v.result.value}</b>
+          </span>
+        </div>
+      </div>
+    )
+  }
+  {
+    v.type === 'bars' && (
+      <ul class="gv__bars">
+        {v.items.map((i) => (
+          <li class:list={{ 'is-max': i.value === max }}>
+            <span class="gv__label">{i.label}</span>
+            <span class="gv__track"><span class="gv__bar" style={`width:${width(i.value)}`} /></span>
+            <b class="gv__value">{num(i.value)}{unitOf(v.unit)}</b>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    v.type === 'funnel' && (
+      <ol class="gv__funnel">
+        {v.steps.map((s, i) => (
+          <li>
+            {i > 0 && v.steps[i - 1]!.value > 0 && (
+              <small class="gv__rate">↓ {num((s.value / v.steps[i - 1]!.value) * 100)}% из прошлого шага</small>
+            )}
+            <span class="gv__fstep" style={`width:${funnelWidth(i, v.steps.length)}`}>
+              <span>{s.label}</span>
+              <b>{num(s.value)}</b>
+            </span>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+  {
+    v.type === 'steps' && (
+      <ol class="gv__steps">
+        {v.steps.map((s, i) => (
+          <li>
+            <span class="gv__n">{i + 1}</span>
+            <b>{typo(s.title)}</b>
+            {s.text && <span>{typo(s.text)}</span>}
+          </li>
+        ))}
+      </ol>
+    )
+  }
+  {
+    v.type === 'compare' && (
+      <div class="gv__compare">
+        {v.columns.map((c) => (
+          <div>
+            <b>{typo(c.title)}</b>
+            <ul>{c.items.map((it) => <li>{typo(it)}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    )
+  }
+  <figcaption>{typo(v.caption)}</figcaption>
+</figure>
+
+<style>
+  .gv {
+    margin: 1.8em 0;
+    padding: clamp(18px, 3vw, 28px);
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+    background: var(--bg-raised);
+  }
+  .gv figcaption { margin-top: 16px; color: var(--text-3); font-size: 14px; line-height: 1.45; }
+
+  /* формула */
+  .gv__expr {
+    font: 700 clamp(18px, 2.4vw, 24px)/1.3 var(--f-display);
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .gv__calc { display: flex; flex-wrap: wrap; align-items: stretch; gap: 10px; margin-top: 18px; }
+  .gv__in {
+    display: grid;
+    gap: 2px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+  }
+  .gv__in small { color: var(--text-3); font-size: 12px; }
+  .gv__in b { font-size: 18px; font-variant-numeric: tabular-nums; }
+  .gv__in--result { border-color: var(--accent); background: rgb(101 91 250 / 0.14); }
+  .gv__arrow { align-self: center; color: var(--text-3); font-size: 20px; }
+
+  /* воронка */
+  .gv__funnel { display: grid; gap: 6px; padding: 0; list-style: none; }
+  .gv__funnel li { display: grid; justify-items: center; gap: 6px; margin: 0; }
+  .gv__fstep {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    min-width: 0;
+    padding: 12px 18px;
+    border-radius: 10px;
+    background: rgb(101 91 250 / 0.22);
+    border: 1px solid rgb(101 91 250 / 0.45);
+  }
+  .gv__funnel li:first-child .gv__fstep { background: rgb(101 91 250 / 0.42); }
+  .gv__fstep span { color: var(--text); font-size: 15px; line-height: 1.3; }
+  .gv__fstep b { font-size: 16px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .gv__rate { color: var(--text-3); font-size: 13px; }
+
+  /* столбцы */
+  .gv__bars { display: grid; gap: 12px; padding: 0; list-style: none; }
+  .gv__bars li {
+    display: grid;
+    grid-template-columns: minmax(90px, 34%) 1fr auto;
+    align-items: center;
+    gap: 6px 14px;
+    margin: 0;
+  }
+  .gv__label { color: var(--text-2); font-size: 14px; line-height: 1.3; }
+  .gv__track { height: 12px; border-radius: 6px; background: rgb(255 255 255 / 0.05); overflow: hidden; }
+  .gv__bar { display: block; height: 100%; border-radius: 6px; background: var(--line-strong); }
+  .gv__bars li.is-max .gv__bar { background: var(--accent); }
+  .gv__value { font-size: 15px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* шаги */
+  .gv__steps { display: grid; gap: 12px; padding: 0; list-style: none; counter-reset: none; }
+  .gv__steps li {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 2px 14px;
+    margin: 0;
+  }
+  .gv__n {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgb(101 91 250 / 0.18);
+    color: var(--accent-hover);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .gv__steps b { color: var(--text); font-weight: 600; line-height: 1.35; padding-top: 5px; }
+  .gv__steps span:not(.gv__n) { color: var(--text-2); font-size: 15px; line-height: 1.5; }
+
+  /* сравнение */
+  .gv__compare { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .gv__compare > div { padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+  .gv__compare b { display: block; margin-bottom: 10px; color: var(--text); font-weight: 600; }
+  .gv__compare ul { display: grid; gap: 8px; margin: 0; padding-left: 1.1em; }
+  .gv__compare li { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.45; }
+
+  @media (max-width: 560px) {
+    .gv__bars li { grid-template-columns: 1fr auto; }
+    .gv__track { grid-column: 1 / -1; grid-row: 2; }
+    .gv__fstep { padding: 10px 12px; }
+    .gv__fstep span { font-size: 14px; }
+  }
+</style>

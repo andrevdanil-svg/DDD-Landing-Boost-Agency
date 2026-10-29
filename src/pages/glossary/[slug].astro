@@ -1,0 +1,223 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import GlossaryVisual from '../../components/GlossaryVisual.astro';
+import { breadcrumbs, faqPage, webPage } from '../../lib/schema';
+import { typo } from '../../lib/typo';
+import { richText } from '../../lib/glossary-text';
+import { mentionedTerms } from '../../lib/blog-links';
+import { postUrl, publishedPosts } from '../../lib/blog';
+import { glossary, glossaryGroups, glossaryHref, GLOSSARY_URL, type GlossaryTerm } from '../../data/glossary';
+import { glossaryPages, linkedTerms, plainText, type GlossaryPage } from '../../data/glossary-pages';
+
+export function getStaticPaths() {
+  return glossary
+    .filter((term) => glossaryPages.has(term.slug))
+    .map((term) => ({ params: { slug: term.slug }, props: { term, page: glossaryPages.get(term.slug)! } }));
+}
+
+const { term, page } = Astro.props as { term: GlossaryTerm; page: GlossaryPage };
+const SITE = 'https://boostagency.uz';
+const url = glossaryHref(term.slug);
+const pageUrl = new URL(url, SITE).href;
+
+const bySlug = new Map(glossary.map((t) => [t.slug, t]));
+const related = [...new Set([...(term.see ?? []), ...linkedTerms(page)])]
+  .map((slug) => bySlug.get(slug))
+  .filter((t): t is GlossaryTerm => t !== undefined && t.slug !== term.slug)
+  .slice(0, 8);
+const sameGroup = glossary
+  .filter((t) => t.group === term.group && t.slug !== term.slug)
+  .sort((a, b) => a.term.localeCompare(b.term, 'ru'));
+const posts = (await publishedPosts()).filter((p) => mentionedTerms(p.body ?? '').has(term.slug)).slice(0, 4);
+const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const schema = [
+  webPage({ title: page.seoTitle, description: page.description, url }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Глоссарий', url: GLOSSARY_URL },
+    { name: term.term, url },
+  ]),
+  {
+    '@type': 'DefinedTerm',
+    '@id': `${pageUrl}#term`,
+    name: term.term,
+    ...(term.full && { alternateName: term.full }),
+    description: term.text,
+    url: pageUrl,
+    inDefinedTermSet: { '@id': `${new URL(GLOSSARY_URL, SITE).href}#terms` },
+  },
+  ...(page.faq.length ? [faqPage(page.faq.map((f) => ({ q: plainText(f.q), a: plainText(f.a) })))] : []),
+];
+---
+
+<Page title={page.seoTitle} description={page.description} schema={schema}>
+  <PageHero
+    hero={{
+      back: { href: GLOSSARY_URL, label: 'Глоссарий' },
+      title: term.term,
+      lead: term.text,
+      meta: [term.full, glossaryGroups[term.group]].filter(Boolean).join(' · '),
+      compact: true,
+    }}
+  />
+
+  <div class="tp wrap">
+    <article class="tp__body">
+      {
+        page.sections.map((s) => (
+          <section class="tp__sec">
+            <h2>{typo(s.title)}</h2>
+            {s.paragraphs?.map((p) => <p set:html={richText(p)} />)}
+            {s.items && <ul class="tp__list">{s.items.map((it) => <li set:html={richText(it)} />)}</ul>}
+            {s.visual && <GlossaryVisual visual={s.visual} />}
+          </section>
+        ))
+      }
+      {
+        page.faq.length > 0 && (
+          <section class="tp__sec tp__faq">
+            <h2>Вопросы и ответы</h2>
+            {page.faq.map((f) => (
+              <details>
+                <summary>{typo(plainText(f.q))}</summary>
+                <p set:html={richText(f.a)} />
+              </details>
+            ))}
+          </section>
+        )
+      }
+    </article>
+
+    <aside class="tp__aside">
+      {
+        related.length > 0 && (
+          <nav class="tp__box" aria-label="Связанные термины">
+            <h2>Связанные термины</h2>
+            <ul class="tp__chips">
+              {related.map((t) => <li><a href={glossaryHref(t.slug)}>{t.term}</a></li>)}
+            </ul>
+          </nav>
+        )
+      }
+      {
+        posts.length > 0 && (
+          <nav class="tp__box" aria-label="Статьи блога по теме">
+            <h2>Статьи блога</h2>
+            <ul class="tp__posts">
+              {posts.map((p) => (
+                <li>
+                  <a href={postUrl(p)}>{typo(p.data.title)}</a>
+                  <time datetime={p.data.publishedAt.toISOString()}>{fmt.format(p.data.publishedAt)}</time>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+    </aside>
+
+    <nav class="tp__group" aria-label={glossaryGroups[term.group]}>
+      <h2>Ещё в разделе «{glossaryGroups[term.group]}»</h2>
+      <ul class="tp__chips">
+        {sameGroup.map((t) => <li><a href={glossaryHref(t.slug)}>{t.term}</a></li>)}
+      </ul>
+      <a class="tp__all" href={GLOSSARY_URL}>Все {glossary.length} терминов глоссария →</a>
+    </nav>
+  </div>
+
+  <CtaBand
+    title="Нужна помощь с рекламой в Ташкенте? Обсудим задачу"
+    secondary={{ href: '/contact/', label: 'Медиаплан за 48 часов' }}
+  />
+</Page>
+
+<style>
+  .tp {
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+    padding-bottom: var(--sec-y);
+  }
+  .tp__body { max-width: 760px; min-width: 0; }
+
+  .tp__sec + .tp__sec { margin-top: clamp(36px, 6vh, 56px); }
+  .tp__sec h2 {
+    font: 700 clamp(24px, 2.8vw, 32px)/1.15 var(--f-display);
+    letter-spacing: -0.02em;
+    -webkit-hyphens: manual;
+    hyphens: manual;
+  }
+  .tp__sec > p { margin-top: 1em; color: var(--text-2); font-size: 18px; line-height: 1.65; }
+  .tp__sec > p:first-of-type { margin-top: 0.8em; }
+  .tp__list { display: grid; gap: 10px; margin-top: 1em; padding-left: 1.3em; }
+  .tp__list li { color: var(--text-2); font-size: 17px; line-height: 1.6; }
+  .tp__list li::marker { color: var(--accent); }
+  .tp :global(a.gl-link) {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 3px;
+  }
+  .tp :global(a.gl-link:hover) { text-decoration-thickness: 2px; }
+
+  .tp__faq details { border-bottom: 1px solid var(--line); }
+  .tp__faq details:first-of-type { margin-top: 0.6em; }
+  .tp__faq summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 0;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 1.4;
+    cursor: pointer;
+    list-style: none;
+  }
+  .tp__faq summary::-webkit-details-marker { display: none; }
+  .tp__faq summary::after { content: '+'; color: var(--text-3); font-weight: 400; font-size: 22px; line-height: 1; }
+  .tp__faq details[open] summary::after { content: '−'; }
+  .tp__faq details p { padding-bottom: 18px; color: var(--text-2); line-height: 1.6; }
+
+  .tp__aside { display: grid; gap: 20px; align-content: start; }
+  .tp__box {
+    padding: 22px;
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+    background: var(--bg-raised);
+  }
+  .tp__box h2, .tp__group h2 {
+    margin-bottom: 14px;
+    color: var(--text-3);
+    font: 600 13px/1.3 var(--f-text);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tp__chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
+  .tp__chips a {
+    display: inline-block;
+    padding: 7px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    color: var(--text-2);
+    font-size: 14px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tp__chips a:hover { color: var(--text); border-color: var(--accent); }
+  .tp__posts { display: grid; gap: 14px; padding: 0; list-style: none; }
+  .tp__posts a { display: block; color: var(--text); font-size: 15px; line-height: 1.4; }
+  .tp__posts a:hover { color: var(--accent-hover); }
+  .tp__posts time { color: var(--text-3); font-size: 13px; }
+
+  .tp__group { padding-top: clamp(24px, 4vh, 40px); border-top: 1px solid var(--line); }
+  .tp__all { display: inline-block; margin-top: 18px; color: var(--text-2); }
+  .tp__all:hover { color: var(--text); }
+
+  @media (min-width: 1100px) {
+    .tp { grid-template-columns: minmax(0, 760px) minmax(260px, 340px); justify-content: space-between; }
+    .tp__aside { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; }
+    .tp__group { grid-column: 1 / -1; }
+  }
+</style>

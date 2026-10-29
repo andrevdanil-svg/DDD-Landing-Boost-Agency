@@ -595,4 +595,5 @@ export const glossary: readonly GlossaryTerm[] = [
 ];
 
 export const GLOSSARY_URL = '/glossary/';
-export const glossaryHref = (slug: string) => `${GLOSSARY_URL}#${slug}`;
+// У каждого термина своя страница; на общей странице у него якорь #slug.
+export const glossaryHref = (slug: string) => `${GLOSSARY_URL}${slug}/`;

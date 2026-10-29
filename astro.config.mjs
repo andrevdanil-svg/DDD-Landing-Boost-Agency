@@ -27,6 +27,7 @@ export default defineConfig({
         if (path === '/blog') return { ...item, priority: 0.9, changefreq: 'weekly' };
         if (path.startsWith('/blog/')) return { ...item, priority: 0.8, changefreq: 'monthly' };
         if (path === '/glossary') return { ...item, priority: 0.8, changefreq: 'monthly' };
+        if (path.startsWith('/glossary/')) return { ...item, priority: 0.7, changefreq: 'monthly' };
 
         // Услуги, площадки, кейсы, отрасли, города — высокий приоритет
         if (
