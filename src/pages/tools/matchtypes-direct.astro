@@ -52,6 +52,61 @@ const modes = [
     </div>
   </section>
 
+  <section class="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title">Что фиксируют операторы Директа</h2>
+      <p class="how__tldr">
+        <b>Коротко:</b> у Директа три оператора — <code>"кавычки"</code> для числа слов,
+        <code>!восклицательный знак</code> для словоформы, <code>[скобки]</code> для порядка слов.
+        Инструмент добавляет их пачкой, можно комбинировать — всего 7 вариантов. Вставили ключи →
+        отметили нужные варианты → скопировали в Директ.
+      </p>
+
+      <div class="scheme">
+        <svg viewBox="0 0 700 320" preserveAspectRatio="xMidYMid meet" aria-hidden="true" class="scheme__svg">
+          <rect x="0" y="0" width="700" height="320" rx="14" fill="var(--bg-app)" />
+
+          <!-- Исходный ключ -->
+          <text x="350" y="36" text-anchor="middle" fill="var(--text-3)" font-size="12" font-family="var(--f-display)">исходный ключ</text>
+          <rect x="230" y="48" width="240" height="42" rx="8" fill="var(--bg-raised)" stroke="var(--line-strong)" />
+          <text x="350" y="76" text-anchor="middle" fill="var(--text)" font-size="16" font-family="ui-monospace, Menlo, monospace">билет москва</text>
+
+          <!-- Три оператора — вертикальные колонки -->
+          <g>
+            <!-- "кавычки" -->
+            <rect x="30" y="120" width="200" height="170" rx="12" fill="var(--bg-raised)" stroke="var(--line)" />
+            <text x="130" y="150" text-anchor="middle" fill="var(--accent-hover)" font-size="26" font-family="var(--f-display)" font-weight="600">" "</text>
+            <text x="130" y="180" text-anchor="middle" fill="var(--text-2)" font-size="13" font-family="var(--f-display)">число слов</text>
+            <text x="130" y="214" text-anchor="middle" fill="var(--text)" font-size="14" font-family="ui-monospace, Menlo, monospace">"билет москва"</text>
+            <text x="130" y="248" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">только по запросам</text>
+            <text x="130" y="264" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">из 2 слов</text>
+
+            <!-- !словоформа -->
+            <rect x="250" y="120" width="200" height="170" rx="12" fill="var(--bg-raised)" stroke="var(--line)" />
+            <text x="350" y="150" text-anchor="middle" fill="var(--accent-hover)" font-size="26" font-family="var(--f-display)" font-weight="600">!</text>
+            <text x="350" y="180" text-anchor="middle" fill="var(--text-2)" font-size="13" font-family="var(--f-display)">словоформа</text>
+            <text x="350" y="214" text-anchor="middle" fill="var(--text)" font-size="14" font-family="ui-monospace, Menlo, monospace">!билет !москва</text>
+            <text x="350" y="248" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">не покажет</text>
+            <text x="350" y="264" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">по «билеты в москву»</text>
+
+            <!-- [скобки] -->
+            <rect x="470" y="120" width="200" height="170" rx="12" fill="var(--bg-raised)" stroke="var(--line)" />
+            <text x="570" y="150" text-anchor="middle" fill="var(--accent-hover)" font-size="26" font-family="var(--f-display)" font-weight="600">[ ]</text>
+            <text x="570" y="180" text-anchor="middle" fill="var(--text-2)" font-size="13" font-family="var(--f-display)">порядок слов</text>
+            <text x="570" y="214" text-anchor="middle" fill="var(--text)" font-size="14" font-family="ui-monospace, Menlo, monospace">[билет москва]</text>
+            <text x="570" y="248" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">«билет москва» ≠</text>
+            <text x="570" y="264" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">«москва билет»</text>
+          </g>
+        </svg>
+        <p class="scheme__caption">
+          Можно комбинировать — все 7 вариантов инструмент собирает автоматически. Например,
+          <code>"[!билет !москва]"</code> — фиксирует и число слов, и порядок, и словоформу одновременно
+          (самый узкий таргетинг для Директа).
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="tool-body">
     <div class="wrap">
       <form class="mt" novalidate data-form>
@@ -91,18 +146,64 @@ const modes = [
 
   <section class="tool-about">
     <div class="wrap tool-about__in">
-      <h2>Как работают операторы Директа</h2>
-      <p>{typo(tool.about)}</p>
-      <dl class="defs">
-        <dt>Без операторов</dt>
-        <dd>Директ показывает по ключу, его словоформам, синонимам и вложенным запросам. Самый широкий охват.</dd>
-        <dt>«Кавычки»</dt>
-        <dd>Фиксируют число слов. Показы только по запросам из того же количества слов, что и ключ (словоформы допускаются).</dd>
-        <dt>!Восклицательный знак</dt>
-        <dd>Фиксирует словоформу: только та форма, которая стоит после «!». Полезно для стоп-слов и исключений.</dd>
-        <dt>[Квадратные скобки]</dt>
-        <dd>Фиксируют порядок слов. Критично для фраз, в которых перестановка меняет смысл: билет Ташкент–Москва ≠ Москва–Ташкент.</dd>
-      </dl>
+      <h2>Подробная инструкция</h2>
+
+      <details open class="guide">
+        <summary><h3>Как им пользоваться</h3></summary>
+        <ol>
+          <li><b>Соберите список ключей</b> в Wordstat или другом инструменте. По одной фразе на строку.</li>
+          <li><b>Вставьте в левое поле</b>.</li>
+          <li><b>Отметьте нужные варианты</b> операторов — любое число. На каждый отмеченный вариант список продублируется с нужными операторами.</li>
+          <li><b>Скопируйте результат</b> и вставьте в Директ — при создании или редактировании группы объявлений в разделе «Ключевые фразы».</li>
+        </ol>
+        <p>
+          Если выбрать несколько вариантов, например «Кавычки» и «Все три оператора», каждый исходный ключ
+          появится в результате дважды — в двух разных вариантах фиксации.
+        </p>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Операторы Директа — для новичков</h3></summary>
+        <p>
+          У Яндекс.Директа — три оператора, которые <b>сужают</b> показ объявлений под более узкие запросы.
+          Без операторов Директ показывает по ключу <b>очень широко</b>: синонимы, перефразировки, вложенные
+          темы. Это даёт много показов, но и много мусора. Операторы фиксируют ключ и отсекают лишнее.
+        </p>
+        <dl class="defs">
+          <dt>Без операторов</dt>
+          <dd>Директ показывает по ключу, его словоформам, синонимам и вложенным запросам. Самый широкий охват. <b>Когда:</b> тестовые запуски, автостратегии, где алгоритм сам фильтрует.</dd>
+          <dt>«Кавычки»</dt>
+          <dd>Фиксируют число слов. Показы только по запросам из того же количества слов, что и ключ (словоформы ещё допускаются). <b>Когда:</b> когда расширенные запросы ловят ненужный мусор. Например <code>"ламинат"</code> не покажет по «ламинат в ванной с подогревом».</dd>
+          <dt>!Восклицательный знак</dt>
+          <dd>Фиксирует словоформу — только та форма, которая стоит после «!». <b>Когда:</b> для стоп-слов, предлогов, названий (<code>билет !в москву</code> не покажет по «билет из москвы»).</dd>
+          <dt>[Квадратные скобки]</dt>
+          <dd>Фиксируют порядок слов. <b>Когда:</b> для фраз, в которых перестановка меняет смысл. Классика — <code>[билет Ташкент Москва]</code> ≠ <code>[билет Москва Ташкент]</code>.</dd>
+        </dl>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Какой вариант когда выбирать</h3></summary>
+        <ul>
+          <li><b>«Без операторов»</b> — тестовые запуски, широкий сбор данных на новом рынке.</li>
+          <li><b>«Кавычки»</b> — большинство кампаний на средних и крупных ядрах. Хороший компромисс между охватом и релевантностью.</li>
+          <li><b>«Словоформа» (!)</b> — когда важна конкретная грамматическая форма. Чаще используется вместе с другими операторами.</li>
+          <li><b>«Порядок» ([ ])</b> — для направлений, маршрутов, пар городов, спортивных встреч.</li>
+          <li><b>Все три оператора вместе</b> — самое узкое соответствие. Для горячих коммерческих запросов, где важна максимальная релевантность.</li>
+        </ul>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Чем это отличается от Google Ads</h3></summary>
+        <p>
+          В Google Ads есть всего три типа соответствия (широкое, фразовое, точное), и выбирается
+          один тип на ключ. В Директе же операторы — это <b>модификаторы</b>, их можно комбинировать
+          внутри одного ключа. Поэтому вариантов не три, а семь.
+        </p>
+        <p>
+          Операторы Директа аналогов в Google не имеют. Там для похожего эффекта используют
+          минус-слова, точное соответствие и аудиторные ограничения.
+        </p>
+      </details>
     </div>
   </section>
 </Page>
@@ -114,6 +215,35 @@ const modes = [
   .crumbs a:hover { color: var(--text); }
   .tool-head h1 { font: 700 clamp(32px, 4.4vw, 56px)/1.05 var(--f-display); letter-spacing: -0.03em; text-wrap: balance; max-width: 20ch; }
   .tool-head__lead { max-width: 60ch; margin-top: 20px; color: var(--text-2); font-size: clamp(16px, 1.3vw, 19px); }
+
+  /* ── блок «Как пользоваться» — TL;DR + статичная SVG-схема ── */
+  .how { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 72px); background: linear-gradient(180deg, rgba(101,91,250,0.04) 0%, transparent 100%); }
+  .how > .wrap > * { max-width: 960px; margin-inline: auto; }
+  .how h2 { font: 600 clamp(22px, 2.4vw, 32px)/1.15 var(--f-display); letter-spacing: -0.02em; margin-bottom: 14px; }
+  .how__tldr { padding: 16px 20px; background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: 12px; color: var(--text-2); font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+  .how__tldr b { color: var(--text); }
+  .how__tldr code { background: var(--bg-app); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
+
+  .scheme { display: grid; gap: 14px; }
+  .scheme__svg { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .scheme__caption { color: var(--text-2); font-size: 15px; line-height: 1.55; max-width: 68ch; }
+  .scheme__caption code { background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
+
+  /* ── подробная инструкция в <details> ── */
+  .guide { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; transition: border-color 0.2s; }
+  .guide[open] { border-color: var(--line-strong); }
+  .guide > summary { list-style: none; cursor: pointer; padding: 16px 20px; display: flex; align-items: center; gap: 14px; }
+  .guide > summary::-webkit-details-marker { display: none; }
+  .guide > summary::after { content: ''; flex: none; margin-left: auto; width: 10px; height: 10px; border-right: 1.5px solid var(--text-2); border-bottom: 1.5px solid var(--text-2); transform: translateY(-2px) rotate(45deg); transition: transform 0.2s; }
+  .guide[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+  .guide > summary h3 { font: 600 17px/1.3 var(--f-display); margin: 0; letter-spacing: -0.01em; }
+  .guide > p, .guide > ul, .guide > ol, .guide > dl { padding: 0 20px 16px; color: var(--text-2); line-height: 1.6; margin: 0; }
+  .guide > p + p, .guide > p + ul, .guide > p + ol { padding-top: 10px; }
+  .guide a { color: var(--accent-hover); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+  .guide code { background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--text); }
+  .guide ul, .guide ol { padding-left: 40px; }
+  .guide li { margin-bottom: 6px; }
+  .guide b { color: var(--text); }
 
   .tool-body { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 72px); }
   .tool-body > .wrap > * { max-width: 960px; margin-inline: auto; }

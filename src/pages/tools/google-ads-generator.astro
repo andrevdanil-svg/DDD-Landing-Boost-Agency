@@ -47,6 +47,155 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
     </div>
   </section>
 
+  <section class="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title">Как пользоваться — за 4 шага</h2>
+      <p class="how__tldr">
+        <b>Коротко:</b> вставьте список ключей → выберите типы соответствия → задайте шаблоны
+        заголовков с макросами <code>[KeyWord]</code> → скачайте XLSX → импортируйте
+        в Google Ads Editor и опубликуйте.
+      </p>
+
+      <div class="demo" data-demo>
+        <div class="demo__tabs" role="tablist" aria-label="Шаги инструкции">
+          <button class="demo__tab" role="tab" aria-selected="true" data-step="0">
+            <span class="demo__num">1</span><span>Вставить ключи</span>
+          </button>
+          <button class="demo__tab" role="tab" aria-selected="false" data-step="1">
+            <span class="demo__num">2</span><span>Типы соответствия</span>
+          </button>
+          <button class="demo__tab" role="tab" aria-selected="false" data-step="2">
+            <span class="demo__num">3</span><span>Заголовки с макросами</span>
+          </button>
+          <button class="demo__tab" role="tab" aria-selected="false" data-step="3">
+            <span class="demo__num">4</span><span>Импорт в Editor</span>
+          </button>
+        </div>
+
+        <div class="demo__screen">
+          <!-- Шаг 1 — вставка ключей -->
+          <div class="demo__pane" data-pane="0" data-active>
+            <div class="demo__caption">
+              <p>Каждая строка — отдельная группа объявлений. Через <code>|</code> можно задать свой URL и свой первый заголовок.</p>
+            </div>
+            <svg viewBox="0 0 700 320" preserveAspectRatio="xMidYMid meet" aria-hidden="true" class="demo__svg">
+              <rect x="0" y="0" width="700" height="320" rx="14" fill="var(--bg-app)" />
+              <text x="24" y="34" class="demo__label">Ключевые слова *</text>
+              <rect x="22" y="48" width="656" height="220" rx="10" fill="var(--bg-raised)" stroke="var(--line-strong)" />
+              <g font-family="ui-monospace, Menlo, monospace" font-size="14" fill="var(--text)">
+                <text x="38" y="78"><tspan>купить ламинат</tspan><tspan fill="var(--text-3)">|https://shop.uz/laminat|</tspan><tspan fill="var(--accent-hover)">Купить ламинат в Ташкенте</tspan></text>
+                <text x="38" y="108"><tspan>ламинат с доставкой</tspan></text>
+                <text x="38" y="138"><tspan>ламинат на кухню</tspan><tspan fill="var(--text-3)">||</tspan><tspan fill="var(--accent-hover)">Для кухни и прихожей</tspan></text>
+                <text x="38" y="168" fill="var(--text-3)"><tspan>…и так далее — одна строка = одна группа объявлений</tspan></text>
+              </g>
+              <text x="24" y="302" class="demo__hint">формат: ключ · url (опц.) · первый заголовок (опц.) — через |</text>
+            </svg>
+          </div>
+
+          <!-- Шаг 2 — типы соответствия -->
+          <div class="demo__pane" data-pane="1">
+            <div class="demo__caption">
+              <p>Отметьте один или несколько типов. Если выбрать несколько — ключ задублируется в разных типах соответствия.</p>
+            </div>
+            <svg viewBox="0 0 700 320" preserveAspectRatio="xMidYMid meet" aria-hidden="true" class="demo__svg">
+              <rect x="0" y="0" width="700" height="320" rx="14" fill="var(--bg-app)" />
+              <text x="24" y="34" class="demo__label">Типы соответствия</text>
+              <g>
+                <rect x="22" y="58" width="200" height="60" rx="10" fill="var(--bg-raised)" stroke="var(--line-strong)" />
+                <rect x="36" y="78" width="18" height="18" rx="4" fill="none" stroke="var(--text-3)" stroke-width="1.5" />
+                <text x="66" y="92" fill="var(--text)" font-size="15">Широкое</text>
+                <text x="36" y="108" font-family="ui-monospace, Menlo, monospace" font-size="12" fill="var(--text-3)">купить ламинат</text>
+
+                <rect x="242" y="58" width="200" height="60" rx="10" fill="var(--accent-hover)" fill-opacity="0.12" stroke="var(--accent-hover)" />
+                <rect x="256" y="78" width="18" height="18" rx="4" fill="var(--accent-hover)" />
+                <path d="M260 87 l5 5 l9 -9" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                <text x="286" y="92" fill="var(--text)" font-size="15">Фразовое</text>
+                <text x="256" y="108" font-family="ui-monospace, Menlo, monospace" font-size="12" fill="var(--text-2)">"купить ламинат"</text>
+
+                <rect x="462" y="58" width="216" height="60" rx="10" fill="var(--accent-hover)" fill-opacity="0.12" stroke="var(--accent-hover)" />
+                <rect x="476" y="78" width="18" height="18" rx="4" fill="var(--accent-hover)" />
+                <path d="M480 87 l5 5 l9 -9" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                <text x="506" y="92" fill="var(--text)" font-size="15">Точное</text>
+                <text x="476" y="108" font-family="ui-monospace, Menlo, monospace" font-size="12" fill="var(--text-2)">[купить ламинат]</text>
+              </g>
+              <text x="24" y="160" class="demo__label">Что получится из «купить ламинат»</text>
+              <g font-family="ui-monospace, Menlo, monospace" font-size="14">
+                <text x="38" y="196" fill="var(--text-2)">"купить ламинат"</text>
+                <text x="238" y="196" fill="var(--text-3)" font-size="12">— фразовое</text>
+                <text x="38" y="222" fill="var(--text-2)">[купить ламинат]</text>
+                <text x="238" y="222" fill="var(--text-3)" font-size="12">— точное</text>
+              </g>
+              <text x="24" y="302" class="demo__hint">широкое ловит синонимы и близкие запросы, точное — только тот же смысл</text>
+            </svg>
+          </div>
+
+          <!-- Шаг 3 — макросы -->
+          <div class="demo__pane" data-pane="2">
+            <div class="demo__caption">
+              <p>Макросы в квадратных скобках подставляют текущий ключ. <code>[KeyWord]</code> — весь ключ с заглавной каждого слова, <code>[word1]</code> — первое слово.</p>
+            </div>
+            <svg viewBox="0 0 700 320" preserveAspectRatio="xMidYMid meet" aria-hidden="true" class="demo__svg">
+              <rect x="0" y="0" width="700" height="320" rx="14" fill="var(--bg-app)" />
+              <text x="24" y="34" class="demo__label">Шаблон заголовка</text>
+              <rect x="22" y="48" width="656" height="46" rx="8" fill="var(--bg-raised)" stroke="var(--line-strong)" />
+              <text x="38" y="76" font-family="ui-monospace, Menlo, monospace" font-size="15">
+                <tspan fill="var(--accent-hover)">[KeyWord]</tspan><tspan fill="var(--text)"> в Ташкенте — скидка 20%</tspan>
+              </text>
+
+              <text x="24" y="128" class="demo__label">Подстановка для разных ключей</text>
+              <g font-family="ui-monospace, Menlo, monospace" font-size="14">
+                <rect x="22" y="140" width="656" height="40" rx="6" fill="var(--bg-raised)" />
+                <text x="38" y="166"><tspan fill="var(--text-3)">купить ламинат → </tspan><tspan fill="var(--text)">Купить Ламинат в Ташкенте — скидка 20%</tspan></text>
+
+                <rect x="22" y="188" width="656" height="40" rx="6" fill="var(--bg-raised)" />
+                <text x="38" y="214"><tspan fill="var(--text-3)">ламинат с доставкой → </tspan><tspan fill="var(--text)">Ламинат С Доставкой в Ташкенте — скидка 20%</tspan></text>
+
+                <rect x="22" y="236" width="656" height="40" rx="6" fill="var(--bg-raised)" />
+                <text x="38" y="262"><tspan fill="var(--text-3)">ламинат на кухню → </tspan><tspan fill="var(--text)">Ламинат На Кухню в Ташкенте — скидка 20%</tspan></text>
+              </g>
+              <text x="24" y="302" class="demo__hint">нужно минимум 3 заголовка и 2 описания — это требование Google</text>
+            </svg>
+          </div>
+
+          <!-- Шаг 4 — Google Ads Editor -->
+          <div class="demo__pane" data-pane="3">
+            <div class="demo__caption">
+              <p>Скачанный XLSX открывается в <b>Google Ads Editor</b> (бесплатная программа от Google). Редактор проверит данные и предложит залить всё в аккаунт.</p>
+            </div>
+            <svg viewBox="0 0 700 320" preserveAspectRatio="xMidYMid meet" aria-hidden="true" class="demo__svg">
+              <rect x="0" y="0" width="700" height="320" rx="14" fill="var(--bg-app)" />
+              <!-- window chrome -->
+              <rect x="20" y="20" width="660" height="280" rx="10" fill="var(--bg-raised)" stroke="var(--line-strong)" />
+              <circle cx="38" cy="38" r="5" fill="#ff5f57" />
+              <circle cx="54" cy="38" r="5" fill="#febc2e" />
+              <circle cx="70" cy="38" r="5" fill="#28c840" />
+              <text x="92" y="42" font-size="12" fill="var(--text-3)">Google Ads Editor</text>
+              <line x1="20" y1="56" x2="680" y2="56" stroke="var(--line)" />
+              <!-- menu -->
+              <g font-size="13">
+                <rect x="36" y="72" width="140" height="28" rx="6" fill="var(--accent-hover)" fill-opacity="0.15" stroke="var(--accent-hover)" />
+                <text x="48" y="91" fill="var(--text)">Аккаунт</text>
+                <text x="110" y="91" fill="var(--accent-hover)">▸ Импорт</text>
+              </g>
+              <!-- modal -->
+              <rect x="80" y="120" width="540" height="160" rx="10" fill="var(--bg-app)" stroke="var(--line-strong)" />
+              <text x="100" y="150" font-size="15" fill="var(--text)">Импорт из файла</text>
+              <text x="100" y="172" font-size="13" fill="var(--text-3)">Выберите XLSX или CSV с кампанией</text>
+              <rect x="100" y="186" width="500" height="44" rx="8" fill="var(--bg-raised)" stroke="var(--line)" stroke-dasharray="4 4" />
+              <text x="120" y="213" font-size="13" fill="var(--text-2)">📄 google_ads_lamianat_2026-10-29.xlsx</text>
+              <rect x="476" y="244" width="124" height="30" rx="7" fill="var(--accent-hover)" />
+              <text x="508" y="263" font-size="13" fill="#fff" font-weight="600">Загрузить</text>
+              <text x="100" y="297" font-size="12" fill="var(--text-3)">Editor проверит ошибки → «Отправить» → всё улетает в аккаунт</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- мобильная подпись к текущему шагу — показывается только когда схема урезана -->
+        <p class="demo__mcaption" data-mcaption aria-hidden="true"></p>
+      </div>
+    </div>
+  </section>
+
   <section class="tool-body" aria-labelledby="gads-form-title">
     <div class="wrap">
       <h2 id="gads-form-title" class="sr-only">Форма генератора</h2>
@@ -128,22 +277,81 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
 
   <section class="tool-about">
     <div class="wrap tool-about__in">
-      <h2>Что делает инструмент</h2>
-      <p>{typo(tool.about)}</p>
-      <h3>Макросы заголовков</h3>
-      <dl class="defs">
-        <dt>[KeyWord]</dt><dd>подставляет ключ как есть, но первая буква каждого слова — с заглавной.</dd>
-        <dt>[Keyword]</dt><dd>только первая буква ключа — с заглавной, остальные — как в исходнике.</dd>
-        <dt>[keyword]</dt><dd>ключ в нижнем регистре.</dd>
-        <dt>[word1]..[word5]</dt><dd>N-е слово ключа. Варианты <code>[Word1]</code> и <code>[WORD1]</code> — с капитализацией.</dd>
-      </dl>
-      <h3>Как импортировать в Google Ads Editor</h3>
-      <ol class="steps">
-        <li>Откройте Google Ads Editor и выберите нужный аккаунт.</li>
-        <li>«Аккаунт» → «Импорт» → «Из файла» → выбрать скачанный XLSX.</li>
-        <li>Редактор покажет диалог с правилами маппинга полей — подтвердите.</li>
-        <li>Проверьте предпросмотр и опубликуйте изменения.</li>
-      </ol>
+      <h2>Подробная инструкция — для тех, кто впервые</h2>
+
+      <details open class="guide">
+        <summary><h3>Что такое Google Ads Editor и зачем он нужен</h3></summary>
+        <p>
+          <b>Google Ads Editor</b> — бесплатная программа от Google для Windows и macOS,
+          которая позволяет готовить кампании офлайн и заливать их в аккаунт пачкой.
+          Через веб-интерфейс создавать 50 групп по одному ключу — долго; через Editor
+          то же самое делается импортом одного файла.
+        </p>
+        <p>
+          Скачать: <a href="https://ads.google.com/intl/ru_uz/home/tools/ads-editor/" target="_blank" rel="noopener">ads.google.com/intl/ru_uz/home/tools/ads-editor</a>.
+          Установили → запустили → привязали аккаунт Google Ads (попросит залогиниться).
+        </p>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Шаг 1. Готовим список ключей</h3></summary>
+        <p>Формат: <b>один ключ на одну строку</b>. Через <code>|</code> можно добавить два параметра:</p>
+        <ul>
+          <li><code>ключ</code> — просто ключ, URL и первый заголовок возьмутся из полей выше.</li>
+          <li><code>ключ|https://site.uz/страница</code> — свой URL для этого ключа.</li>
+          <li><code>ключ|url|Купить в Ташкенте</code> — ещё и первый заголовок, уникальный для этого ключа.</li>
+          <li><code>ключ||Купить в Ташкенте</code> — пустой URL (возьмёт по умолчанию), но свой заголовок.</li>
+        </ul>
+        <p>Каждый ключ станет отдельной группой объявлений — так контекстологи делают SKAG (Single Keyword Ad Group) для максимальной релевантности объявлений ключу.</p>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Шаг 2. Выбираем типы соответствия</h3></summary>
+        <p>Три варианта, можно комбинировать:</p>
+        <dl class="defs">
+          <dt>Широкое</dt>
+          <dd>пишется как есть. Ловит синонимы, перефразировки, близкие по смыслу запросы. Самый широкий охват, но и больше нерелевантных показов. Хорошо работает с автоматическими стратегиями.</dd>
+          <dt>Фразовое</dt>
+          <dd>в кавычках. Запрос должен содержать смысл ключа — Google допускает перестановки слов и близкие формы, но не разрешает подмену темы.</dd>
+          <dt>Точное</dt>
+          <dd>в квадратных скобках. Только запросы с таким же смыслом. Самый узкий охват, но и самая высокая релевантность.</dd>
+        </dl>
+        <p>Чаще всего отмечают <b>фразовое + точное</b> — комбинация даёт хороший охват при контроле.</p>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Шаг 3. Пишем шаблоны заголовков и описаний с макросами</h3></summary>
+        <p>Google Ads требует для одного адаптивного объявления минимум 3 заголовка (до 15, по 30 знаков) и 2 описания (до 4, по 90 знаков). Макросы в квадратных скобках подставляют текущий ключ или его часть:</p>
+        <dl class="defs">
+          <dt>[KeyWord]</dt><dd>подставляет ключ, первая буква каждого слова с заглавной. «купить ламинат» → «Купить Ламинат».</dd>
+          <dt>[Keyword]</dt><dd>только первая буква ключа заглавная. «купить ламинат» → «Купить ламинат».</dd>
+          <dt>[keyword]</dt><dd>ключ в нижнем регистре.</dd>
+          <dt>[word1]..[word5]</dt><dd>N-е слово ключа. Варианты <code>[Word1]</code> и <code>[WORD1]</code> — с капитализацией. Полезно, когда нужно только существительное из многословного ключа.</dd>
+        </dl>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Шаг 4. Скачиваем XLSX и импортируем в Google Ads Editor</h3></summary>
+        <ol class="steps">
+          <li>Нажмите «Сгенерировать и скачать XLSX» — файл сохранится в папку загрузок.</li>
+          <li>Откройте Google Ads Editor и выберите аккаунт в левом верхнем углу.</li>
+          <li>Меню «<b>Аккаунт» → «Импорт» → «Из файла</b>» → выберите скачанный XLSX.</li>
+          <li>Editor покажет диалог со списком того, что будет добавлено. Проверьте, что имя кампании совпадает с существующей (если импортируете в неё), иначе создастся новая.</li>
+          <li>Нажмите «Подтвердить». Все кампании по умолчанию импортируются <b>на паузе</b> — это специально, чтобы вы могли проверить.</li>
+          <li>Проверьте предпросмотр, снимите паузу с нужных кампаний и нажмите «<b>Отправить</b>» вверху — Editor отправит всё в аккаунт.</li>
+        </ol>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Что ещё важно знать</h3></summary>
+        <ul>
+          <li><b>Ставка</b> в XLSX проставлена условная (<code>Max CPC = 1</code>). Отрегулируйте в Editor или в веб-кабинете перед запуском.</li>
+          <li><b>Бюджет</b> — 100 в день по умолчанию. Это заглушка, замените своим.</li>
+          <li><b>Статус</b> — <code>Paused</code>. Включите кампанию, когда проверите.</li>
+          <li>Не превышайте 30 знаков в заголовках и 90 в описаниях — Google обрежет или откажет в показе.</li>
+          <li>Макросы раскрываются <b>на нашей стороне</b> — в XLSX уже лежат финальные тексты. Google-макросы вида <code>&#123;KeyWord:default&#125;</code> к этому инструменту отношения не имеют.</li>
+        </ul>
+      </details>
     </div>
   </section>
 </Page>
@@ -155,6 +363,129 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
   .crumbs a:hover { color: var(--text); }
   .tool-head h1 { font: 700 clamp(32px, 4.4vw, 56px)/1.05 var(--f-display); letter-spacing: -0.03em; text-wrap: balance; max-width: 20ch; }
   .tool-head__lead { max-width: 60ch; margin-top: 20px; color: var(--text-2); font-size: clamp(16px, 1.3vw, 19px); }
+
+  /* ── блок «Как пользоваться» — TL;DR + SVG-демо с автопереключением вкладок ── */
+  .how { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 72px); background: linear-gradient(180deg, rgba(101,91,250,0.04) 0%, transparent 100%); }
+  .how > .wrap > * { max-width: 960px; margin-inline: auto; }
+  .how h2 { font: 600 clamp(22px, 2.4vw, 32px)/1.15 var(--f-display); letter-spacing: -0.02em; margin-bottom: 14px; }
+  .how__tldr {
+    padding: 16px 20px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    color: var(--text-2);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .how__tldr b { color: var(--text); font-weight: 600; }
+  .how__tldr code { background: var(--bg-app); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
+
+  .demo { display: grid; gap: 16px; }
+  .demo__tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+    padding: 4px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+  }
+  .demo__tab {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    color: var(--text-3);
+    font: 500 14px/1 var(--f-display);
+    transition: color 0.2s, background-color 0.2s;
+    white-space: nowrap;
+  }
+  .demo__tab:hover { color: var(--text); }
+  .demo__tab[aria-selected='true'] { background: var(--accent); color: #fff; }
+  .demo__num {
+    display: grid; place-items: center;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--bg-app);
+    color: var(--text-2);
+    font-size: 11px; font-weight: 600;
+  }
+  .demo__tab[aria-selected='true'] .demo__num { background: rgba(255,255,255,0.25); color: #fff; }
+
+  .demo__screen { position: relative; min-height: 420px; }
+  .demo__pane {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; gap: 14px;
+    opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), visibility 0s linear 0.4s;
+  }
+  .demo__pane[data-active] {
+    opacity: 1; visibility: visible; transform: none;
+    transition-delay: 0s;
+  }
+  .demo__caption { color: var(--text-2); font-size: 15px; line-height: 1.55; max-width: 68ch; }
+  .demo__caption code { background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
+  .demo__caption b { color: var(--text); }
+  .demo__svg {
+    width: 100%; height: auto;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .demo__svg .demo__label { fill: var(--text-2); font-size: 13px; font-family: var(--f-display); }
+  .demo__svg .demo__hint { fill: var(--text-3); font-size: 12px; font-family: var(--f-display); }
+  .demo__mcaption { display: none; }
+
+  @media (max-width: 720px) {
+    .demo__tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 3px; }
+    .demo__tab { padding: 8px 4px; font-size: 12px; flex-direction: column; gap: 4px; }
+    .demo__tab span:last-child { font-size: 11px; }
+    .demo__screen { min-height: 360px; }
+  }
+
+  /* ── подробная инструкция в <details> ── */
+  .guide {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+  .guide[open] { border-color: var(--line-strong); }
+  .guide > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+  }
+  .guide > summary::-webkit-details-marker { display: none; }
+  .guide > summary::after {
+    content: '';
+    flex: none;
+    margin-left: auto;
+    width: 10px; height: 10px;
+    border-right: 1.5px solid var(--text-2);
+    border-bottom: 1.5px solid var(--text-2);
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.2s;
+  }
+  .guide[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+  .guide > summary h3 { font: 600 17px/1.3 var(--f-display); margin: 0; letter-spacing: -0.01em; }
+  .guide > p, .guide > ul, .guide > ol, .guide > dl {
+    padding: 0 20px 16px;
+    color: var(--text-2);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .guide > p + p, .guide > p + ul, .guide > p + ol { padding-top: 10px; }
+  .guide a { color: var(--accent-hover); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+  .guide a:hover { text-decoration-color: var(--accent-hover); }
+  .guide code { background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--text); }
+  .guide ul, .guide ol { padding-left: 40px; }
+  .guide li { margin-bottom: 6px; }
+  .guide b { color: var(--text); }
 
   .tool-body { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 72px); }
   .tool-body > .wrap > * { max-width: 960px; margin-inline: auto; }
@@ -235,6 +566,32 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
 
 <script>
   import writeXlsxFile from 'write-excel-file/browser';
+
+  // ── автопереключение шагов демо; клик по вкладке — ручной режим и отмена автопрогресса ──
+  (() => {
+    const demo = document.querySelector<HTMLElement>('[data-demo]');
+    if (!demo) return;
+    const tabs = [...demo.querySelectorAll<HTMLButtonElement>('.demo__tab')];
+    const panes = [...demo.querySelectorAll<HTMLElement>('.demo__pane')];
+    const DUR = 6000;
+    let active = 0;
+    let auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer = 0;
+    let visible = false;
+
+    const setActive = (i: number) => {
+      active = i;
+      tabs.forEach((t, k) => t.setAttribute('aria-selected', String(k === i)));
+      panes.forEach((p, k) => p.toggleAttribute('data-active', k === i));
+    };
+    const tick = () => setActive((active + 1) % panes.length);
+    const sync = () => {
+      window.clearInterval(timer);
+      if (auto && visible) timer = window.setInterval(tick, DUR);
+    };
+    tabs.forEach((t, k) => t.addEventListener('click', () => { auto = false; setActive(k); sync(); }));
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; sync(); }, { threshold: 0.3 }).observe(demo);
+  })();
 
   type MatchType = 'broad' | 'phrase' | 'exact';
   type ParsedKey = { keyword: string; url: string; headline?: string; raw: string };

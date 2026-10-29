@@ -42,6 +42,46 @@ const schema = [
     </div>
   </section>
 
+  <section class="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title">Что показывает калькулятор</h2>
+      <p class="how__tldr">
+        <b>Коротко:</b> ввели клики и конверсии — получили не только процент, а <b>диапазон, в котором
+        настоящий процент конверсии живёт с нужной вероятностью</b>. Для А/Б — узнаете, можно ли уже
+        делать выводы, или надо ещё данных.
+      </p>
+
+      <div class="scheme">
+        <svg viewBox="0 0 700 240" preserveAspectRatio="xMidYMid meet" aria-hidden="true" class="scheme__svg">
+          <rect x="0" y="0" width="700" height="240" rx="14" fill="var(--bg-app)" />
+          <text x="24" y="34" fill="var(--text-2)" font-size="14" font-family="var(--f-display)">1 000 кликов, 50 конверсий — конверсия 5%</text>
+          <text x="24" y="56" fill="var(--text-3)" font-size="12" font-family="var(--f-display)">настоящая конверсия с вероятностью 95% лежит где-то здесь:</text>
+          <!-- Горизонтальная шкала 0..10% -->
+          <line x1="40" y1="130" x2="660" y2="130" stroke="var(--line)" stroke-width="1" />
+          <g font-size="11" fill="var(--text-3)" font-family="ui-monospace, Menlo, monospace">
+            <text x="40" y="156" text-anchor="middle">0%</text>
+            <text x="194" y="156" text-anchor="middle">2.5%</text>
+            <text x="350" y="156" text-anchor="middle">5%</text>
+            <text x="506" y="156" text-anchor="middle">7.5%</text>
+            <text x="660" y="156" text-anchor="middle">10%</text>
+          </g>
+          <!-- Доверительный интервал 3.81..6.53 -->
+          <rect x="275" y="100" width="170" height="60" rx="8" fill="var(--accent)" fill-opacity="0.25" />
+          <line x1="350" y1="100" x2="350" y2="160" stroke="var(--text)" stroke-width="2" />
+          <text x="350" y="94" text-anchor="middle" fill="var(--text)" font-size="13" font-family="var(--f-display)" font-weight="600">5.00%</text>
+          <text x="275" y="186" text-anchor="middle" fill="var(--accent-hover)" font-size="12" font-family="ui-monospace, Menlo, monospace">3.81%</text>
+          <text x="445" y="186" text-anchor="middle" fill="var(--accent-hover)" font-size="12" font-family="ui-monospace, Menlo, monospace">6.53%</text>
+          <text x="350" y="214" text-anchor="middle" fill="var(--text-2)" font-size="12" font-family="var(--f-display)">диапазон доверительного интервала</text>
+        </svg>
+        <p class="scheme__caption">
+          Чем больше кликов — тем уже диапазон, тем ближе к «настоящей» конверсии. Калькулятор
+          считает интервалы на 70, 80, 90, 95 и 99% по методу Wilson, который работает даже при
+          малой выборке и крайних значениях процента (например, 0% или 100%).
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="tool-body">
     <div class="wrap">
       <div class="modeset" role="tablist" aria-label="Режим расчёта">
@@ -99,24 +139,75 @@ const schema = [
 
   <section class="tool-about">
     <div class="wrap tool-about__in">
-      <h2>Что такое доверительный интервал</h2>
-      <p>{typo(tool.about)}</p>
-      <h3>Метод Wilson score interval</h3>
-      <p>
-        Классическая формула <code>p ± z·√(p(1-p)/n)</code> ломается при p близких к 0 и 100%
-        — границы вылезают за пределы 0..100. Wilson устраняет это: интервал всегда внутри
-        0..100, работает даже при очень малой выборке и показывает корректную асимметрию при
-        крайних значениях p. По этой причине его советует и Agresti–Coull, и в документации
-        scipy / R / Python statsmodels.
-      </p>
-      <h3>Уровни</h3>
-      <dl class="defs">
-        <dt>70%</dt><dd>грубая оценка — чуть надёжнее монетки, но полезная для раннего мониторинга.</dd>
-        <dt>80%</dt><dd>часто используется в бизнес-аналитике, когда цена ошибки невысока.</dd>
-        <dt>90%</dt><dd>рабочий стандарт для внутренних A/B с ограниченной выборкой.</dd>
-        <dt>95%</dt><dd>стандартный научный уровень. p &lt; 0.05 — «статистически значимо».</dd>
-        <dt>99%</dt><dd>для критичных решений: ценообразование, безопасность, финансы.</dd>
-      </dl>
+      <h2>Подробная инструкция</h2>
+
+      <details open class="guide">
+        <summary><h3>Зачем вообще считать доверительный интервал</h3></summary>
+        <p>
+          Допустим, вы запустили кампанию, собрали 100 кликов и получили 5 конверсий. Конверсия — 5%.
+          Но это за один раз. Если бы те же 100 кликов пришли в другой день, конверсий могло быть
+          3, 7 или 10. Что из этого «настоящая» конверсия вашей связки?
+        </p>
+        <p>
+          <b>Доверительный интервал</b> — это диапазон, в который попадает настоящий процент конверсии
+          с заданной вероятностью. При 100 кликах с 5 конверсиями он широкий: от 2% до 11% на уровне 95%.
+          При 10 000 кликов и той же конверсии — узкий: от 4.6% до 5.4%. Чем больше выборка — тем
+          увереннее можно говорить о цифрах.
+        </p>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Режим «Один вариант» — для оценки одной связки</h3></summary>
+        <ol>
+          <li><b>Клики</b> — размер выборки. Вместо кликов можно вводить <b>показы</b> — тогда калькулятор посчитает интервал для CTR.</li>
+          <li><b>Конверсии</b> — положительные события. Для CTR — <b>клики</b>.</li>
+          <li>Либо введите <b>коэффициент конверсии в процентах</b> напрямую — калькулятор посчитает число конверсий сам.</li>
+          <li>Внизу — таблица с границами интервала на 5 уровнях уверенности. Чем выше процент — тем шире границы (мы требуем больше гарантий — приходится допускать больший диапазон).</li>
+        </ol>
+        <p><b>Пример:</b> 500 кликов, 25 конверсий — конверсия 5%. 95%-й интервал: 3.4%…7.3%. Значит реальная конверсия почти наверняка в этом диапазоне.</p>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Режим «A/B сравнение» — когда объявлять победителя</h3></summary>
+        <p>
+          Запустили два варианта креатива или две посадочных страницы. У A — 40 конверсий на 1000 кликов (4%),
+          у B — 60 на 1000 (6%). B выглядит лучше, но вопрос: это <b>реальное</b> преимущество или просто
+          случайность выборки?
+        </p>
+        <ol>
+          <li>Вводим клики и конверсии для <b>A</b> и для <b>B</b>.</li>
+          <li>Калькулятор считает <b>p-value</b> — вероятность получить такую разницу, если на самом деле варианты одинаковы.</li>
+          <li>Если <b>p &lt; 0.05</b> — считаем разницу значимой. Говорим «B выиграл» и переносим бюджет на B.</li>
+          <li>Если p больше — <b>нужны ещё данные</b>. Либо накатите ещё одной недели трафика, либо примите, что разница недостаточна для вывода.</li>
+        </ol>
+        <p><b>Внимание:</b> не останавливайте тест при первом же «p &lt; 0.05» — это классическая ошибка (peeking). Заложите количество данных заранее и ждите до конца.</p>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Какой уровень доверия выбрать</h3></summary>
+        <dl class="defs">
+          <dt>70%</dt><dd>грубая оценка — чуть надёжнее монетки. Для раннего мониторинга и быстрых решений.</dd>
+          <dt>80%</dt><dd>подходит для бизнес-аналитики, когда цена ошибки невысока.</dd>
+          <dt>90%</dt><dd>рабочий стандарт для внутренних A/B с ограниченной выборкой.</dd>
+          <dt>95%</dt><dd>стандартный научный уровень. <code>p &lt; 0.05</code> — классическая граница «статистически значимо».</dd>
+          <dt>99%</dt><dd>для критичных решений: ценообразование, безопасность, финансы.</dd>
+        </dl>
+      </details>
+
+      <details class="guide">
+        <summary><h3>Почему Wilson, а не классическая формула</h3></summary>
+        <p>
+          Классическая формула доверительного интервала для доли — <code>p ± z·√(p(1-p)/n)</code>.
+          Проблема: при p близких к 0 или 100% границы вылезают за пределы 0..100 (отрицательная конверсия
+          или больше 100%). При малой выборке даёт заниженные интервалы — то есть вы думаете, что цифры
+          надёжнее, чем на самом деле.
+        </p>
+        <p>
+          <b>Wilson score interval</b> — альтернатива, которая всегда остаётся внутри 0..100 и работает
+          корректно даже при 10 кликах. Это стандарт в scipy, R, statsmodels. При больших выборках
+          (от 1000+) разница с классической формулой минимальна — но на малых цифрах Wilson гораздо честнее.
+        </p>
+      </details>
     </div>
   </section>
 </Page>
@@ -128,6 +219,61 @@ const schema = [
   .crumbs a:hover { color: var(--text); }
   .tool-head h1 { font: 700 clamp(32px, 4.4vw, 56px)/1.05 var(--f-display); letter-spacing: -0.03em; text-wrap: balance; max-width: 20ch; }
   .tool-head__lead { max-width: 60ch; margin-top: 20px; color: var(--text-2); font-size: clamp(16px, 1.3vw, 19px); }
+
+  /* ── блок «Как пользоваться» — TL;DR + статичная схема ── */
+  .how { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 72px); background: linear-gradient(180deg, rgba(101,91,250,0.04) 0%, transparent 100%); }
+  .how > .wrap > * { max-width: 960px; margin-inline: auto; }
+  .how h2 { font: 600 clamp(22px, 2.4vw, 32px)/1.15 var(--f-display); letter-spacing: -0.02em; margin-bottom: 14px; }
+  .how__tldr {
+    padding: 16px 20px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    color: var(--text-2);
+    font-size: 15px; line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .how__tldr b { color: var(--text); }
+  .how__tldr code { background: var(--bg-app); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
+
+  .scheme { display: grid; gap: 14px; }
+  .scheme__svg {
+    width: 100%; height: auto;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .scheme__caption { color: var(--text-2); font-size: 15px; line-height: 1.55; max-width: 68ch; }
+  .scheme__caption code { background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
+
+  /* ── подробная инструкция в <details> ── */
+  .guide { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; transition: border-color 0.2s; }
+  .guide[open] { border-color: var(--line-strong); }
+  .guide > summary {
+    list-style: none; cursor: pointer;
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .guide > summary::-webkit-details-marker { display: none; }
+  .guide > summary::after {
+    content: ''; flex: none; margin-left: auto;
+    width: 10px; height: 10px;
+    border-right: 1.5px solid var(--text-2); border-bottom: 1.5px solid var(--text-2);
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.2s;
+  }
+  .guide[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+  .guide > summary h3 { font: 600 17px/1.3 var(--f-display); margin: 0; letter-spacing: -0.01em; }
+  .guide > p, .guide > ul, .guide > ol, .guide > dl {
+    padding: 0 20px 16px;
+    color: var(--text-2); line-height: 1.6; margin: 0;
+  }
+  .guide > p + p, .guide > p + ul, .guide > p + ol { padding-top: 10px; }
+  .guide a { color: var(--accent-hover); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+  .guide code { background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--text); }
+  .guide ul, .guide ol { padding-left: 40px; }
+  .guide li { margin-bottom: 6px; }
+  .guide b { color: var(--text); }
 
   .tool-body { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 72px); }
   .tool-body > .wrap > * { max-width: 960px; margin-inline: auto; }
