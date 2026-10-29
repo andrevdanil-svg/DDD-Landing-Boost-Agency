@@ -197,7 +197,7 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
     padding-block: clamp(28px, 4vh, 40px);
     border-block: 1px solid var(--line);
   }
-  .pt__hl > .wrap > * { max-width: 820px; margin-inline: auto; }
+  .pt__hl > .wrap > * { max-width: 640px; margin-inline: auto; }
   .pt__hl h2 {
     font: 600 13px/1 var(--f-display);
     color: var(--text-3);
@@ -213,10 +213,11 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
   }
 
   .pt__body { padding-block: clamp(40px, 7vh, 72px); }
+  /* колонка поста — до ~75 знаков в строке: шире читать тяжело */
   .pt__body .prose {
-    max-width: 720px;
+    max-width: 640px;
     margin-inline: auto;
-    font-size: 18px;
+    font-size: 19px;
     line-height: 1.7;
     color: var(--text-2);
   }
@@ -294,7 +295,7 @@ const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', ye
     background: rgb(101 91 250 / 0.06);
     border-block: 1px solid var(--line);
   }
-  .pt__note > .wrap > * { max-width: 820px; margin-inline: auto; }
+  .pt__note > .wrap > * { max-width: 640px; margin-inline: auto; }
   .pt__note h2 {
     font: 600 13px/1 var(--f-display);
     color: var(--text-3);

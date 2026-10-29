@@ -140,7 +140,7 @@ const schema = [
     gap: clamp(32px, 5vw, 64px);
     padding-bottom: var(--sec-y);
   }
-  .tp__body { max-width: 760px; min-width: 0; }
+  .tp__body { max-width: 660px; min-width: 0; }
 
   .tp__sec + .tp__sec { margin-top: clamp(36px, 6vh, 56px); }
   .tp__sec h2 {
@@ -216,7 +216,7 @@ const schema = [
   .tp__all:hover { color: var(--text); }
 
   @media (min-width: 1100px) {
-    .tp { grid-template-columns: minmax(0, 760px) minmax(260px, 340px); justify-content: space-between; }
+    .tp { grid-template-columns: minmax(0, 660px) minmax(260px, 340px); justify-content: space-between; }
     .tp__aside { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; }
     .tp__group { grid-column: 1 / -1; }
   }
