@@ -7,9 +7,9 @@ export type Rubric = Readonly<{ name: string; slug: string; lead: string }>;
 // Каталог рубрик — тот же список, что у генератора постов (news-kit writeSystemPrompt)
 // и в редакторе платформы (Editor.jsx RUBRICS). Порядок = порядок в меню и фильтрах.
 export const RUBRICS: readonly Rubric[] = [
-  { name: 'Таргет', slug: 'targeting', lead: 'Таргетированная реклама в Meta, TikTok, Telegram и других соцсетях: форматы, аудитории, ставки.' },
+  { name: 'Таргет', slug: 'targeting', lead: 'Таргетированная реклама в Meta, Telegram и других соцсетях: форматы, аудитории, ставки.' },
   { name: 'Контекст', slug: 'search', lead: 'Поисковая и медийная реклама в Google Ads и Яндекс Директе: настройка, объявления, оптимизация.' },
-  { name: 'Соцсети', slug: 'social', lead: 'Продвижение в Instagram, Telegram, TikTok и YouTube: контент, блогеры, работа с сообществом.' },
+  { name: 'Соцсети', slug: 'social', lead: 'Продвижение в Instagram, Telegram и YouTube: контент, блогеры, работа с сообществом.' },
   { name: 'ТВ и радио', slug: 'tv-radio', lead: 'Реклама на телевидении и радио в Узбекистане: каналы, форматы, медиапланирование.' },
   { name: 'Платформы', slug: 'platforms', lead: 'Новости рекламных платформ и площадок Узбекистана: запуски, обновления, новые возможности.' },
   { name: 'Инструменты', slug: 'tools', lead: 'Инструкции по рекламным кабинетам, аналитике и сервисам для маркетолога.' },

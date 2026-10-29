@@ -484,7 +484,7 @@ export const glossary: readonly GlossaryTerm[] = [
   {
     slug: 'pixel', term: 'Пиксель', full: 'пиксель отслеживания', group: 'analytics',
     text: 'Код на сайте, который собирает данные о посетителях и их действиях — для аналитики и оптимизации рекламы.',
-    match: ['пиксел\\p{L}* (?:Meta|Facebook|TikTok|отслеживания)', 'meta pixel'],
+    match: ['пиксел\\p{L}* (?:Meta|Facebook|отслеживания)', 'meta pixel'],
     see: ['tag'],
   },
   {

@@ -326,10 +326,10 @@ export const industries: Record<string, IndustryItem> = {
     shortName: 'Стартапы и digital-продукты',
     seoTitle: 'Реклама для стартапа в Узбекистане — digital-продукты и SaaS | Boost!',
     seoDescription:
-      'Реклама для стартапов, мобильных приложений и SaaS-продуктов в Узбекистане: performance-маркетинг на установки и подписки, Meta и TikTok Ads, programmatic in-app, инфлюенсеры, PR в tech-медиа.',
+      'Реклама для стартапов, мобильных приложений и SaaS-продуктов в Узбекистане: performance-маркетинг на установки и подписки, Meta Ads, programmatic in-app, инфлюенсеры, PR в tech-медиа.',
     hero: {
       title: 'Реклама для стартапа в Узбекистане',
-      lead: 'Запускаем performance-рекламу для стартапов, мобильных приложений, SaaS и digital-продуктов Узбекистана. Таргет в Meta и TikTok на установки и подписки, programmatic in-app, инфлюенсеры, PR в tech-медиа — с оптимизацией на CPI, CAC и retention.',
+      lead: 'Запускаем performance-рекламу для стартапов, мобильных приложений, SaaS и digital-продуктов Узбекистана. Таргет в Meta на установки и подписки, programmatic in-app, инфлюенсеры, PR в tech-медиа — с оптимизацией на CPI, CAC и retention.',
       cta: true,
     },
     sections: [
@@ -337,14 +337,13 @@ export const industries: Record<string, IndustryItem> = {
         type: 'text',
         id: 'tldr',
         title: 'Коротко',
-        text: 'Для стартапа в Узбекистане обычно собираем: Meta Ads и TikTok Ads на установки приложения, programmatic in-app через Bidease, инфлюенсеров в Instagram и Telegram, PR в tech-медиа. Главные метрики — CPI (стоимость установки), CAC, retention D1/D7/D30. Старт — от 10 тыс. USD в месяц (на тест) и 30+ тыс. USD в месяц для масштабирования.',
+        text: 'Для стартапа в Узбекистане обычно собираем: Meta Ads на установки приложения, programmatic in-app через Bidease, инфлюенсеров в Instagram и Telegram, PR в tech-медиа. Главные метрики — CPI (стоимость установки), CAC, retention D1/D7/D30. Старт — от 10 тыс. USD в месяц (на тест) и 30+ тыс. USD в месяц для масштабирования.',
       },
       {
         type: 'list',
         title: 'Что работает для стартапов',
         items: [
           { title: 'Meta Ads на установки и подписки', text: 'Facebook и Instagram с оптимизацией на установки, события в приложении, подписки. Главный канал для consumer-продуктов.', href: '/social/' },
-          { title: 'TikTok Ads', text: 'Короткое вертикальное видео с цепляющим хуком. Хорошо работает для consumer-apps и edtech. Молодая аудитория Узбекистана.', href: '/social/' },
           { title: 'Programmatic in-app', text: 'Bidease и аналогичные DSP — реклама внутри других мобильных приложений Узбекистана с оптимизацией на установки.', href: '/platforms/bidease/' },
           { title: 'Инфлюенсеры', text: 'Для consumer-apps — обзоры у блогеров Instagram и Telegram. Промокоды и реферальные ссылки.', href: '/bloggers/' },
           { title: 'PR и статьи в tech-медиа', text: 'Spot.uz, Review.uz, hook.uz — для публичного запуска и инвест-раунда.', href: '/media/' },

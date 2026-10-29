@@ -25,7 +25,7 @@ export const tools: Tool[] = [
     name: 'Генератор UTM-меток',
     lead: 'Соберите корректные ссылки с utm_source, utm_medium и utm_campaign — по одной или сразу пачкой — и выгрузите список в XLSX.',
     description:
-      'Бесплатный генератор UTM-меток для Google Ads, Яндекс.Директ, Meta, Instagram, Facebook, TikTok, Telegram, VK и локальных .uz-источников. Массовый режим, стандартные значения utm_medium (cpc, cpm, cpa, cpv), экспорт в XLSX.',
+      'Бесплатный генератор UTM-меток для Google Ads, Яндекс.Директ, Meta, Instagram, Facebook, Telegram, VK и локальных .uz-источников. Массовый режим, стандартные значения utm_medium (cpc, cpm, cpa, cpv), экспорт в XLSX.',
     about:
       'Поля формы собирают ссылку по стандарту Google Analytics. Для каждой площадки подставляются корректные значения utm_source и utm_medium: cpc для контекста, cpm для баннерной рекламы, cpv для видео, cpa для конверсий. Массовый режим накапливает список и выгружает его в Excel одним файлом.',
     tag: 'Для аналитики',
