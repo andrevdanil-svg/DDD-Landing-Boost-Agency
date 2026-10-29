@@ -1,0 +1,131 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Arrow from '../../components/Arrow.astro';
+import { tools, toolUrl } from '../../data/tools';
+import { breadcrumbs, webPage } from '../../lib/schema';
+import { typo } from '../../lib/typo';
+
+const title = 'Бесплатные инструменты для рекламы — UTM, Google Ads, статзначимость';
+const description =
+  'Публичные онлайн-инструменты Boost! Agency: генератор UTM-меток с массовым режимом и выгрузкой в XLSX, генератор кампании Google Ads из ключей, калькулятор статистической значимости, конвертеры типов соответствия Google Ads и операторов Яндекс.Директ. Бесплатно, без регистрации.';
+
+const schema = [
+  webPage({ title, description, url: '/tools/' }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Инструменты', url: '/tools/' },
+  ]),
+  {
+    '@type': 'ItemList',
+    name: 'Бесплатные инструменты Boost! Agency',
+    numberOfItems: tools.length,
+    itemListElement: tools.map((t, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(toolUrl(t.slug), 'https://boostagency.uz').href,
+      name: t.name,
+    })),
+  },
+];
+---
+
+<Page title={title} description={description} schema={schema}>
+  <PageHero
+    hero={{
+      title: 'Инструменты для контекста и аналитики',
+      lead: `Пять утилит, которыми мы пользуемся сами: UTM-метки с массовой выгрузкой в XLSX, кампания Google Ads из списка ключей, калькулятор доверительных интервалов и два конвертера типов соответствия. Всё работает в браузере, данные никуда не уходят.`,
+    }}
+  />
+
+  <section class="tl" aria-labelledby="tl-title">
+    <div class="wrap">
+      <h2 id="tl-title" class="sr-only">Список инструментов</h2>
+      <ul class="tl__list">
+        {
+          tools.map((t) => (
+            <li>
+              <a href={toolUrl(t.slug)}>
+                <span class="tl__tag">{t.tag}</span>
+                <span class="tl__name">{typo(t.name)}</span>
+                <span class="tl__text">{typo(t.lead)}</span>
+                <span class="tl__go" aria-hidden="true"><Arrow /></span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Нужна связка UTM + сквозная аналитика + медиаплан под цель? Соберём."
+    secondary={{ href: '/contact/', label: 'Оставить заявку' }}
+  />
+</Page>
+
+<style>
+  .tl { border-top: 1px solid var(--line); padding-block: var(--sec-y); }
+
+  .tl__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .tl__list a {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr) auto;
+    gap: var(--gap);
+    align-items: start;
+    padding-block: clamp(22px, 4vh, 36px);
+    border-top: 1px solid var(--line);
+    transition: border-color 0.3s var(--ease);
+  }
+  .tl__list li:last-child a { border-bottom: 1px solid var(--line); }
+
+  .tl__tag {
+    color: var(--text-3);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding-top: 0.6em;
+  }
+  .tl__name {
+    font: 600 clamp(22px, min(2.2vw, 3.8vh), 32px)/1.1 var(--f-display);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    transition: color 0.3s;
+  }
+  .tl__text {
+    grid-column: 2;
+    margin-top: 10px;
+    color: var(--text-2);
+    font-size: 16px;
+    max-width: 60ch;
+  }
+  .tl__go {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s;
+  }
+  .tl__go :global(svg) { width: 16px; height: 16px; }
+
+  .tl__list a:hover { border-top-color: var(--accent); }
+  .tl__list li:last-child a:hover { border-bottom-color: var(--accent); }
+  .tl__list a:hover .tl__go { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  @media (max-width: 860px) {
+    .tl__list a { grid-template-columns: minmax(0, 1fr) auto; }
+    .tl__tag { grid-column: 1 / -1; padding-top: 0; font-size: 13px; }
+    .tl__name { grid-column: 1; }
+    .tl__text { grid-column: 1 / -1; }
+    .tl__go { grid-column: 2; grid-row: 2; align-self: center; width: 40px; height: 40px; }
+  }
+
+  @media (max-width: 640px) {
+    .tl__list a { padding-block: 18px; gap: 10px; }
+    .tl__name { font-size: 20px; }
+    .tl__text { font-size: 15px; }
+  }
+</style>

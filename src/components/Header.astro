@@ -1,5 +1,6 @@
 ---
 import { publishedPosts, rubricUrl, rubricsWithPosts } from '../lib/blog';
+import { tools, toolUrl } from '../data/tools';
 
 const nav = [
   { href: '/services/', label: 'Услуги' },
@@ -8,6 +9,7 @@ const nav = [
   { href: '/blog/', label: 'Блог' },
   { href: '/glossary/', label: 'Глоссарий' },
   { href: '/process/', label: 'Как работаем' },
+  { href: '/tools/', label: 'Инструменты' },
 ];
 
 // Разделы блога в меню — только рубрики, где уже есть посты (сайт пересобирается
@@ -26,26 +28,45 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
     </a>
     <nav class="hdr__nav" aria-label="Основная навигация">
       {
-        nav.map((n) =>
-          n.href === '/blog/' && blogSections.length > 0 ? (
-            <div class="dd" data-dd>
-              <a href={n.href} class="dd__link">{n.label}</a>
-              <button class="dd__toggle" type="button" aria-expanded="false" aria-controls="dd-blog" aria-label="Разделы блога" data-dd-toggle>
-                <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
-              </button>
-              <div class="dd__panel" id="dd-blog">
-                <ul class="dd__list">
-                  <li><a href="/blog/" class="dd__item dd__item--all">Все статьи <span>{blogPosts.length}</span></a></li>
-                  {blogSections.map(({ rubric, count }) => (
-                    <li><a href={rubricUrl(rubric)} class="dd__item">{rubric.name} <span>{count}</span></a></li>
-                  ))}
-                </ul>
+        nav.map((n) => {
+          if (n.href === '/blog/' && blogSections.length > 0) {
+            return (
+              <div class="dd" data-dd>
+                <a href={n.href} class="dd__link">{n.label}</a>
+                <button class="dd__toggle" type="button" aria-expanded="false" aria-controls="dd-blog" aria-label="Разделы блога" data-dd-toggle>
+                  <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </button>
+                <div class="dd__panel" id="dd-blog">
+                  <ul class="dd__list">
+                    <li><a href="/blog/" class="dd__item dd__item--all">Все статьи <span>{blogPosts.length}</span></a></li>
+                    {blogSections.map(({ rubric, count }) => (
+                      <li><a href={rubricUrl(rubric)} class="dd__item">{rubric.name} <span>{count}</span></a></li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-          ) : (
-            <a href={n.href}>{n.label}</a>
-          ),
-        )
+            );
+          }
+          if (n.href === '/tools/') {
+            return (
+              <div class="dd" data-dd>
+                <a href={n.href} class="dd__link">{n.label}</a>
+                <button class="dd__toggle" type="button" aria-expanded="false" aria-controls="dd-tools" aria-label="Список инструментов" data-dd-toggle>
+                  <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </button>
+                <div class="dd__panel" id="dd-tools">
+                  <ul class="dd__list">
+                    <li><a href="/tools/" class="dd__item dd__item--all">Все инструменты</a></li>
+                    {tools.map((t) => (
+                      <li><a href={toolUrl(t.slug)} class="dd__item">{t.short}</a></li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            );
+          }
+          return <a href={n.href}>{n.label}</a>;
+        })
       }
     </nav>
     <div class="hdr__end">
@@ -64,6 +85,11 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
             {n.href === '/blog/' && blogSections.length > 0 && (
               <div class="menu__sub">
                 {blogSections.map(({ rubric }) => <a href={rubricUrl(rubric)}>{rubric.name}</a>)}
+              </div>
+            )}
+            {n.href === '/tools/' && (
+              <div class="menu__sub">
+                {tools.map((t) => <a href={toolUrl(t.slug)}>{t.short}</a>)}
               </div>
             )}
           </>
@@ -238,23 +264,33 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
     if (e.key === 'Escape') setMenu(false);
   });
 
-  // Выпадающее меню «Блог»: кнопка-стрелка для тач-экранов, закрытие по клику мимо и Esc.
-  const dd = document.querySelector<HTMLElement>('[data-dd]');
-  const ddToggle = dd?.querySelector<HTMLButtonElement>('[data-dd-toggle]');
-  const setDd = (open: boolean) => {
-    dd?.classList.toggle('is-open', open);
-    ddToggle?.setAttribute('aria-expanded', String(open));
+  // Выпадающие меню («Блог», «Инструменты»): кнопка-стрелка для тач-экранов,
+  // закрытие по клику мимо и Esc. Нескольких dd в хедере — поддержка на каждый.
+  const dds = [...document.querySelectorAll<HTMLElement>('[data-dd]')];
+  const setDd = (dd: HTMLElement, open: boolean) => {
+    dd.classList.toggle('is-open', open);
+    dd.querySelector<HTMLButtonElement>('[data-dd-toggle]')?.setAttribute('aria-expanded', String(open));
   };
-  ddToggle?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    setDd(!dd?.classList.contains('is-open'));
+  const closeAllDd = () => dds.forEach((dd) => setDd(dd, false));
+  dds.forEach((dd) => {
+    const toggle = dd.querySelector<HTMLButtonElement>('[data-dd-toggle]');
+    toggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willOpen = !dd.classList.contains('is-open');
+      closeAllDd();
+      setDd(dd, willOpen);
+    });
   });
   document.addEventListener('click', (e) => {
-    if (dd && !dd.contains(e.target as Node)) setDd(false);
+    dds.forEach((dd) => {
+      if (!dd.contains(e.target as Node)) setDd(dd, false);
+    });
   });
   document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape' || !dd) return;
-    setDd(false);
-    if (dd.contains(document.activeElement)) (document.activeElement as HTMLElement).blur();
+    if (e.key !== 'Escape') return;
+    dds.forEach((dd) => {
+      setDd(dd, false);
+      if (dd.contains(document.activeElement)) (document.activeElement as HTMLElement).blur();
+    });
   });
 </script>

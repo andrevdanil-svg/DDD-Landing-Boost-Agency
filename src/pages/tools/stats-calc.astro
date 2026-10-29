@@ -1,0 +1,436 @@
+---
+import Page from '../../layouts/Page.astro';
+import { toolBySlug, toolUrl } from '../../data/tools';
+import { breadcrumbs, webPage, webApplication } from '../../lib/schema';
+import { typo } from '../../lib/typo';
+
+const tool = toolBySlug('stats-calc')!;
+const url = toolUrl(tool.slug);
+
+const schema = [
+  webPage({ title: tool.name, description: tool.description, url }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Инструменты', url: '/tools/' },
+    { name: tool.short, url },
+  ]),
+  webApplication({
+    name: tool.name,
+    description: tool.description,
+    url,
+    applicationCategory: 'BusinessApplication',
+    featureList: [
+      'Доверительные интервалы 70, 80, 90, 95, 99%',
+      'Метод Wilson score interval',
+      'A/B-сравнение двух вариантов',
+      'Расчёт p-value для разницы конверсий',
+    ],
+  }),
+];
+---
+
+<Page title={tool.name} description={tool.description} schema={schema}>
+  <section class="tool-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Хлебные крошки">
+        <a href="/tools/">Инструменты</a>
+        <span aria-hidden="true">·</span>
+        <span>{tool.short}</span>
+      </nav>
+      <h1>{typo(tool.name)}</h1>
+      <p class="tool-head__lead">{typo(tool.lead)}</p>
+    </div>
+  </section>
+
+  <section class="tool-body">
+    <div class="wrap">
+      <div class="modeset" role="tablist" aria-label="Режим расчёта">
+        <button type="button" role="tab" aria-selected="true" data-mode="one">Один вариант</button>
+        <button type="button" role="tab" aria-selected="false" data-mode="ab">A/B сравнение</button>
+      </div>
+
+      <form class="stats" novalidate data-form>
+        <!-- Один вариант -->
+        <div class="pane" data-pane="one" data-active>
+          <div class="grid-2">
+            <div class="field">
+              <label for="s-clicks">Клики (или показы)</label>
+              <input id="s-clicks" name="clicks" type="number" inputmode="numeric" min="1" step="1" placeholder="1000" />
+              <p class="field__hint">Размер выборки. Для CTR вместо кликов — показы.</p>
+            </div>
+            <div class="field">
+              <label for="s-conv">Конверсии (или клики)</label>
+              <input id="s-conv" name="conversions" type="number" inputmode="numeric" min="0" step="1" placeholder="50" />
+              <p class="field__hint">Положительные события. Для CTR — клики.</p>
+            </div>
+          </div>
+          <p class="or">— или —</p>
+          <div class="field">
+            <label for="s-cr">Коэффициент конверсии, %</label>
+            <input id="s-cr" name="cr" type="number" inputmode="decimal" min="0" max="100" step="0.01" placeholder="5" />
+            <p class="field__hint">Если заполнили клики — поле считается само; можно задать и вручную при известном CR.</p>
+          </div>
+        </div>
+
+        <!-- A/B -->
+        <div class="pane" data-pane="ab">
+          <div class="ab">
+            <div class="ab__col">
+              <h3>Вариант A</h3>
+              <div class="field"><label>Клики</label><input name="aClicks" type="number" inputmode="numeric" min="1" step="1" placeholder="1000" /></div>
+              <div class="field"><label>Конверсии</label><input name="aConv" type="number" inputmode="numeric" min="0" step="1" placeholder="40" /></div>
+            </div>
+            <div class="ab__col">
+              <h3>Вариант B</h3>
+              <div class="field"><label>Клики</label><input name="bClicks" type="number" inputmode="numeric" min="1" step="1" placeholder="1000" /></div>
+              <div class="field"><label>Конверсии</label><input name="bConv" type="number" inputmode="numeric" min="0" step="1" placeholder="60" /></div>
+            </div>
+          </div>
+          <p class="field__hint ab__hint">p-value считается двухвыборочным z-тестом разности пропорций. Разница считается значимой при p &lt; 0.05.</p>
+        </div>
+      </form>
+
+      <section class="result" aria-live="polite" data-result>
+        <h2 data-result-title>Введите данные для расчёта</h2>
+        <div data-result-body></div>
+      </section>
+    </div>
+  </section>
+
+  <section class="tool-about">
+    <div class="wrap tool-about__in">
+      <h2>Что такое доверительный интервал</h2>
+      <p>{typo(tool.about)}</p>
+      <h3>Метод Wilson score interval</h3>
+      <p>
+        Классическая формула <code>p ± z·√(p(1-p)/n)</code> ломается при p близких к 0 и 100%
+        — границы вылезают за пределы 0..100. Wilson устраняет это: интервал всегда внутри
+        0..100, работает даже при очень малой выборке и показывает корректную асимметрию при
+        крайних значениях p. По этой причине его советует и Agresti–Coull, и в документации
+        scipy / R / Python statsmodels.
+      </p>
+      <h3>Уровни</h3>
+      <dl class="defs">
+        <dt>70%</dt><dd>грубая оценка — чуть надёжнее монетки, но полезная для раннего мониторинга.</dd>
+        <dt>80%</dt><dd>часто используется в бизнес-аналитике, когда цена ошибки невысока.</dd>
+        <dt>90%</dt><dd>рабочий стандарт для внутренних A/B с ограниченной выборкой.</dd>
+        <dt>95%</dt><dd>стандартный научный уровень. p &lt; 0.05 — «статистически значимо».</dd>
+        <dt>99%</dt><dd>для критичных решений: ценообразование, безопасность, финансы.</dd>
+      </dl>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .tool-head { padding-block: clamp(40px, 7vh, 80px) clamp(28px, 5vh, 48px); }
+  .crumbs { display: flex; gap: 10px; align-items: center; color: var(--text-3); font-size: 14px; margin-bottom: 20px; }
+  .crumbs a { color: var(--text-2); transition: color 0.2s; }
+  .crumbs a:hover { color: var(--text); }
+  .tool-head h1 { font: 700 clamp(32px, 4.4vw, 56px)/1.05 var(--f-display); letter-spacing: -0.03em; text-wrap: balance; max-width: 20ch; }
+  .tool-head__lead { max-width: 60ch; margin-top: 20px; color: var(--text-2); font-size: clamp(16px, 1.3vw, 19px); }
+
+  .tool-body { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 72px); }
+
+  .modeset { display: flex; gap: 2px; margin-bottom: 28px; padding: 4px; background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: 999px; width: fit-content; }
+  .modeset button {
+    padding: 8px 18px;
+    border-radius: 999px;
+    color: var(--text-2);
+    font: 500 14px/1 var(--f-display);
+    transition: color 0.2s, background-color 0.2s;
+  }
+  .modeset button[aria-selected='true'] { background: var(--accent); color: #fff; }
+  .modeset button:not([aria-selected='true']):hover { color: var(--text); }
+
+  .stats { display: grid; gap: 24px; }
+  .pane { display: none; }
+  .pane[data-active] { display: grid; gap: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: minmax(0, 1fr); } }
+
+  .field { display: grid; gap: 8px; min-width: 0; }
+  .field label { font: 500 15px/1.3 var(--f-display); color: var(--text); }
+  .field input {
+    width: 100%; min-height: 44px; padding: 10px 14px;
+    background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: 10px;
+    color: var(--text); font: inherit; font-variant-numeric: tabular-nums;
+  }
+  .field input:focus { outline: none; border-color: var(--accent); }
+  .field__hint { color: var(--text-3); font-size: 13px; line-height: 1.5; }
+  .field__hint code { background: var(--bg-raised); padding: 1px 6px; border-radius: 4px; font-size: 12.5px; color: var(--text-2); }
+
+  .or { color: var(--text-3); font-size: 14px; text-align: center; letter-spacing: 0.05em; }
+
+  .ab { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .ab__col { display: grid; gap: 14px; padding: 20px; border: 1px solid var(--line); border-radius: 14px; }
+  .ab__col h3 { font: 600 17px/1.2 var(--f-display); }
+  .ab__hint { margin-top: 10px; }
+  @media (max-width: 640px) { .ab { grid-template-columns: minmax(0, 1fr); } }
+
+  .result { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .result h2 { font: 600 clamp(22px, 2.4vw, 28px)/1.15 var(--f-display); letter-spacing: -0.02em; }
+  .result h2 em { font-style: normal; color: var(--accent); }
+  .result :global(.panel) {
+    margin-top: 20px;
+    padding: 24px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+  }
+  .result :global(.bar) {
+    position: relative;
+    height: 56px;
+    margin: 16px 0 24px;
+    background: var(--bg-app);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .result :global(.bar__fill) {
+    position: absolute; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
+    opacity: 0.3;
+  }
+  .result :global(.bar__center) {
+    position: absolute; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--text);
+  }
+  .result :global(.bar__scale) {
+    display: flex; justify-content: space-between;
+    color: var(--text-3); font-size: 12.5px; font-variant-numeric: tabular-nums;
+    margin-top: 4px;
+  }
+  .result :global(.levels) { display: grid; gap: 10px; }
+  .result :global(.levels__row) { display: grid; grid-template-columns: 60px 1fr 1fr 1fr; gap: 12px; align-items: baseline; color: var(--text-2); font-size: 14px; font-variant-numeric: tabular-nums; }
+  .result :global(.levels__row b) { color: var(--text); font-weight: 500; }
+  .result :global(.levels__row span.lbl) { color: var(--text-3); }
+  .result :global(.verdict) { margin-top: 20px; padding: 16px 18px; border-radius: 12px; font-size: 15px; line-height: 1.5; }
+  .result :global(.verdict.ok) { background: rgb(62 207 142 / 0.1); color: var(--green); border: 1px solid rgb(62 207 142 / 0.3); }
+  .result :global(.verdict.nope) { background: rgb(255 138 91 / 0.1); color: var(--coral); border: 1px solid rgb(255 138 91 / 0.3); }
+  .result :global(.verdict b) { color: inherit; }
+  .result :global(.kpis) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .result :global(.kpi) { display: grid; gap: 4px; }
+  .result :global(.kpi span) { color: var(--text-3); font-size: 13px; }
+  .result :global(.kpi b) { font: 600 clamp(22px, 2.4vw, 28px)/1.1 var(--f-display); color: var(--text); font-variant-numeric: tabular-nums; }
+  @media (max-width: 640px) {
+    .result :global(.kpis) { grid-template-columns: minmax(0, 1fr); }
+    .result :global(.levels__row) { grid-template-columns: 60px 1fr 1fr; }
+    .result :global(.levels__row > *:nth-child(4)) { display: none; }
+  }
+
+  .tool-about { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 80px); }
+  .tool-about__in { max-width: 72ch; display: grid; gap: 20px; }
+  .tool-about h2 { font: 600 clamp(22px, 2.4vw, 32px)/1.15 var(--f-display); letter-spacing: -0.02em; }
+  .tool-about h3 { font: 600 18px/1.2 var(--f-display); margin-top: 20px; }
+  .tool-about p { color: var(--text-2); line-height: 1.6; }
+  .tool-about code { background: var(--bg-raised); padding: 1px 6px; border-radius: 4px; font-size: 13px; color: var(--text); }
+  .defs { display: grid; grid-template-columns: 60px 1fr; gap: 10px 20px; color: var(--text-2); }
+  .defs dt { color: var(--text); font-variant-numeric: tabular-nums; }
+  @media (max-width: 640px) { .defs { grid-template-columns: 1fr; gap: 2px 0; } .defs dt { margin-top: 10px; } }
+</style>
+
+<script>
+  // z-значения для двусторонних доверительных интервалов (нормальное распределение).
+  // Получены как inverse-CDF стандартной нормали на 1 - alpha/2.
+  const LEVELS: Array<{ level: number; z: number }> = [
+    { level: 70, z: 1.0364 },
+    { level: 80, z: 1.2816 },
+    { level: 90, z: 1.6449 },
+    { level: 95, z: 1.9600 },
+    { level: 99, z: 2.5758 },
+  ];
+
+  // Wilson score interval для доли (x of n), по уровню доверия (z).
+  const wilson = (x: number, n: number, z: number) => {
+    const p = x / n;
+    const denom = 1 + (z * z) / n;
+    const center = (p + (z * z) / (2 * n)) / denom;
+    const halfWidth = (z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n))) / denom;
+    return { lo: Math.max(0, center - halfWidth), hi: Math.min(1, center + halfWidth), p };
+  };
+
+  const fmt = (v: number, digits = 2) => (v * 100).toFixed(digits) + '%';
+  const fmtNum = (v: number, digits = 3) => v.toFixed(digits);
+
+  // Аппроксимация 1 - Φ(z) через erfc (ошибочная функция). Точно для нужд p-value.
+  const erf = (x: number) => {
+    // Abramowitz & Stegun 7.1.26
+    const sign = x < 0 ? -1 : 1;
+    const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+    const absX = Math.abs(x);
+    const t = 1 / (1 + p * absX);
+    const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-absX * absX);
+    return sign * y;
+  };
+  const pValueTwoSided = (z: number) => 1 - erf(Math.abs(z) / Math.SQRT2);
+
+  const form = document.querySelector<HTMLFormElement>('[data-form]')!;
+  const resultTitle = document.querySelector<HTMLElement>('[data-result-title]')!;
+  const resultBody = document.querySelector<HTMLElement>('[data-result-body]')!;
+
+  let mode: 'one' | 'ab' = 'one';
+  document.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      mode = btn.dataset.mode as 'one' | 'ab';
+      document.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) =>
+        b.setAttribute('aria-selected', String(b === btn)));
+      document.querySelectorAll<HTMLElement>('[data-pane]').forEach((p) => {
+        if (p.dataset.pane === mode) p.setAttribute('data-active', '');
+        else p.removeAttribute('data-active');
+      });
+      render();
+    });
+  });
+
+  // Синхронизация clicks/conversions ↔ CR в режиме «один вариант».
+  const clicksEl = form.querySelector<HTMLInputElement>('[name=clicks]')!;
+  const convEl = form.querySelector<HTMLInputElement>('[name=conversions]')!;
+  const crEl = form.querySelector<HTMLInputElement>('[name=cr]')!;
+  let lastEdited: 'conv' | 'cr' = 'conv';
+
+  clicksEl.addEventListener('input', () => render());
+  convEl.addEventListener('input', () => { lastEdited = 'conv'; render(); });
+  crEl.addEventListener('input', () => { lastEdited = 'cr'; render(); });
+
+  form.querySelectorAll<HTMLInputElement>('[name^="a"], [name^="b"]').forEach((i) =>
+    i.addEventListener('input', render));
+
+  const resolveOne = (): { n: number; x: number; p: number } | null => {
+    const n = Number(clicksEl.value);
+    if (!Number.isFinite(n) || n < 1) return null;
+    if (lastEdited === 'cr') {
+      const cr = Number(crEl.value);
+      if (!Number.isFinite(cr) || cr < 0 || cr > 100) return null;
+      const x = Math.round((cr / 100) * n);
+      return { n, x, p: cr / 100 };
+    }
+    const x = Number(convEl.value);
+    if (!Number.isFinite(x) || x < 0 || x > n) return null;
+    return { n, x, p: x / n };
+  };
+
+  // Поддерживаем производное поле: если пользователь редактирует «клики/конверсии» —
+  // CR пересчитываем, и наоборот. Пустое поле не трогаем, чтобы не мешать вводу.
+  const syncDerived = (one: { n: number; x: number; p: number }) => {
+    if (lastEdited === 'conv' && document.activeElement !== crEl) {
+      crEl.value = (one.p * 100).toFixed(2);
+    } else if (lastEdited === 'cr' && document.activeElement !== convEl) {
+      convEl.value = String(one.x);
+    }
+  };
+
+  const renderOne = (one: { n: number; x: number; p: number }) => {
+    const ciRows = LEVELS.map(({ level, z }) => {
+      const { lo, hi } = wilson(one.x, one.n, z);
+      return { level, lo, hi, half: (hi - lo) / 2 };
+    });
+    const ci95 = ciRows.find((r) => r.level === 95)!;
+    resultTitle.innerHTML = `Конверсия <em>${fmt(one.p)}</em> — доверительный интервал 95%: <em>${fmt(ci95.lo)} … ${fmt(ci95.hi)}</em>`;
+    resultBody.innerHTML = `
+      <div class="panel">
+        <div class="kpis">
+          <div class="kpi"><span>Выборка</span><b>${one.n.toLocaleString('ru')}</b></div>
+          <div class="kpi"><span>Положительных</span><b>${one.x.toLocaleString('ru')}</b></div>
+          <div class="kpi"><span>Конверсия</span><b>${fmt(one.p)}</b></div>
+        </div>
+        ${renderBar(one.p, ci95.lo, ci95.hi)}
+        <div class="levels">
+          <div class="levels__row"><span class="lbl">Уровень</span><span class="lbl">Нижняя</span><span class="lbl">Верхняя</span><span class="lbl">±</span></div>
+          ${ciRows.map((r) => `
+            <div class="levels__row">
+              <b>${r.level}%</b>
+              <span>${fmt(r.lo)}</span>
+              <span>${fmt(r.hi)}</span>
+              <span>${fmt(r.half)}</span>
+            </div>`).join('')}
+        </div>
+      </div>
+    `;
+  };
+
+  const renderBar = (p: number, lo: number, hi: number) => {
+    // Шкала расширяется, чтобы интервал занял ~60% ширины, но держим минимум 0..p*2.
+    const span = Math.max(hi - lo, p * 0.5, 0.02);
+    const left = Math.max(0, lo - span * 0.3);
+    const right = Math.min(1, hi + span * 0.3);
+    const w = right - left || 1;
+    const barLo = ((lo - left) / w) * 100;
+    const barHi = ((hi - left) / w) * 100;
+    const barCenter = ((p - left) / w) * 100;
+    return `
+      <div class="bar" aria-label="Диапазон 95% доверительного интервала">
+        <div class="bar__fill" style="left:${barLo}%;right:${100 - barHi}%"></div>
+        <div class="bar__center" style="left:${barCenter}%"></div>
+      </div>
+      <div class="bar__scale"><span>${fmt(left)}</span><span>${fmt((left + right) / 2)}</span><span>${fmt(right)}</span></div>
+    `;
+  };
+
+  const renderAb = () => {
+    const a = {
+      n: Number((form.querySelector<HTMLInputElement>('[name=aClicks]')!).value),
+      x: Number((form.querySelector<HTMLInputElement>('[name=aConv]')!).value),
+    };
+    const b = {
+      n: Number((form.querySelector<HTMLInputElement>('[name=bClicks]')!).value),
+      x: Number((form.querySelector<HTMLInputElement>('[name=bConv]')!).value),
+    };
+    if (!Number.isFinite(a.n) || a.n < 1 || !Number.isFinite(a.x) || a.x < 0 || a.x > a.n ||
+        !Number.isFinite(b.n) || b.n < 1 || !Number.isFinite(b.x) || b.x < 0 || b.x > b.n) {
+      resultTitle.textContent = 'Заполните клики и конверсии для обоих вариантов';
+      resultBody.innerHTML = '';
+      return;
+    }
+    const pA = a.x / a.n, pB = b.x / b.n;
+    const pPool = (a.x + b.x) / (a.n + b.n);
+    const se = Math.sqrt(pPool * (1 - pPool) * (1 / a.n + 1 / b.n));
+    const z = se === 0 ? 0 : (pB - pA) / se;
+    const pVal = pValueTwoSided(z);
+    const diff = pB - pA;
+    const relative = pA === 0 ? Infinity : diff / pA;
+    const ciA = wilson(a.x, a.n, 1.96);
+    const ciB = wilson(b.x, b.n, 1.96);
+    const significant = pVal < 0.05 && Math.abs(z) >= 1.96;
+
+    resultTitle.innerHTML = significant
+      ? `Разница <em>${diff >= 0 ? '+' : ''}${(diff * 100).toFixed(2)} п.п.</em> — значима на уровне 95%`
+      : `Разница <em>${diff >= 0 ? '+' : ''}${(diff * 100).toFixed(2)} п.п.</em> — пока не значима`;
+
+    resultBody.innerHTML = `
+      <div class="panel">
+        <div class="kpis">
+          <div class="kpi"><span>Конверсия A</span><b>${fmt(pA)}</b></div>
+          <div class="kpi"><span>Конверсия B</span><b>${fmt(pB)}</b></div>
+          <div class="kpi"><span>Разница (отн.)</span><b>${relative === Infinity ? '∞' : ((relative) * 100).toFixed(1) + '%'}</b></div>
+        </div>
+        <div class="kpis" style="margin-top: 20px;">
+          <div class="kpi"><span>z-статистика</span><b>${fmtNum(z, 3)}</b></div>
+          <div class="kpi"><span>p-value</span><b>${pVal < 0.0001 ? '<0.0001' : pVal.toFixed(4)}</b></div>
+          <div class="kpi"><span>95% CI A — B</span><b>${fmt(ciA.lo)}..${fmt(ciA.hi)} / ${fmt(ciB.lo)}..${fmt(ciB.hi)}</b></div>
+        </div>
+        <div class="verdict ${significant ? 'ok' : 'nope'}">
+          ${significant
+            ? `<b>p = ${pVal < 0.0001 ? '<0.0001' : pVal.toFixed(4)}</b> — разница статистически значима на уровне 0.05. Если бы варианты были одинаковы, такой разрыв между ними случайно получался бы реже чем в ${(pVal * 100).toFixed(2)}% повторов.`
+            : `<b>p = ${pVal.toFixed(4)}</b> — пока недостаточно данных. Нужна либо большая выборка, либо реальный эффект больше. Доверительные интервалы A и B пересекаются.`}
+        </div>
+      </div>
+    `;
+  };
+
+  function render() {
+    if (mode === 'one') {
+      const one = resolveOne();
+      if (!one) {
+        resultTitle.textContent = 'Введите клики и конверсии (или только % конверсии)';
+        resultBody.innerHTML = '';
+        return;
+      }
+      syncDerived(one);
+      renderOne(one);
+    } else {
+      renderAb();
+    }
+  }
+
+  render();
+</script>

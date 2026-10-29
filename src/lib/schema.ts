@@ -205,6 +205,37 @@ export function article(input: ArticleInput): JsonLd {
   };
 }
 
+// ---------- WebApplication / SoftwareApplication (инструменты /tools/*) ----------
+
+export type WebApplicationInput = {
+  name: string;
+  description: string;
+  url: string;
+  // Главный тип. BrowserApplication подойдёт для онлайн-утилит без установки.
+  applicationCategory?: string;
+  featureList?: string[];
+  // Пример: 'Any' — работает в любом современном браузере.
+  operatingSystem?: string;
+};
+
+export function webApplication(input: WebApplicationInput): JsonLd {
+  const absoluteUrl = new URL(input.url, SITE).href;
+  return {
+    '@type': ['WebApplication', 'SoftwareApplication'],
+    name: input.name,
+    description: input.description,
+    url: absoluteUrl,
+    applicationCategory: input.applicationCategory ?? 'BusinessApplication',
+    operatingSystem: input.operatingSystem ?? 'Any',
+    browserRequirements: 'Requires JavaScript. Requires HTML5.',
+    inLanguage: 'ru',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    provider: { '@id': ORG_ID },
+    ...(input.featureList && { featureList: input.featureList }),
+  };
+}
+
 // ---------- WebPage (универсальная обёртка) ----------
 
 export type WebPageInput = {

@@ -1,0 +1,602 @@
+---
+import Page from '../../layouts/Page.astro';
+import { toolBySlug, toolUrl } from '../../data/tools';
+import { breadcrumbs, webPage, webApplication } from '../../lib/schema';
+import { typo } from '../../lib/typo';
+
+const tool = toolBySlug('utm')!;
+const url = toolUrl(tool.slug);
+
+const schema = [
+  webPage({ title: tool.name, description: tool.description, url }),
+  breadcrumbs([
+    { name: 'Главная', url: '/' },
+    { name: 'Инструменты', url: '/tools/' },
+    { name: tool.short, url },
+  ]),
+  webApplication({
+    name: tool.name,
+    description: tool.description,
+    url,
+    applicationCategory: 'BusinessApplication',
+    featureList: [
+      'Пресеты платформ: Google Ads, Яндекс.Директ, Meta, Instagram, Facebook, TikTok, Telegram, VK, Email',
+      'Стандартные значения utm_medium: cpc, cpm, cpa, cpv, cpi, email, social, display',
+      'Массовый режим с таблицей ссылок',
+      'Экспорт списка в XLSX',
+      'Проверка обязательных параметров',
+    ],
+  }),
+];
+---
+
+<Page title={tool.name} description={tool.description} schema={schema}>
+  <section class="tool-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Хлебные крошки">
+        <a href="/tools/">Инструменты</a>
+        <span aria-hidden="true">·</span>
+        <span>{tool.short}</span>
+      </nav>
+      <h1>{typo(tool.name)}</h1>
+      <p class="tool-head__lead">{typo(tool.lead)}</p>
+    </div>
+  </section>
+
+  <section class="tool-body" aria-labelledby="utm-form-title">
+    <div class="wrap">
+      <h2 id="utm-form-title" class="sr-only">Форма генератора</h2>
+
+      <div class="presets" role="toolbar" aria-label="Пресеты платформ">
+        <button type="button" data-preset="google_ads">Google Ads</button>
+        <button type="button" data-preset="yandex_direct">Яндекс.Директ</button>
+        <button type="button" data-preset="meta_facebook">Facebook</button>
+        <button type="button" data-preset="meta_instagram">Instagram</button>
+        <button type="button" data-preset="tiktok">TikTok</button>
+        <button type="button" data-preset="telegram_ads">Telegram Ads</button>
+        <button type="button" data-preset="vk">VK</button>
+        <button type="button" data-preset="email">Email</button>
+        <button type="button" data-preset="" data-reset>Сбросить</button>
+      </div>
+
+      <form class="utm" novalidate data-form>
+        <div class="field">
+          <label for="utm-url">URL целевой страницы <sup>*</sup></label>
+          <input id="utm-url" name="url" type="url" required placeholder="https://example.uz/promo" autocomplete="off" />
+          <p class="field__hint" data-hint-for="url"></p>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="utm-source">utm_source <sup>*</sup></label>
+            <input id="utm-source" name="source" required placeholder="google, yandex, instagram, telegram..." autocomplete="off" />
+            <p class="field__hint">Площадка-источник трафика. Пишем латиницей, строчными, без пробелов.</p>
+          </div>
+
+          <div class="field">
+            <label for="utm-medium">utm_medium <sup>*</sup></label>
+            <select id="utm-medium" name="medium" required data-medium>
+              <option value="cpc">cpc — оплата за клик (контекст, таргет)</option>
+              <option value="cpm">cpm — оплата за показы (баннеры, видео)</option>
+              <option value="cpa">cpa — оплата за действие (конверсия, установка)</option>
+              <option value="cpv">cpv — оплата за просмотр видео</option>
+              <option value="cpi">cpi — оплата за установку приложения</option>
+              <option value="cpp">cpp — оплата за публикацию (посев, PR)</option>
+              <option value="display">display — медийная реклама</option>
+              <option value="social">social — соцсети</option>
+              <option value="email">email — рассылки</option>
+              <option value="referral">referral — переходы с других сайтов</option>
+              <option value="organic">organic — органика</option>
+              <option value="affiliate">affiliate — партнёрка</option>
+              <option value="qr">qr — QR-коды</option>
+              <option value="__custom">Своё значение...</option>
+            </select>
+            <input class="field__custom" name="medium_custom" placeholder="Введите своё значение" data-medium-custom hidden autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="utm-campaign">utm_campaign <sup>*</sup></label>
+          <input id="utm-campaign" name="campaign" required placeholder="название_кампании, например winter_sale_2026" autocomplete="off" />
+          <p class="field__hint">
+            Имя кампании для аналитики. Хороший формат: <code>продукт_цель_период</code>.
+            <button type="button" class="field__action" data-suggest-campaign>Собрать по шаблону</button>
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="utm-content">utm_content</label>
+            <input id="utm-content" name="content" placeholder="баннер_300x250_v1, видео_15s, креатив_blue" autocomplete="off" />
+            <p class="field__hint">Отличает креативы и объявления внутри одной кампании.</p>
+          </div>
+
+          <div class="field">
+            <label for="utm-term">utm_term</label>
+            <input id="utm-term" name="term" placeholder="ключевое_слово или {keyword} для шаблонов" autocomplete="off" />
+            <p class="field__hint">Для контекста — ключ или динамический параметр площадки.</p>
+          </div>
+        </div>
+
+        <details class="advanced" data-advanced>
+          <summary>Автосборка имени кампании</summary>
+          <p class="advanced__text">
+            Соберёт utm_campaign по формуле <code>продукт_цель_источник_формат_оплата_таргетинг</code> — так принято
+            в агентствах для автоматического разбора отчётов. Поля необязательны, пустые пропускаются.
+          </p>
+          <div class="grid-3">
+            <div class="field">
+              <label for="utm-product">Продукт / услуга</label>
+              <input id="utm-product" data-adv="product" placeholder="кредит, подписка, доставка" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="utm-goal">Цель кампании</label>
+              <select id="utm-goal" data-adv="goal">
+                <option value="">—</option>
+                <option value="perf">perf — конверсии</option>
+                <option value="reach">reach — охват и знание</option>
+                <option value="traffic">traffic — трафик на сайт</option>
+                <option value="app_install">app_install — установки</option>
+                <option value="video_view">video_view — просмотры</option>
+                <option value="leadgen">leadgen — лиды</option>
+                <option value="retention">retention — удержание</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="utm-format">Формат</label>
+              <select id="utm-format" data-adv="format">
+                <option value="">—</option>
+                <option value="banner">banner — баннер</option>
+                <option value="video">video — видео</option>
+                <option value="search">search — поиск</option>
+                <option value="adpt">adpt — адаптив (RSA)</option>
+                <option value="native">native — нативка</option>
+                <option value="rich">rich — rich-media</option>
+                <option value="tg_post">tg_post — посев в Telegram</option>
+                <option value="pr">pr — PR-пост</option>
+                <option value="stories">stories — Stories</option>
+                <option value="reels">reels — Reels</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="utm-targeting">Таргетинг</label>
+              <select id="utm-targeting" data-adv="targeting">
+                <option value="">—</option>
+                <option value="keyword">keyword — ключи</option>
+                <option value="interest">interest — интересы</option>
+                <option value="geo">geo — гео</option>
+                <option value="retarget">retarget — ретаргетинг</option>
+                <option value="lal">lal — look-alike</option>
+                <option value="channel">channel — выбранные каналы/сайты</option>
+                <option value="list">list — список контактов</option>
+                <option value="language">language — язык</option>
+                <option value="audience_channel">audience_channel — аудитория канала</option>
+                <option value="audience_site">audience_site — аудитория сайта</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <div class="result" aria-live="polite">
+          <label>Ссылка с UTM-метками</label>
+          <output class="result__url" data-output>https://...</output>
+          <div class="result__actions">
+            <button type="button" class="btn btn--primary btn--sm" data-copy>Скопировать</button>
+            <button type="button" class="btn btn--ghost btn--sm" data-add>Добавить в список</button>
+          </div>
+          <p class="result__hint" data-copy-status aria-live="polite"></p>
+        </div>
+      </form>
+
+      <section class="list" aria-labelledby="list-title" data-list-section hidden>
+        <div class="list__head">
+          <h2 id="list-title">Список ссылок <span data-count>(0)</span></h2>
+          <div class="list__actions">
+            <button type="button" class="btn btn--primary btn--sm" data-export>Скачать XLSX</button>
+            <button type="button" class="btn btn--ghost btn--sm" data-clear>Очистить</button>
+          </div>
+        </div>
+        <div class="list__wrap">
+          <table class="list__table">
+            <thead>
+              <tr>
+                <th>utm_source</th>
+                <th>utm_medium</th>
+                <th>utm_campaign</th>
+                <th>utm_content</th>
+                <th>utm_term</th>
+                <th>Готовая ссылка</th>
+                <th aria-label="Удалить"></th>
+              </tr>
+            </thead>
+            <tbody data-list-body></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="tool-about">
+    <div class="wrap tool-about__in">
+      <h2>Как работают UTM-метки</h2>
+      <p>{typo(tool.about)}</p>
+      <h3>Стандартные значения utm_medium</h3>
+      <dl class="defs">
+        <dt>cpc</dt><dd>контекстная и таргетированная реклама с оплатой за клик — Google Ads, Яндекс.Директ, Meta в режиме трафика.</dd>
+        <dt>cpm</dt><dd>баннерная и видео-реклама с оплатой за показы — медийка, programmatic, OLV.</dd>
+        <dt>cpa</dt><dd>оплата за действие — заявки, продажи, установки.</dd>
+        <dt>cpv</dt><dd>оплата за просмотр видео — YouTube, Rutube, VK Video.</dd>
+        <dt>email</dt><dd>рассылки, транзакционные письма, промо-письма.</dd>
+        <dt>social</dt><dd>органический трафик с соцсетей.</dd>
+        <dt>display</dt><dd>медийная реклама, если не хочется разделять cpm и cpc.</dd>
+      </dl>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .tool-head { padding-block: clamp(40px, 7vh, 80px) clamp(28px, 5vh, 48px); }
+  .crumbs { display: flex; gap: 10px; align-items: center; color: var(--text-3); font-size: 14px; margin-bottom: 20px; }
+  .crumbs a { color: var(--text-2); transition: color 0.2s; }
+  .crumbs a:hover { color: var(--text); }
+  .tool-head h1 { font: 700 clamp(32px, 4.4vw, 56px)/1.05 var(--f-display); letter-spacing: -0.03em; text-wrap: balance; max-width: 20ch; }
+  .tool-head__lead { max-width: 60ch; margin-top: 20px; color: var(--text-2); font-size: clamp(16px, 1.3vw, 19px); }
+
+  .tool-body { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 72px); }
+
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .presets button {
+    padding: 8px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    color: var(--text-2);
+    font-size: 14px;
+    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+  }
+  .presets button:hover { color: var(--text); border-color: var(--text); }
+  .presets button[data-reset] { color: var(--text-3); }
+
+  .utm { display: grid; gap: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  @media (min-width: 860px) { .grid-3 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: minmax(0, 1fr); } }
+
+  .field { display: grid; gap: 8px; min-width: 0; }
+  .field label { font: 500 15px/1.3 var(--f-display); color: var(--text); }
+  .field label sup { color: var(--accent); font-size: 14px; vertical-align: top; }
+  .field input, .field select, .field__custom {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 14px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    color: var(--text);
+    font: inherit;
+    transition: border-color 0.2s;
+  }
+  .field input:focus, .field select:focus, .field__custom:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .field input::placeholder, .field__custom::placeholder { color: var(--text-3); }
+  .field input:-webkit-autofill, .field input:-webkit-autofill:hover, .field input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text);
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-raised) inset;
+    caret-color: var(--text);
+  }
+  .field__hint { color: var(--text-3); font-size: 13px; line-height: 1.5; display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; }
+  .field__hint code { background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: var(--text-2); }
+  .field__action { color: var(--accent); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+  .field__action:hover { color: var(--accent-hover); }
+
+  .advanced { border: 1px solid var(--line); border-radius: 14px; padding: 0; }
+  .advanced > summary { padding: 14px 18px; cursor: pointer; font: 500 15px/1 var(--f-display); color: var(--text-2); }
+  .advanced[open] > summary { border-bottom: 1px solid var(--line); color: var(--text); }
+  .advanced > *:not(summary) { padding: 18px; }
+  .advanced > .grid-3 { padding-top: 0; }
+  .advanced__text { color: var(--text-3); font-size: 14px; margin: 0; }
+  .advanced__text code { color: var(--text-2); background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 12.5px; }
+
+  .result {
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    background: var(--bg-raised);
+  }
+  .result label { color: var(--text-2); font-size: 14px; }
+  .result__url {
+    display: block;
+    overflow-wrap: anywhere;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text);
+    min-height: 1.5em;
+  }
+  .result__url.is-empty { color: var(--text-3); }
+  .result__actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .result__hint { color: var(--green); font-size: 13px; min-height: 1em; }
+  .result__hint.is-error { color: var(--coral); }
+
+  .list { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .list__head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .list__head h2 { font: 600 20px/1.2 var(--f-display); }
+  .list__head h2 span { color: var(--text-3); font-weight: 400; }
+  .list__actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .list__wrap { overflow-x: auto; }
+  .list__table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .list__table th, .list__table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .list__table th { color: var(--text-3); font-weight: 400; font-size: 13px; }
+  .list__table td { color: var(--text-2); }
+  .list__table td:nth-child(6) { color: var(--text); word-break: break-all; max-width: 320px; font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; }
+  .list__del {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    color: var(--text-3);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .list__del:hover { color: var(--coral); border-color: var(--coral); }
+
+  .tool-about { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 80px); }
+  .tool-about__in { max-width: 72ch; display: grid; gap: 20px; }
+  .tool-about h2 { font: 600 clamp(22px, 2.4vw, 32px)/1.15 var(--f-display); letter-spacing: -0.02em; }
+  .tool-about h3 { font: 600 18px/1.2 var(--f-display); margin-top: 20px; }
+  .tool-about p { color: var(--text-2); line-height: 1.6; }
+  .defs { display: grid; grid-template-columns: 100px 1fr; gap: 10px 20px; color: var(--text-2); }
+  .defs dt { font-family: ui-monospace, Menlo, monospace; color: var(--text); }
+  @media (max-width: 640px) {
+    .defs { grid-template-columns: 1fr; gap: 2px 0; }
+    .defs dt { margin-top: 10px; }
+  }
+</style>
+
+<script>
+  import writeXlsxFile from 'write-excel-file/browser';
+
+  type Row = {
+    url: string;
+    source: string;
+    medium: string;
+    campaign: string;
+    content: string;
+    term: string;
+    final: string;
+  };
+
+  const form = document.querySelector<HTMLFormElement>('[data-form]')!;
+  const output = document.querySelector<HTMLElement>('[data-output]')!;
+  const copyStatus = document.querySelector<HTMLElement>('[data-copy-status]')!;
+  const mediumSel = document.querySelector<HTMLSelectElement>('[data-medium]')!;
+  const mediumCustom = document.querySelector<HTMLInputElement>('[data-medium-custom]')!;
+  const listSection = document.querySelector<HTMLElement>('[data-list-section]')!;
+  const listBody = document.querySelector<HTMLTableSectionElement>('[data-list-body]')!;
+  const countEl = document.querySelector<HTMLElement>('[data-count]')!;
+
+  const STORAGE_KEY = 'boost-utm-list-v1';
+  let list: Row[] = [];
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) list = JSON.parse(saved);
+  } catch {}
+
+  // Пресеты: source + разумный medium по умолчанию. medium можно сменить руками.
+  const presets: Record<string, { source: string; medium: string }> = {
+    google_ads: { source: 'google', medium: 'cpc' },
+    yandex_direct: { source: 'yandex', medium: 'cpc' },
+    meta_facebook: { source: 'facebook', medium: 'cpc' },
+    meta_instagram: { source: 'instagram', medium: 'cpc' },
+    tiktok: { source: 'tiktok', medium: 'cpc' },
+    telegram_ads: { source: 'telegram', medium: 'cpm' },
+    vk: { source: 'vk', medium: 'cpc' },
+    email: { source: 'newsletter', medium: 'email' },
+  };
+
+  // Нормализация ввода пользователя под аналитику: латиница в нижнем регистре, пробелы → _.
+  const slugify = (v: string) =>
+    v.trim().toLowerCase().replace(/[\s/\\]+/g, '_').replace(/[^\w\-\.]/g, '');
+
+  const getMedium = (): string => {
+    if (mediumSel.value === '__custom') return slugify(mediumCustom.value);
+    return mediumSel.value;
+  };
+
+  const buildUrl = (): string => {
+    const data = new FormData(form);
+    const base = (data.get('url') as string || '').trim();
+    if (!base) return '';
+    const source = slugify(data.get('source') as string || '');
+    const medium = getMedium();
+    const campaign = slugify(data.get('campaign') as string || '');
+    const content = slugify(data.get('content') as string || '');
+    const term = (data.get('term') as string || '').trim(); // term нередко содержит {keyword}
+    if (!source || !medium || !campaign) return '';
+    const params = new URLSearchParams();
+    params.set('utm_source', source);
+    params.set('utm_medium', medium);
+    params.set('utm_campaign', campaign);
+    if (content) params.set('utm_content', content);
+    if (term) params.set('utm_term', term);
+    const sep = base.includes('?') ? '&' : '?';
+    return base + sep + params.toString().replace(/%7B/g, '{').replace(/%7D/g, '}');
+  };
+
+  const render = () => {
+    const url = buildUrl();
+    if (url) {
+      output.textContent = url;
+      output.classList.remove('is-empty');
+    } else {
+      output.textContent = 'Заполните URL, utm_source, utm_medium и utm_campaign — здесь появится ссылка.';
+      output.classList.add('is-empty');
+    }
+    copyStatus.textContent = '';
+    copyStatus.classList.remove('is-error');
+  };
+
+  form.addEventListener('input', render);
+  form.addEventListener('change', render);
+  mediumSel.addEventListener('change', () => {
+    mediumCustom.hidden = mediumSel.value !== '__custom';
+    if (mediumSel.value === '__custom') mediumCustom.focus();
+  });
+
+  // Пресеты
+  document.querySelectorAll<HTMLButtonElement>('[data-preset]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.preset;
+      const src = form.querySelector<HTMLInputElement>('[name=source]')!;
+      if (!key) { // reset
+        form.reset();
+        mediumCustom.hidden = true;
+        render();
+        return;
+      }
+      const p = presets[key];
+      if (!p) return;
+      src.value = p.source;
+      // выставляем medium: совпадает со списком — берём, иначе — свой
+      if ([...mediumSel.options].some((o) => o.value === p.medium)) {
+        mediumSel.value = p.medium;
+        mediumCustom.hidden = true;
+      } else {
+        mediumSel.value = '__custom';
+        mediumCustom.value = p.medium;
+        mediumCustom.hidden = false;
+      }
+      render();
+    });
+  });
+
+  // Автосборка utm_campaign из advanced полей
+  document.querySelector<HTMLButtonElement>('[data-suggest-campaign]')?.addEventListener('click', () => {
+    const parts = ['product', 'goal', 'source', 'format', 'medium', 'targeting']
+      .map((k) => {
+        if (k === 'source') return slugify((form.querySelector<HTMLInputElement>('[name=source]')?.value) || '');
+        if (k === 'medium') return getMedium();
+        return slugify((document.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-adv="${k}"]`)?.value) || '');
+      })
+      .filter(Boolean);
+    const campaignInput = form.querySelector<HTMLInputElement>('[name=campaign]')!;
+    campaignInput.value = parts.join('_');
+    render();
+    campaignInput.focus();
+    // открываем advanced, если собирали вслепую
+    document.querySelector<HTMLDetailsElement>('[data-advanced]')?.setAttribute('open', '');
+  });
+
+  // Копировать
+  document.querySelector<HTMLButtonElement>('[data-copy]')?.addEventListener('click', async () => {
+    const url = buildUrl();
+    if (!url) {
+      copyStatus.textContent = 'Заполните обязательные поля (URL, source, medium, campaign).';
+      copyStatus.classList.add('is-error');
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      copyStatus.textContent = 'Ссылка скопирована в буфер обмена.';
+      copyStatus.classList.remove('is-error');
+    } catch {
+      copyStatus.textContent = 'Браузер не дал доступ к буферу — скопируйте вручную.';
+      copyStatus.classList.add('is-error');
+    }
+  });
+
+  // Добавить в список
+  const renderList = () => {
+    listSection.hidden = list.length === 0;
+    countEl.textContent = list.length ? `(${list.length})` : '(0)';
+    listBody.innerHTML = '';
+    list.forEach((r, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${escapeHtml(r.source)}</td>
+        <td>${escapeHtml(r.medium)}</td>
+        <td>${escapeHtml(r.campaign)}</td>
+        <td>${escapeHtml(r.content)}</td>
+        <td>${escapeHtml(r.term)}</td>
+        <td>${escapeHtml(r.final)}</td>
+        <td><button type="button" class="list__del" aria-label="Удалить строку" data-i="${i}">×</button></td>
+      `;
+      listBody.appendChild(tr);
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch {}
+  };
+
+  const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!
+  ));
+
+  listBody.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-i]');
+    if (!btn) return;
+    const i = Number(btn.dataset.i);
+    list.splice(i, 1);
+    renderList();
+  });
+
+  document.querySelector<HTMLButtonElement>('[data-add]')?.addEventListener('click', () => {
+    const url = buildUrl();
+    if (!url) {
+      copyStatus.textContent = 'Заполните обязательные поля.';
+      copyStatus.classList.add('is-error');
+      return;
+    }
+    const data = new FormData(form);
+    list.push({
+      url: (data.get('url') as string).trim(),
+      source: slugify(data.get('source') as string),
+      medium: getMedium(),
+      campaign: slugify(data.get('campaign') as string),
+      content: slugify((data.get('content') as string) || ''),
+      term: ((data.get('term') as string) || '').trim(),
+      final: url,
+    });
+    renderList();
+    copyStatus.textContent = `Добавлено в список (${list.length}).`;
+    copyStatus.classList.remove('is-error');
+  });
+
+  document.querySelector<HTMLButtonElement>('[data-clear]')?.addEventListener('click', () => {
+    if (!confirm('Очистить весь список?')) return;
+    list = [];
+    renderList();
+  });
+
+  document.querySelector<HTMLButtonElement>('[data-export]')?.addEventListener('click', async () => {
+    if (!list.length) return;
+    const data = [
+      [
+        { value: 'URL целевой', fontWeight: 'bold' as const },
+        { value: 'utm_source', fontWeight: 'bold' as const },
+        { value: 'utm_medium', fontWeight: 'bold' as const },
+        { value: 'utm_campaign', fontWeight: 'bold' as const },
+        { value: 'utm_content', fontWeight: 'bold' as const },
+        { value: 'utm_term', fontWeight: 'bold' as const },
+        { value: 'Готовая ссылка', fontWeight: 'bold' as const },
+      ],
+      ...list.map((r) => [
+        { value: r.url },
+        { value: r.source },
+        { value: r.medium },
+        { value: r.campaign },
+        { value: r.content },
+        { value: r.term },
+        { value: r.final },
+      ]),
+    ];
+    const date = new Date().toISOString().slice(0, 10);
+    await writeXlsxFile(data, {
+      columns: [{ width: 30 }, { width: 15 }, { width: 12 }, { width: 25 }, { width: 20 }, { width: 20 }, { width: 60 }],
+      sheet: 'UTM',
+    }).toFile(`utm_${date}.xlsx`);
+  });
+
+  render();
+  renderList();
+</script>
