@@ -52,6 +52,7 @@ const schema = [
       </p>
 
       <div class="scheme">
+        <div class="scheme__wrap">
         <svg viewBox="0 0 700 320" preserveAspectRatio="xMidYMid meet" aria-hidden="true" class="scheme__svg">
           <rect x="0" y="0" width="700" height="320" rx="14" fill="var(--bg-app)" />
           <!-- Исходный ключ -->
@@ -59,41 +60,42 @@ const schema = [
           <rect x="240" y="54" width="220" height="42" rx="8" fill="var(--bg-raised)" stroke="var(--line-strong)" />
           <text x="350" y="82" text-anchor="middle" fill="var(--text)" font-size="16" font-family="ui-monospace, Menlo, monospace">купить ламинат</text>
 
-          <!-- Три стрелки вниз -->
+          <!-- Три стрелки вниз, центры совпадают с центрами боксов (130, 350, 570) -->
           <g stroke="var(--line-strong)" stroke-width="1">
-            <line x1="140" y1="130" x2="140" y2="170" />
-            <path d="M135 165 l5 10 l5 -10" fill="none" />
+            <line x1="130" y1="130" x2="130" y2="170" />
+            <path d="M125 165 l5 10 l5 -10" fill="none" />
             <line x1="350" y1="130" x2="350" y2="170" />
             <path d="M345 165 l5 10 l5 -10" fill="none" />
-            <line x1="560" y1="130" x2="560" y2="170" />
-            <path d="M555 165 l5 10 l5 -10" fill="none" />
+            <line x1="570" y1="130" x2="570" y2="170" />
+            <path d="M565 165 l5 10 l5 -10" fill="none" />
           </g>
 
-          <!-- Три бокса результата -->
+          <!-- Три бокса результата: 200px шириной, с gap 20px, без наезда -->
           <g>
-            <!-- Широкое -->
-            <rect x="30" y="180" width="220" height="110" rx="10" fill="var(--bg-raised)" stroke="var(--line)" />
-            <text x="140" y="206" text-anchor="middle" fill="var(--text-2)" font-size="13" font-family="var(--f-display)">Широкое</text>
-            <text x="140" y="240" text-anchor="middle" fill="var(--text)" font-size="15" font-family="ui-monospace, Menlo, monospace">купить ламинат</text>
-            <text x="140" y="270" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">синонимы, перефразировки</text>
+            <!-- Широкое: 30..230, центр 130 -->
+            <rect x="30" y="180" width="200" height="110" rx="10" fill="var(--bg-raised)" stroke="var(--line)" />
+            <text x="130" y="206" text-anchor="middle" fill="var(--text-2)" font-size="13" font-family="var(--f-display)">Широкое</text>
+            <text x="130" y="240" text-anchor="middle" fill="var(--text)" font-size="15" font-family="ui-monospace, Menlo, monospace">купить ламинат</text>
+            <text x="130" y="270" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">синонимы, перефразировки</text>
 
-            <!-- Фразовое -->
-            <rect x="240" y="180" width="220" height="110" rx="10" fill="var(--accent)" fill-opacity="0.08" stroke="var(--accent)" stroke-opacity="0.4" />
+            <!-- Фразовое: 250..450, центр 350 -->
+            <rect x="250" y="180" width="200" height="110" rx="10" fill="var(--accent)" fill-opacity="0.08" stroke="var(--accent)" stroke-opacity="0.4" />
             <text x="350" y="206" text-anchor="middle" fill="var(--text-2)" font-size="13" font-family="var(--f-display)">Фразовое</text>
             <text x="350" y="240" text-anchor="middle" fill="var(--text)" font-size="15" font-family="ui-monospace, Menlo, monospace">
               <tspan fill="var(--accent-hover)">"</tspan>купить ламинат<tspan fill="var(--accent-hover)">"</tspan>
             </text>
-            <text x="350" y="270" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">запрос содержит смысл ключа</text>
+            <text x="350" y="270" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">содержит смысл ключа</text>
 
-            <!-- Точное -->
-            <rect x="450" y="180" width="220" height="110" rx="10" fill="var(--accent)" fill-opacity="0.08" stroke="var(--accent)" stroke-opacity="0.4" />
-            <text x="560" y="206" text-anchor="middle" fill="var(--text-2)" font-size="13" font-family="var(--f-display)">Точное</text>
-            <text x="560" y="240" text-anchor="middle" fill="var(--text)" font-size="15" font-family="ui-monospace, Menlo, monospace">
+            <!-- Точное: 470..670, центр 570 -->
+            <rect x="470" y="180" width="200" height="110" rx="10" fill="var(--accent)" fill-opacity="0.08" stroke="var(--accent)" stroke-opacity="0.4" />
+            <text x="570" y="206" text-anchor="middle" fill="var(--text-2)" font-size="13" font-family="var(--f-display)">Точное</text>
+            <text x="570" y="240" text-anchor="middle" fill="var(--text)" font-size="15" font-family="ui-monospace, Menlo, monospace">
               <tspan fill="var(--accent-hover)">[</tspan>купить ламинат<tspan fill="var(--accent-hover)">]</tspan>
             </text>
-            <text x="560" y="270" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">только тот же смысл</text>
+            <text x="570" y="270" text-anchor="middle" fill="var(--text-3)" font-size="11" font-family="var(--f-display)">только тот же смысл</text>
           </g>
         </svg>
+        </div>
         <p class="scheme__caption">
           Отмеченные типы будут продублированы в результате: если выбраны фразовое и точное,
           «купить ламинат» превратится в <code>"купить ламинат"</code> и <code>[купить ламинат]</code>.
@@ -193,7 +195,20 @@ const schema = [
   .how__tldr code { background: var(--bg-app); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
 
   .scheme { display: grid; gap: 14px; }
-  .scheme__svg { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .scheme__wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    /* тонкий намёк, что можно прокрутить, когда схема не влезает */
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+  .scheme__svg { width: 100%; height: auto; display: block; }
+  @media (max-width: 720px) {
+    /* не даём SVG сжаться ниже читаемого — пользователь листает горизонтально */
+    .scheme__svg { min-width: 560px; }
+  }
   .scheme__caption { color: var(--text-2); font-size: 15px; line-height: 1.55; max-width: 68ch; }
   .scheme__caption code { background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
 
@@ -243,7 +258,7 @@ const schema = [
   .actions__hint.is-error { color: var(--coral); }
 
   .tool-about { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 80px); }
-  .tool-about__in { max-width: 72ch; display: grid; gap: 20px; }
+  .tool-about__in { max-width: 960px; margin-inline: auto; display: grid; gap: 20px; }
   .tool-about h2 { font: 600 clamp(22px, 2.4vw, 32px)/1.15 var(--f-display); letter-spacing: -0.02em; }
   .tool-about p { color: var(--text-2); line-height: 1.6; }
   .tool-about code { background: var(--bg-raised); padding: 1px 6px; border-radius: 4px; font-size: 13px; color: var(--text); }

@@ -52,6 +52,7 @@ const schema = [
       </p>
 
       <div class="scheme">
+        <div class="scheme__wrap">
         <svg viewBox="0 0 700 240" preserveAspectRatio="xMidYMid meet" aria-hidden="true" class="scheme__svg">
           <rect x="0" y="0" width="700" height="240" rx="14" fill="var(--bg-app)" />
           <text x="24" y="34" fill="var(--text-2)" font-size="14" font-family="var(--f-display)">1 000 кликов, 50 конверсий — конверсия 5%</text>
@@ -73,6 +74,7 @@ const schema = [
           <text x="445" y="186" text-anchor="middle" fill="var(--accent-hover)" font-size="12" font-family="ui-monospace, Menlo, monospace">6.53%</text>
           <text x="350" y="214" text-anchor="middle" fill="var(--text-2)" font-size="12" font-family="var(--f-display)">диапазон доверительного интервала</text>
         </svg>
+        </div>
         <p class="scheme__caption">
           Чем больше кликов — тем уже диапазон, тем ближе к «настоящей» конверсии. Калькулятор
           считает интервалы на 70, 80, 90, 95 и 99% по методу Wilson, который работает даже при
@@ -237,11 +239,17 @@ const schema = [
   .how__tldr code { background: var(--bg-app); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
 
   .scheme { display: grid; gap: 14px; }
-  .scheme__svg {
-    width: 100%; height: auto;
+  .scheme__wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     border: 1px solid var(--line);
     border-radius: 14px;
-    overflow: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+  .scheme__svg { width: 100%; height: auto; display: block; }
+  @media (max-width: 720px) {
+    .scheme__svg { min-width: 560px; }
   }
   .scheme__caption { color: var(--text-2); font-size: 15px; line-height: 1.55; max-width: 68ch; }
   .scheme__caption code { background: var(--bg-raised); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent-hover); }
@@ -366,7 +374,7 @@ const schema = [
   }
 
   .tool-about { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 80px); }
-  .tool-about__in { max-width: 72ch; display: grid; gap: 20px; }
+  .tool-about__in { max-width: 960px; margin-inline: auto; display: grid; gap: 20px; }
   .tool-about h2 { font: 600 clamp(22px, 2.4vw, 32px)/1.15 var(--f-display); letter-spacing: -0.02em; }
   .tool-about h3 { font: 600 18px/1.2 var(--f-display); margin-top: 20px; }
   .tool-about p { color: var(--text-2); line-height: 1.6; }

@@ -72,6 +72,9 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
           </button>
         </div>
 
+        <!-- мобильная подпись к текущему шагу — показывается только когда вкладки «обрезаны» -->
+        <p class="demo__mcaption" data-mcaption aria-hidden="true"></p>
+
         <div class="demo__screen">
           <!-- Шаг 1 — вставка ключей -->
           <div class="demo__pane" data-pane="0" data-active>
@@ -190,8 +193,6 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
           </div>
         </div>
 
-        <!-- мобильная подпись к текущему шагу — показывается только когда схема урезана -->
-        <p class="demo__mcaption" data-mcaption aria-hidden="true"></p>
       </div>
     </div>
   </section>
@@ -437,10 +438,27 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
   .demo__mcaption { display: none; }
 
   @media (max-width: 720px) {
+    /* на мобильном оставляем только цифры шагов — длинные подписи не влезают
+       в 4 узкие колонки. Текст активного шага выводим ниже, отдельной строкой */
     .demo__tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 3px; }
-    .demo__tab { padding: 8px 4px; font-size: 12px; flex-direction: column; gap: 4px; }
-    .demo__tab span:last-child { font-size: 11px; }
+    .demo__tab { padding: 10px 0; }
+    .demo__tab span:last-child { display: none; }
+    .demo__tab .demo__num { width: 24px; height: 24px; font-size: 12px; }
+    .demo__mcaption {
+      display: block;
+      padding: 12px 14px;
+      background: var(--bg-raised);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--text);
+      font: 600 15px/1.2 var(--f-display);
+      text-align: center;
+    }
     .demo__screen { min-height: 360px; }
+    /* SVG каждого шага — горизонтальный скролл, иначе мокап режется */
+    .demo__pane .demo__svg { min-width: 560px; }
+    .demo__pane { overflow: hidden; }
+    .demo__pane > *:not(.demo__caption):not(.demo__mcaption) { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   }
 
   /* ── подробная инструкция в <details> ── */
@@ -549,7 +567,7 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
   .preview__table td:nth-child(2) { color: var(--text); }
 
   .tool-about { border-top: 1px solid var(--line); padding-block: clamp(40px, 7vh, 80px); }
-  .tool-about__in { max-width: 72ch; display: grid; gap: 20px; }
+  .tool-about__in { max-width: 960px; margin-inline: auto; display: grid; gap: 20px; }
   .tool-about h2 { font: 600 clamp(22px, 2.4vw, 32px)/1.15 var(--f-display); letter-spacing: -0.02em; }
   .tool-about h3 { font: 600 18px/1.2 var(--f-display); margin-top: 20px; }
   .tool-about p { color: var(--text-2); line-height: 1.6; }
@@ -573,6 +591,9 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
     if (!demo) return;
     const tabs = [...demo.querySelectorAll<HTMLButtonElement>('.demo__tab')];
     const panes = [...demo.querySelectorAll<HTMLElement>('.demo__pane')];
+    const mcaption = demo.querySelector<HTMLElement>('[data-mcaption]');
+    // На мобильном подписи шагов рядом с цифрой не влезают — выводим их в mcaption
+    const labels = tabs.map((t) => t.querySelector<HTMLElement>('span:last-child')?.textContent?.trim() ?? '');
     const DUR = 6000;
     let active = 0;
     let auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -583,6 +604,7 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
       active = i;
       tabs.forEach((t, k) => t.setAttribute('aria-selected', String(k === i)));
       panes.forEach((p, k) => p.toggleAttribute('data-active', k === i));
+      if (mcaption) mcaption.textContent = `Шаг ${i + 1}. ${labels[i]}`;
     };
     const tick = () => setActive((active + 1) % panes.length);
     const sync = () => {
@@ -591,6 +613,8 @@ const defaultKeywords = `купить ламинат|https://example.uz/laminat|
     };
     tabs.forEach((t, k) => t.addEventListener('click', () => { auto = false; setActive(k); sync(); }));
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; sync(); }, { threshold: 0.3 }).observe(demo);
+    // инициализируем mcaption первым шагом
+    setActive(0);
   })();
 
   type MatchType = 'broad' | 'phrase' | 'exact';

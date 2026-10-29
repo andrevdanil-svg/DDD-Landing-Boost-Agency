@@ -86,6 +86,37 @@ h1, h2, h3, h4 { overflow-wrap: break-word; -webkit-hyphens: manual; hyphens: ma
   letter-spacing: -0.035em;
   text-wrap: balance;
 }
+/* на мобильном text-wrap: balance делает все строки одинаково короткими —
+   «пришлите задачу / вернём / медиаплан / за 48 часов». Это читается как
+   машинный перенос. Снимаем balance, уменьшаем жирность и размер — текст
+   растягивается на всю ширину и ломается по естественным местам.
+   Правило распространяем на все крупные заголовки сайта — .h2, PageHero
+   и tool-head на страницах инструментов. */
+@media (max-width: 640px) {
+  .h2 {
+    font-weight: 600;
+    font-size: clamp(26px, 7.6vw, 36px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    text-wrap: pretty;
+  }
+  .ph__title {
+    font-weight: 600 !important;
+    font-size: clamp(32px, 9vw, 44px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.02em !important;
+    text-wrap: pretty !important;
+    max-width: none !important;
+  }
+  .tool-head h1 {
+    font-weight: 600 !important;
+    font-size: clamp(26px, 7.6vw, 36px) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.02em !important;
+    text-wrap: pretty !important;
+    max-width: none !important;
+  }
+}
 
 .btn {
   display: inline-flex;
