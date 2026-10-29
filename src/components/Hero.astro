@@ -1,13 +1,18 @@
 ---
 import Arrow from './Arrow.astro';
 import { TELEGRAM } from '../data/contacts';
+import { typo } from '../lib/typo';
 
-// ПРОТОТИП: число демонстрационное. В проде берём сумму показов из платформы.
-const TOTAL_IMPRESSIONS = 2418337905;
-const total = new Intl.NumberFormat('ru-RU').format(TOTAL_IMPRESSIONS);
+// Столбики над заголовком — фирменный мотив «рост», не данные: подписей и чисел у них нет.
+// Высоты встают ровно по колонкам сетки.
+const bars = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
 
-// Показы по месяцам за последний год, % от максимума (демо) — столбцы встают ровно по колонкам сетки
-const months = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
+// Только подтверждённые владельцем факты (2026-10-29).
+const facts = [
+  { n: '200+', l: 'кампаний запустили для клиентов' },
+  { n: '48 ч', l: 'от заявки до медиаплана' },
+  { n: '5 мин', l: 'на запуск кампании в кабинете' },
+];
 ---
 
 <section class="hero">
@@ -17,32 +22,29 @@ const months = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
 
   <div class="wrap hero__body">
     <div class="hero__chart" aria-hidden="true">
-      {months.map((h, i) => <i style={`--h:${h}%;--i:${i}`} />)}
+      {bars.map((h, i) => <i style={`--h:${h}%;--i:${i}`} />)}
     </div>
 
-    <p class="hero__count" data-in style="--d:0">
-      <span class="sr-only">Более 2,4 миллиарда</span>
-      <span aria-hidden="true" data-counter={TOTAL_IMPRESSIONS}>{total}</span>
-    </p>
-    <p class="hero__lead" data-in style="--d:1">
-      показов рекламы купили для&nbsp;клиентов&nbsp;— и&nbsp;каждый можно проверить <u>в&nbsp;кабинете</u>.
-    </p>
+    <h1 class="hero__h1" data-in style="--d:0">{typo('Реклама в Ташкенте и по всему Узбекистану')}</h1>
 
-    <div class="hero__aside" data-in style="--d:2">
-      <div>
-        <h1 class="hero__h1">Boost!&nbsp;Agency&nbsp;— рекламное агентство в&nbsp;Ташкенте и&nbsp;Узбекистане.</h1>{' '}
-        <p>
-          Запускаем рекламу в&nbsp;интернете, на&nbsp;ТВ, радио и&nbsp;улицах, разрабатываем сайты
-          под&nbsp;трафик и&nbsp;пополняем рекламные кабинеты.<span class="hero__more">
-            Результаты digital-кампаний&nbsp;— в&nbsp;личном кабинете, без менеджера-посредника.</span
-          >
-        </p>
-      </div>
+    <div class="hero__main" data-in style="--d:1">
+      <p class="hero__lead">
+        {typo('Интернет, ТВ, радио и наружная реклама — в одном медиаплане. Каждый показ digital-кампаний видно в личном кабинете.')}
+      </p>
       <div class="hero__cta">
-        <a class="btn btn--primary" href={TELEGRAM}>Обсудить задачу в&nbsp;Telegram <Arrow /></a>
-        <a class="btn btn--ghost" href="#contact">Медиаплан за&nbsp;48&nbsp;часов</a>
+        <a class="btn btn--primary" href={TELEGRAM}>Обсудить задачу в Telegram <Arrow /></a>
+        <a class="btn btn--ghost" href="#contact">{typo('Медиаплан за 48 часов')}</a>
       </div>
     </div>
+
+    <ul class="hero__facts" data-in style="--d:2">
+      {facts.map((f) => (
+        <li>
+          <b>{f.n}</b>
+          <span>{typo(f.l)}</span>
+        </li>
+      ))}
+    </ul>
   </div>
 </section>
 
@@ -69,26 +71,26 @@ const months = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
   }
   .hero__cols span { border-inline: 1px solid var(--line); opacity: 0.5; }
 
+  /* Две вертикали: всё левое начинается с первой колонки, факты — с девятой.
+     Лид и факты стоят в одной строке сетки и начинаются на одной горизонтали. */
   .hero__body {
     position: relative;
     flex: 1;
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: minmax(0, 1fr) auto auto auto;
+    grid-template-rows: minmax(0, 1fr) auto auto;
     column-gap: var(--gap);
     padding-block: clamp(24px, 5vh, 64px) clamp(48px, 9vh, 104px);
-    container-type: inline-size;
   }
 
-  /* График роста: заполняет верх экрана и «стекает» в счётчик под ним */
   .hero__chart {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--gap);
     align-items: end;
-    min-height: clamp(56px, 12vh, 420px);
-    margin-bottom: clamp(16px, 3vh, 32px);
+    min-height: clamp(48px, 10vh, 320px);
+    margin-bottom: clamp(24px, 5vh, 56px);
   }
   .hero__chart i {
     height: var(--h);
@@ -108,42 +110,53 @@ const months = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
     @keyframes bar-grow { from { transform: scaleY(0); } }
   }
 
-  .hero__count {
+  .hero__h1 {
     grid-column: 1 / -1;
-    margin-left: -0.05em;
-    font-family: var(--f-display);
-    font-weight: 800;
-    font-size: clamp(34px, 12.6cqi, 200px);
-    line-height: 0.86;
-    letter-spacing: -0.05em;
-    font-variant-numeric: tabular-nums;
+    font: 800 clamp(40px, 6vw, 88px)/0.98 var(--f-display);
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+    -webkit-hyphens: manual;
+    hyphens: manual;
+  }
+
+  .hero__main,
+  .hero__facts {
+    grid-row: 3;
+    align-self: start;
+    margin-top: clamp(32px, 5.5vh, 64px);
+  }
+  .hero__main { grid-column: 1 / span 7; }
+  .hero__lead {
+    max-width: 32em;
+    font: 500 clamp(18px, 1.55vw, 22px)/1.5 var(--f-text);
+    color: var(--text);
+  }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(24px, 3.5vh, 36px); }
+
+  .hero__facts {
+    --fn: clamp(26px, 2.4vw, 38px); /* кегль цифр: от него — ширина их колонки */
+    grid-column: 9 / -1;
+    display: grid;
+    margin-block-end: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .hero__facts li {
+    display: grid;
+    grid-template-columns: calc(var(--fn) * 2.9) 1fr;
+    align-items: baseline;
+    align-content: start;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero__facts li:first-child { padding-top: 0; }
+  .hero__facts b {
+    font: 700 var(--fn)/1 var(--f-display);
+    letter-spacing: -0.03em;
     white-space: nowrap;
   }
-
-  .hero__lead {
-    grid-column: 1 / span 7;
-    margin-top: clamp(18px, 3vh, 36px);
-    font: 600 clamp(22px, 2.8vw, 42px)/1.12 var(--f-display);
-    letter-spacing: -0.022em;
-    text-wrap: balance;
-  }
-  .hero__lead u {
-    text-decoration: underline;
-    text-decoration-color: var(--accent);
-    text-decoration-thickness: 0.12em;
-    text-underline-offset: 0.16em;
-  }
-
-  .hero__aside {
-    grid-column: 9 / -1;
-    align-self: end;
-    display: grid;
-    gap: 24px;
-  }
-  .hero__aside div { max-width: 42ch; }
-  .hero__h1 { display: inline; font: 600 17px/1.55 var(--f-text); color: var(--text); }
-  .hero__aside p { display: inline; color: var(--text-2); }
-  .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero__facts span { color: var(--text-2); font-size: 15px; line-height: 1.4; }
 
   /* появление первого экрана */
   @media (prefers-reduced-motion: no-preference) {
@@ -151,46 +164,43 @@ const months = [26, 31, 29, 38, 44, 41, 53, 58, 55, 69, 81, 96];
     @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
   }
 
+  /* планшет: колонки друг под другом, факты — одним рядом из трёх ячеек */
   @media (max-width: 1000px) {
-    .hero__lead { grid-column: 1 / -1; }
-    .hero__aside { grid-column: 1 / -1; margin-top: 32px; }
+    .hero__h1, .hero__main { grid-column: 1 / -1; }
+    .hero__facts {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: clamp(28px, 4vh, 44px);
+      border-top: 1px solid var(--line);
+    }
+    .hero__facts li,
+    .hero__facts li:first-child {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 18px 16px 0 0;
+      border-bottom: 0;
+    }
+    .hero__facts li + li { padding-left: 16px; border-left: 1px solid var(--line); }
   }
 
   @media (max-width: 640px) {
-    /* на телефоне — последние 6 месяцев, линии сетки совпадают со столбцами */
+    /* на телефоне — последние 6 столбиков, линии сетки совпадают с ними */
     .hero__cols { grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 16px; }
     .hero__cols span:nth-child(n + 7) { display: none; }
-    .hero__body { column-gap: 16px; }
-    .hero__chart { grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 16px; }
+    .hero__body { column-gap: 16px; padding-block: 20px 36px; }
+    .hero__chart { grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 16px; min-height: 64px; margin-bottom: 20px; }
     .hero__chart i:nth-child(-n + 6) { display: none; }
-    .hero__aside { margin-top: 24px; gap: 20px; }
-    .hero__more { display: none; }
-    .hero__cta { flex-direction: column; gap: 10px; }
+    .hero__h1 { font-size: clamp(34px, 10.4vw, 46px); line-height: 1.02; letter-spacing: -0.035em; }
+    .hero__main { margin-top: 20px; }
+    .hero__lead { font-size: 17px; }
+    .hero__cta { flex-direction: column; gap: 10px; margin-top: 22px; }
     .hero__cta .btn { width: 100%; }
+    .hero__facts { margin-top: 28px; }
+    .hero__facts li,
+    .hero__facts li:first-child { padding: 14px 8px 0 0; gap: 6px; }
+    .hero__facts li + li { padding-left: 10px; }
+    .hero__facts { --fn: 24px; }
+    .hero__facts span { font-size: 13px; line-height: 1.35; overflow-wrap: break-word; }
   }
 </style>
-
-<script>
-  const el = document.querySelector<HTMLElement>('[data-counter]');
-  if (el) {
-    const target = Number(el.dataset.counter);
-    const fmt = new Intl.NumberFormat('ru-RU');
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let value = reduce ? target : target - 240000;
-    const render = () => { el.textContent = fmt.format(Math.round(value)); };
-    render();
-
-    if (!reduce) {
-      const from = value;
-      const t0 = performance.now();
-      const intro = (t: number) => {
-        const k = Math.min(1, (t - t0) / 1800);
-        value = from + (target - from) * (1 - Math.pow(1 - k, 4));
-        render();
-        if (k < 1) requestAnimationFrame(intro);
-        else window.setInterval(() => { value += 40 + Math.random() * 140; render(); }, 320);
-      };
-      requestAnimationFrame(intro);
-    }
-  }
-</script>

@@ -1,31 +1,17 @@
 ---
-const text =
-  'Boost! Agency — рекламное агентство в Ташкенте, работаем с 2019 года. Запускаем рекламу в интернете, на ТВ, радио и наружно по Узбекистану, разрабатываем сайты под трафик и считаем каждый вложенный доллар: по каждому каналу — отчёт, по digital — личный кабинет с данными в реальном времени.';
-const words = text.split(' ');
+import { typo } from '../lib/typo';
 
-const facts = [
-  { n: '200+', l: 'кампаний с 2019 года' },
-  { n: '48 ч', l: 'от заявки до медиаплана' },
-  { n: '5 мин', l: 'на запуск кампании в кабинете' },
-];
+// Кто мы — крупной фразой, подробности — обычным текстом в колонке удобной ширины:
+// длинный абзац крупным шрифтом на весь экран читать тяжело. Цифры — на первом экране.
+const statement = 'Boost! Agency — рекламное агентство в Ташкенте.';
+const text =
+  'Запускаем рекламу в интернете, на ТВ, радио и наружно по Узбекистану, разрабатываем сайты под трафик и считаем каждый вложенный доллар: по каждому каналу — отчёт, по digital — личный кабинет с данными в реальном времени.';
 ---
 
 <section class="mf" id="about" aria-labelledby="mf-title">
-  <div class="wrap">
-    <h2 id="mf-title" class="sr-only">О компании</h2>
-    <p class="mf__text">
-      {words.map((w) => <><span class="w">{w}</span>{' '}</>)}
-    </p>
-    <ul class="mf__facts">
-      {
-        facts.map((f) => (
-          <li>
-            <strong>{f.n}</strong>
-            <span>{f.l}</span>
-          </li>
-        ))
-      }
-    </ul>
+  <div class="wrap mf__in">
+    <h2 id="mf-title" class="mf__statement">{typo(statement)}</h2>
+    <p class="mf__text">{typo(text)}</p>
   </div>
 </section>
 
@@ -34,49 +20,35 @@ const facts = [
     border-top: 1px solid var(--line);
     padding-block: var(--sec-y);
   }
-  .mf__text {
-    max-width: 24em;
-    font: 600 clamp(24px, min(3.6vw, 6vh), 58px)/1.1 var(--f-display);
-    letter-spacing: -0.028em;
-    text-wrap: pretty;
-  }
-
-  /* слова «проявляются» строка за строкой по мере прокрутки — только CSS, без JS */
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .w {
-        animation: word-in linear both;
-        animation-timeline: view();
-        animation-range: entry 5% cover 38%;
-      }
-    }
-  }
-  @keyframes word-in {
-    from { opacity: 0.14; }
-    to { opacity: 1; }
-  }
-
-  .mf__facts {
-    list-style: none;
-    margin-top: clamp(32px, 7vh, 88px);
-    padding: 0;
+  .mf__in {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: 1px solid var(--line);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: 24px;
+    align-items: start;
   }
-  .mf__facts li { display: grid; align-content: start; gap: 10px; padding: clamp(18px, 3vh, 28px) 24px 0 0; }
-  .mf__facts li + li { padding-left: 24px; border-left: 1px solid var(--line); }
-  .mf__facts strong {
-    font: 700 clamp(30px, min(4.2vw, 7vh), 64px)/1 var(--f-display);
-    letter-spacing: -0.035em;
+  .mf__statement {
+    grid-column: 1 / span 6;
+    font: 700 clamp(28px, 3.4vw, 48px)/1.08 var(--f-display);
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+    -webkit-hyphens: manual;
+    hyphens: manual;
   }
-  .mf__facts span { color: var(--text-2); font-size: 16px; max-width: 26ch; }
+  .mf__text {
+    grid-column: 8 / -1;
+    max-width: 60ch;
+    padding-top: 0.35em;
+    color: var(--text-2);
+    font-size: clamp(18px, 1.4vw, 20px);
+    line-height: 1.6;
+  }
 
-  /* телефон: три факта остаются в строку, чтобы блок помещался в экран */
-  @media (max-width: 760px) {
-    .mf__facts li { padding: 16px 10px 0 0; gap: 6px; }
-    .mf__facts li + li { padding-left: 10px; }
-    .mf__facts strong { font-size: 26px; }
-    .mf__facts span { font-size: 13px; line-height: 1.35; overflow-wrap: break-word; }
+  @media (max-width: 860px) {
+    .mf__statement, .mf__text { grid-column: 1 / -1; }
+    .mf__text { padding-top: 0; }
+  }
+  @media (max-width: 640px) {
+    .mf__text { font-size: 17px; }
   }
 </style>
