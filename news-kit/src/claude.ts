@@ -52,9 +52,52 @@ export function classifyClaudeFailure(message: string): NewsWriterError["code"] 
   return "ai_failed";
 }
 
+// What one call cost, from the CLI's own answer (no prompt or answer text in it): the subscription limit
+// is spent by these tokens, so a pipeline step is measured by them, not guessed.
+export type ClaudeCallUsage = Readonly<{
+  cacheRead?: number;
+  cacheWrite?: number;
+  costUsd?: number;
+  input?: number;
+  kind: NewsModelKind;
+  model: string;
+  ms: number;
+  output?: number;
+  searches?: number;
+  subtype?: string;
+  turns?: number;
+  // Per model, as the CLI counts it: a web search runs as a request of its own, so its cost shows here.
+  byModel?: Readonly<Record<string, Readonly<{ costUsd?: number; input?: number; output?: number; searches?: number }>>>;
+}>;
+
+function callUsage(kind: NewsModelKind, model: string, started: number, result: Record<string, unknown>): ClaudeCallUsage {
+  const usage = (result.usage ?? {}) as Record<string, unknown>;
+  const number = (value: unknown) => (typeof value === "number" ? value : undefined);
+  const searches = number((usage.server_tool_use as Record<string, unknown> | undefined)?.web_search_requests);
+  const entries = {
+    cacheRead: number(usage.cache_read_input_tokens), cacheWrite: number(usage.cache_creation_input_tokens),
+    costUsd: number(result.total_cost_usd), input: number(usage.input_tokens), output: number(usage.output_tokens),
+    searches, subtype: typeof result.subtype === "string" ? result.subtype : undefined, turns: number(result.num_turns),
+  };
+  const modelUsage = result.modelUsage && typeof result.modelUsage === "object" ? result.modelUsage as Record<string, Record<string, unknown>> : {};
+  const defined = <T extends object>(value: T) => Object.freeze(Object.fromEntries(Object.entries(value).filter(([, item]) => item !== undefined)));
+  const byModel = Object.fromEntries(Object.entries(modelUsage).map(([name, usage]) => [name, defined({
+    costUsd: number(usage.costUSD), input: number(usage.inputTokens), output: number(usage.outputTokens), searches: number(usage.webSearchRequests),
+  })]));
+  return Object.freeze({
+    kind, model, ms: Date.now() - started,
+    ...Object.fromEntries(Object.entries(entries).filter(([, value]) => value !== undefined)),
+    ...(Object.keys(byModel).length ? { byModel: Object.freeze(byModel) } : {}),
+  });
+}
+
 export function createClaudeCliModel(options: Readonly<{
   binary?: string;
+  // Turns an agentic call (one with tools) may take before the CLI stops it.
+  maxTurns?: Readonly<Partial<Record<NewsModelKind, number>>>;
   models?: Readonly<Partial<Record<NewsModelKind, string>> & { write: string }>;
+  // Called once per finished call with what it cost.
+  onUsage?: (usage: ClaudeCallUsage) => void;
   spawn?: Spawn;
   // MAX_THINKING_TOKENS for a kind of call. 0 turns extended thinking off: an illustration took Opus
   // 15 000 output tokens and ~4 minutes with it, 1 800 tokens and 26 s without (VPS, 2026-10-28).
@@ -76,6 +119,8 @@ export function createClaudeCliModel(options: Readonly<{
       return new Promise<unknown>((resolve, reject) => {
         let settled = false;
         let stdout = "";
+        const started = Date.now();
+        const modelName = models[input.kind] ?? models.write;
         let child: ChildProcessWithoutNullStreams | undefined;
         function kill() {
           if (child && child.exitCode === null) child.kill("SIGKILL");
@@ -102,9 +147,10 @@ export function createClaudeCliModel(options: Readonly<{
           child = run(launcher.command, [
             ...launcher.args,
             "-p",
-            "--model", models[input.kind] ?? models.write,
+            "--model", modelName,
             "--tools", (options.tools?.[input.kind] ?? []).join(","),
             ...((options.tools?.[input.kind] ?? []).length ? ["--allowedTools", (options.tools?.[input.kind] ?? []).join(",")] : []),
+            ...(options.maxTurns?.[input.kind] ? ["--max-turns", String(options.maxTurns[input.kind])] : []),
             "--strict-mcp-config",
             "--setting-sources", "",
             "--no-session-persistence",
@@ -149,6 +195,11 @@ export function createClaudeCliModel(options: Readonly<{
           } catch {
             finish(new NewsWriterError(stdout.trim() ? "ai_invalid" : "ai_failed"));
             return;
+          }
+          try {
+            options.onUsage?.(callUsage(input.kind, modelName, started, result));
+          } catch {
+            // a report must not fail the call
           }
           if (result.is_error === true) {
             finish(new NewsWriterError(classifyClaudeFailure(String(result.result ?? result.subtype ?? ""))));

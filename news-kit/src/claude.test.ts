@@ -21,6 +21,7 @@ process.stdin.on("end", () => {
   else if (input.includes("scenario:text")) reply({ is_error: false, result: "{\\"title\\":\\"Текстом\\"}", type: "result" });
   else if (input.includes("scenario:login")) reply({ is_error: true, result: "Not logged in · Please run /login", type: "result" });
   else if (input.includes("scenario:limit")) reply({ is_error: true, result: "Claude usage limit reached", type: "result" });
+  else if (input.includes("scenario:usage")) reply({ is_error: false, num_turns: 4, structured_output: {}, subtype: "success", total_cost_usd: 0.21, type: "result", modelUsage: { "claude-sonnet-4-6": { costUSD: 0.21, inputTokens: 1200, outputTokens: 800, webSearchRequests: 3 } }, usage: { cache_read_input_tokens: 9000, input_tokens: 1200, output_tokens: 800, server_tool_use: { web_search_requests: 3 } } });
   else if (input.includes("scenario:garbage")) process.stdout.write("not json");
   else if (input.includes("scenario:slow")) setTimeout(() => reply({ is_error: false, structured_output: {} }), 10000);
 });
@@ -73,6 +74,21 @@ describe("Claude CLI writer model", () => {
     expect(call.env.DATABASE_URL).toBeUndefined();
     expect(call.env.TELEGRAM_BOT_WRAPPING_KEY).toBeUndefined();
     expect(call.env.HOME).toMatch(/news-writer-/u);
+  });
+
+  // 2026-10-29: генерация поста съедала ~11% пятичасового лимита, а сколько — каким шагом, было не видно.
+  it("reports what each call cost and bounds an agentic call's turns", async () => {
+    const seen: unknown[] = [];
+    const checker = createClaudeCliModel({
+      binary, maxTurns: { factcheck: 9 }, models: { factcheck: "sonnet", write: "opus" }, onUsage: (usage) => seen.push(usage),
+      token: "sk-ant-oat01-test-token-value", tools: { factcheck: ["WebSearch"] },
+    });
+    await checker.complete({ kind: "factcheck", prompt: "scenario:usage", schema: { type: "object" }, system: "s" });
+    expect((await lastCall()).args).toEqual(expect.arrayContaining(["--model", "sonnet", "--max-turns", "9", "--allowedTools", "WebSearch"]));
+    expect(seen).toEqual([expect.objectContaining({
+      byModel: { "claude-sonnet-4-6": { costUsd: 0.21, input: 1200, output: 800, searches: 3 } },
+      cacheRead: 9000, costUsd: 0.21, input: 1200, kind: "factcheck", model: "sonnet", output: 800, searches: 3, subtype: "success", turns: 4,
+    })]);
   });
 
   it("without a token, runs with the machine's own login: its HOME, no token, nothing else of the environment", async () => {

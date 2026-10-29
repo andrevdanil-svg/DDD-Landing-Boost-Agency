@@ -13,8 +13,21 @@ const fontFiles = [
   ...fallback.filter((file) => existsSync(file)),
 ];
 
+// An attribute written twice in one tag (font-size="14" … font-size="16") is an XML error resvg refuses
+// the whole picture for (2026-10-29: a paid illustration lost so). The first one stays, as a browser does.
+export function withoutRepeatedAttributes(svg: string): string {
+  return svg.replace(/<([A-Za-z][\w:.-]*)((?:\s+[\w:.-]+\s*=\s*(?:"[^"]*"|'[^']*'))+)(\s*\/?)>/gu, (_tag, name: string, attributes: string, end: string) => {
+    const seen = new Set<string>();
+    const kept = [...attributes.matchAll(/\s+([\w:.-]+)\s*=\s*("[^"]*"|'[^']*')/gu)]
+      .filter((match) => !seen.has(match[1]!) && seen.add(match[1]!))
+      .map((match) => ` ${match[1]}=${match[2]}`)
+      .join("");
+    return `<${name}${kept}${end}>`;
+  });
+}
+
 export function renderSvg(svg: string): Buffer {
-  const png = new Resvg(svg, {
+  const png = new Resvg(withoutRepeatedAttributes(svg), {
     background: "#111119",
     fitTo: { mode: "width", value: 1200 },
     font: { defaultFontFamily: "Montserrat", fontFiles, loadSystemFonts: false, sansSerifFamily: "Montserrat" },

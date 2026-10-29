@@ -12,7 +12,7 @@
 //   {"action": "rewrite", "material": {title, text, instruction?}}
 //     → {"ok": true, "post": {...}, "warnings": [...]}  или {"ok": true, "skip": true, "reason": "..."}
 
-import { createClaudeCliModel } from "../src/claude";
+import { createClaudeCliModel, type ClaudeCallUsage } from "../src/claude";
 import { factcheckPost } from "../src/factcheck";
 import { drawIllustrations, illustrationOrders } from "../src/illustrate";
 import { numbersIn, parseWriterVerdict, postText, type WrittenNewsPost } from "../src/writing";
@@ -37,6 +37,11 @@ function writtenPost(value: unknown): WrittenNewsPost | null {
     table: v.visuals?.table ?? null, title: v.title,
   });
   return verdict?.kind === "post" ? verdict.post : null;
+}
+
+// What each Claude call cost — one line per call into the backend's log (journald).
+function logUsage(usage: ClaudeCallUsage): void {
+  process.stderr.write(`[usage] ${JSON.stringify(usage)}\n`);
 }
 
 function out(value: unknown): void {
@@ -107,6 +112,10 @@ async function main(): Promise<void> {
       const deadline = Date.now() + budgetMs;
       const model = createClaudeCliModel({
         models: { write: writeModel },
+        onUsage: logUsage,
+        // Размышления до 4 тыс. токенов: без предела Opus тратил на них ~8 тыс. токенов выхода и
+        // 2–3 минуты на пост (2026-10-29), а план поста укладывается в меньшее.
+        thinkingTokens: { write: 4000 },
         timeoutMs: budgetMs,
         ...(process.env.CLAUDE_CODE_OAUTH_TOKEN ? { token: process.env.CLAUDE_CODE_OAUTH_TOKEN } : {}),
       });
@@ -133,9 +142,15 @@ async function main(): Promise<void> {
       if (!post) throw new Error("post: нужен пост в формате rewrite");
       const budgetMs = (typeof req.timeoutSec === "number" && req.timeoutSec > 30 ? req.timeoutSec : 240) * 1000 - 15_000;
       const model = createClaudeCliModel({
-        models: { factcheck: "opus", fix: "opus", write: "opus" },
+        // Sonnet: поиск и сверка не требуют Opus, а агентный цикл с поиском — самая дорогая часть
+        // генерации (каждый шаг пересылает весь растущий контекст). Исправления — правками, без
+        // второго вызова (factcheck.ts).
+        models: { factcheck: "sonnet", write: "sonnet" },
+        // До 8 поисков + ответ; запас на параллельные поиски в одном шаге.
+        maxTurns: { factcheck: 14 },
+        onUsage: logUsage,
         // Без «размышлений» — иначе каждый вызов в разы дольше (см. claude.ts).
-        thinkingTokens: { factcheck: 0, fix: 0 },
+        thinkingTokens: { factcheck: 0 },
         // Только поиск на стороне Anthropic: никаких загрузок страниц с этого сервера.
         tools: { factcheck: ["WebSearch"] },
         timeoutMs: budgetMs,
@@ -144,7 +159,7 @@ async function main(): Promise<void> {
       const result = await factcheckPost(post, {
         ...(typeof req.sourceUrl === "string" ? { sourceUrl: req.sourceUrl } : {}),
         ...(typeof req.trusted === "string" ? { trusted: req.trusted } : {}),
-      }, model, { deadline: Date.now() + budgetMs, signal: AbortSignal.timeout(budgetMs) });
+      }, model, { signal: AbortSignal.timeout(budgetMs) });
       // «Цифры, которых нет в источнике» (warnings rewrite): исправленные проверкой из поста ушли.
       const left = new Set(numbersIn(postText(result.post)));
       const numbers = Array.isArray(req.numbers) ? req.numbers.filter((value): value is string => typeof value === "string" && left.has(value)) : [];
@@ -160,6 +175,7 @@ async function main(): Promise<void> {
       const budgetMs = (typeof req.timeoutSec === "number" && req.timeoutSec > 30 ? req.timeoutSec : 240) * 1000 - 15_000;
       const model = createClaudeCliModel({
         models: { illustrate: typeof req.model === "string" && req.model ? req.model : "opus", write: "opus" },
+        onUsage: logUsage,
         // Без «размышлений»: иначе одна SVG — ~4 минуты вместо ~30 секунд.
         thinkingTokens: { illustrate: 0 },
         timeoutMs: budgetMs,
