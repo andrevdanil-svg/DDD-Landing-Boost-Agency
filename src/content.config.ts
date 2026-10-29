@@ -27,11 +27,6 @@ const blog = defineCollection({
     // SEO (отдельно от title/description, чтобы в поиске был другой заголовок)
     seoTitle: z.string().max(140).optional(),
     seoDescription: z.string().max(300).optional(),
-    // Источники — подтверждения фактов (проверка фактов при генерации поста)
-    sources: z
-      .array(z.object({ title: z.string().max(200), url: z.string().url() }))
-      .max(10)
-      .optional(),
     // Обложка — og:image + hero поста
     cover: z
       .object({

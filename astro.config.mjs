@@ -1,11 +1,15 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { satteri } from '@astrojs/markdown-satteri';
+import { blogLinks } from './src/lib/blog-links.ts';
 
 export default defineConfig({
   site: 'https://boostagency.uz',
   trailingSlash: 'ignore',
   build: { format: 'directory' },
   devToolbar: { enabled: false },
+  // посты блога: без внешних ссылок, термины ведут в глоссарий
+  markdown: { processor: satteri({ mdastPlugins: [blogLinks] }) },
   integrations: [
     sitemap({
       // переадресации /en/ и /uz/ и страница 404 в карту сайта не попадают;
@@ -22,6 +26,7 @@ export default defineConfig({
         // Блог — высокий приоритет, обновляется чаще
         if (path === '/blog') return { ...item, priority: 0.9, changefreq: 'weekly' };
         if (path.startsWith('/blog/')) return { ...item, priority: 0.8, changefreq: 'monthly' };
+        if (path === '/glossary') return { ...item, priority: 0.8, changefreq: 'monthly' };
 
         // Услуги, площадки, кейсы, отрасли, города — высокий приоритет
         if (

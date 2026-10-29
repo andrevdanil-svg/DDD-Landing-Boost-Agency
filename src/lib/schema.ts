@@ -187,8 +187,6 @@ export type ArticleInput = {
   dateModified?: string;
   authorName?: string;
   authorUrl?: string;
-  // Источники фактов поста → schema.org citation
-  citations?: { title: string; url: string }[];
 };
 
 export function article(input: ArticleInput): JsonLd {
@@ -205,9 +203,6 @@ export function article(input: ArticleInput): JsonLd {
       : { '@id': ORG_ID },
     publisher: { '@id': ORG_ID },
     mainEntityOfPage: new URL(input.url, SITE).href,
-    ...(input.citations?.length && {
-      citation: input.citations.map((c) => ({ '@type': 'CreativeWork', name: c.title, url: c.url })),
-    }),
   };
 }
 
