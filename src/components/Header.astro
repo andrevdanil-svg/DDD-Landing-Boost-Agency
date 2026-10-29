@@ -1,12 +1,12 @@
 ---
 import { publishedPosts, rubricUrl, rubricsWithPosts } from '../lib/blog';
-import { glossary, GLOSSARY_URL } from '../data/glossary';
 
 const nav = [
   { href: '/services/', label: 'Услуги' },
   { href: '/platforms/', label: 'Площадки' },
   { href: '/cases/', label: 'Кейсы' },
   { href: '/blog/', label: 'Блог' },
+  { href: '/glossary/', label: 'Глоссарий' },
   { href: '/process/', label: 'Как работаем' },
 ];
 
@@ -39,7 +39,6 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
                   {blogSections.map(({ rubric, count }) => (
                     <li><a href={rubricUrl(rubric)} class="dd__item">{rubric.name} <span>{count}</span></a></li>
                   ))}
-                  <li class="dd__sep"><a href={GLOSSARY_URL} class="dd__item">Глоссарий <span>{glossary.length}</span></a></li>
                 </ul>
               </div>
             </div>
@@ -65,7 +64,6 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
             {n.href === '/blog/' && blogSections.length > 0 && (
               <div class="menu__sub">
                 {blogSections.map(({ rubric }) => <a href={rubricUrl(rubric)}>{rubric.name}</a>)}
-                <a href={GLOSSARY_URL}>Глоссарий</a>
               </div>
             )}
           </>
@@ -102,7 +100,8 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
     font-size: 15px;
     color: var(--text-2);
   }
-  .hdr__nav a { transition: color 0.2s; }
+  .hdr__nav a { transition: color 0.2s; white-space: nowrap; }
+  .hdr__cta { white-space: nowrap; }
   .hdr__nav a:hover { color: var(--text); }
 
   /* Выпадающее меню «Блог»: по наведению и фокусу (мышь, клавиатура), по кнопке-стрелке —
@@ -157,7 +156,6 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
   .dd__item span { color: var(--text-3); font-size: 13px; font-variant-numeric: tabular-nums; }
   .dd__item:hover, .dd__item:focus-visible { background: rgb(255 255 255 / 0.05); color: var(--text); }
   .dd__item--all { color: var(--text); font-weight: 500; }
-  .dd__sep { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); }
 
   .hdr__end { margin-left: auto; display: flex; align-items: center; gap: 16px; }
 
@@ -203,7 +201,13 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/contact/';
     color: var(--text-2);
   }
 
-  @media (max-width: 900px) {
+  /* шесть пунктов меню и кнопка на средней ширине помещаются только плотнее */
+  @media (max-width: 1180px) {
+    .hdr__in { gap: 20px; }
+    .hdr__nav { gap: 18px; margin-left: 4px; }
+  }
+
+  @media (max-width: 960px) {
     .hdr__nav, .hdr__cta { display: none; }
     .hdr__burger { display: block; }
     .hdr__end { gap: 4px; }
