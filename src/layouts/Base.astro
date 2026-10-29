@@ -6,6 +6,7 @@ import '@fontsource/golos-text/600.css';
 import '../styles/global.css';
 import { business } from '../data/business';
 import { graph, organization, website } from '../lib/schema';
+import { pageTitle } from '../lib/title';
 
 interface Props {
   title: string;
@@ -20,7 +21,8 @@ interface Props {
   ogType?: 'website' | 'article';
 }
 
-const { title, description, noindex = false, schema = [], ogImage, ogType = 'website' } = Astro.props;
+const { title: rawTitle, description, noindex = false, schema = [], ogImage, ogType = 'website' } = Astro.props;
+const title = pageTitle(rawTitle);
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const og = new URL(ogImage ?? business.ogImageUrl, Astro.site).href;
 

@@ -3,7 +3,8 @@
 // Падает (exit 1), если нашёл блокирующие проблемы — чтобы deploy.sh остановился.
 //
 // Что проверяем:
-// - title есть и 20–72 символа
+// - title есть, кончается на « | Реклама в Ташкенте» (правило владельца, src/lib/title.ts)
+// - ссылки на страницы глоссария (/glossary/…/) ведут на существующие страницы
 // - description есть и 50–180 символов
 // - canonical есть
 // - JSON-LD application/ld+json хотя бы один и парсится
@@ -64,6 +65,8 @@ function checkPage(file: string): Issue[] {
     const t = decodeEntities(title);
     // Для кириллицы Google обрезает title быстрее, но длинные title полнее читаются ИИ-ботами —
     // предупреждаем только если явно превышает экран (≥88 знаков).
+    // Правило владельца: Title каждой страницы кончается на « | Реклама в Ташкенте» (src/lib/title.ts).
+    if (!t.endsWith(" | Реклама в Ташкенте")) issues.push({ url, level: "error", code: "title-suffix", detail: `«${t}»` });
     if (t.length < 20) issues.push({ url, level: "warn", code: "short-title", detail: `${t.length} chars: «${t}»` });
     else if (t.length > 88) issues.push({ url, level: "warn", code: "long-title", detail: `${t.length} chars: «${t.slice(0, 60)}…»` });
   }
@@ -158,6 +161,16 @@ for (const file of walk(DIST)) {
 }
 
 allIssues.push(...detectDuplicates(pageData));
+
+// Ссылки на термины глоссария из постов и страниц терминов: страница термина должна существовать.
+for (const file of walk(DIST)) {
+  const html = fs.readFileSync(file, "utf8");
+  for (const [, href] of html.matchAll(/href="(\/glossary\/[a-z0-9-]+\/)(?:#[^"]*)?"/g)) {
+    if (!fs.existsSync(path.join(DIST, href!, "index.html"))) {
+      allIssues.push({ url: pageUrl(file), level: "error", code: "broken-glossary-link", detail: href });
+    }
+  }
+}
 
 const errors = allIssues.filter((i) => i.level === "error");
 const warns = allIssues.filter((i) => i.level === "warn");
