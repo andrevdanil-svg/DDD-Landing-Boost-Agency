@@ -1,0 +1,1 @@
+var e=document.querySelectorAll(`[data-odo]`);if(window.matchMedia(`(prefers-reduced-motion: reduce)`).matches||!(`IntersectionObserver`in window))e.forEach(e=>e.classList.add(`is-in`));else{let t=new IntersectionObserver(e=>{e.forEach(e=>{e.isIntersecting&&(e.target.classList.add(`is-in`),t.unobserve(e.target))})},{threshold:.4});e.forEach(e=>t.observe(e))}

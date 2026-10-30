@@ -1,0 +1,1 @@
+var e=document.querySelector(`[data-mbar]`),t=document.querySelector(`[data-contact]`),n=!1,r=!1,i=()=>e?.classList.toggle(`is-on`,n&&!r);window.addEventListener(`scroll`,()=>{n=window.scrollY>window.innerHeight*.7,i()},{passive:!0}),t&&`IntersectionObserver`in window&&new IntersectionObserver(([e])=>{r=e.isIntersecting,i()}).observe(t);
